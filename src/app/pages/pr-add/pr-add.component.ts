@@ -7,9 +7,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
-import { SessionStorageService } from '../../services/session-storage.service';
-import { NotificationsService } from '../../services/notifications.service';
-import { WebSocketService } from '../../services/web-socket.service';
 //import { StatusMessageComponent } from '../status-message/status-message.component';
 
 @Component({
@@ -21,6 +18,7 @@ import { WebSocketService } from '../../services/web-socket.service';
 
 export class PrAddComponent implements OnInit {
   public dataSource:any;
+  public result:any;
   //public displayedColumns = ['PRNo','DateCreated','Requestor','Designation','Division','Purpose','PRStatus'];
   public prload;
   public prNumber:any;
@@ -52,13 +50,7 @@ export class PrAddComponent implements OnInit {
     this.fieldArray.splice(index, 1);
   }
 
-  constructor(
-    private document:PrService,
-    private fb:FormBuilder,
-    private sessionStorageService: SessionStorageService,
-    private notif: NotificationsService,
-    public websock: WebSocketService
-  ) {
+  constructor(private document:PrService, private fb:FormBuilder) {
     this.productForm = this.fb.group({
       quantities: this.fb.array([]) ,
     });
@@ -72,11 +64,11 @@ export class PrAddComponent implements OnInit {
 
     this.document.loadPRNo()
     .subscribe(data => {
-      this.websock.response = data;
+      this.result = data;
       //console.log(this.result)
     });
 
-    this.dataSource = new MatTableDataSource(this.websock.response);
+    this.dataSource = new MatTableDataSource(this.result);
 
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
@@ -128,19 +120,6 @@ export class PrAddComponent implements OnInit {
     //this.snackBar.openFromComponent(StatusMessageComponent, config);
   }
 
-  clearAddPRForm() {
-    let requestor = <HTMLInputElement>document.querySelector('.requestor');
-    let designation = <HTMLInputElement>document.querySelector('.designation');
-    let purpose = <HTMLInputElement>document.querySelector('.purpose');
-
-    this.productForm.reset();
-    requestor.value = '';
-    designation.value = '';
-    purpose.value = '';
-  }
-
-
-
   addPurchaseRequest() {
     let prno = <HTMLInputElement>document.querySelector('.prno');
     let datecreated = <HTMLInputElement>document.querySelector('.datecreated');
@@ -173,21 +152,7 @@ export class PrAddComponent implements OnInit {
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
 
     x.subscribe(data => {
-      let response:any = data;
-      if (response === "Inserted Successfully") {
-        let title = 'Purchase Request Created';
-        let message = `Purchase Request: ${prno.value} has been created by ${this.sessionStorageService.getSession('username')}`;
-
-
-        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), division.value, prstatus.value, prno.value).subscribe(data => {
-          //this.websock.status_message = devicedeveui;
-          console.log(data);
-        });
-
-        this.websock.sendNotif(message);
-        this.websock.updateNotification();
-        this.clearAddPRForm();
-      }
+      //console.log(data);
     });
 
      /* prno.value = "";
@@ -211,5 +176,5 @@ export class PrAddComponent implements OnInit {
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
-
+  
 }

@@ -1,37 +1,43 @@
+<!-- PR count / division -->
+<div class="mat-headline" style="margin: 10px 10px 5px 5px; border-bottom: 1px solid #dddddd;">
+    Total Purchase Requests Created
+</div>
 <div fxLayout="row" fxLayout="row wrap">
     <div *ngFor="let dash of dashCard" fxFlex="25" fxFlex.lt-sm="100" fxFlex.lt-md="50">
         <cdk-dashcard [dashData]="dash"></cdk-dashcard>
     </div>
 </div>
-<div fxLayout="row" fxLayout="row wrap">
+
+<!--<div fxLayout="row" fxLayout="row wrap">
     <cdk-bar-graph fxFlex="37.5" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-bar-graph>
     <cdk-doughnut-graph fxFlex="37.5" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-doughnut-graph>
     <cdk-weather fxFlex="25" fxFlex.lt-sm="100" fxFlex.sm="100"></cdk-weather>
-</div>
+</div>-->
+
 <div fxLayout="row" fxLayout="row wrap">
-    <cdk-line-graph fxFlex="75" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-line-graph>
-    <cdk-share-price fxFlex="25" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-share-price>
+    <cdk-line-graph fxFlex="100" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-line-graph>
+    <!--<cdk-share-price fxFlex="25" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-share-price>-->
 </div>
-<div fxLayout="row" fxLayout="row wrap">
+<!--<div fxLayout="row" fxLayout="row wrap">
     <cdk-sales-list fxFlex="60" fxFlex.lt-sm="100" fxFlex.sm="100" fxFlex.md="70"></cdk-sales-list>
-    <!-- <cdk-profile-card fxFlex="40" fxFlex.lt-sm="100" fxFlex.sm="100" fxFlex.md="30"></cdk-profile-card> -->
+    <cdk-profile-card fxFlex="40" fxFlex.lt-sm="100" fxFlex.sm="100" fxFlex.md="30"></cdk-profile-card>
 </div>
 
 <div fxLayout="row" fxLayout.lt-md="row wrap">
     <div fxFlex.lt-sm="100" fxFlex.lt-md="50" fxFlex="25">
-        <cdk-round-progressbar [title]="'SALES'" [current]="'23'" [max]="'100'" [background]="'#FFF968'" [color]="'#B1A7FF'" [boxcolor]="'#7986CB'"></cdk-round-progressbar>
+        <cdk-round-progressbar [title]="'ADMINISTRATIVE SERVICES'" [current]="'4'" [max]="'5'" [background]="'#FFF968'" [color]="'#B1A7FF'" [boxcolor]="'#7986CB'"></cdk-round-progressbar>
     </div>
     <div fxFlex.lt-sm="100" fxFlex.lt-md="50" fxFlex="25">
-        <cdk-round-progressbar [title]="'LEADS'" [current]="'33'" [max]="'100'" [background]="'#FFE268'" [color]="'#A7C1FF'" [boxcolor]="'#42A5F5'"></cdk-round-progressbar>
+        <cdk-round-progressbar [title]="'ENGINEERING AND MAINTENANCE'" [current]="'33'" [max]="'100'" [background]="'#FFE268'" [color]="'#A7C1FF'" [boxcolor]="'#42A5F5'"></cdk-round-progressbar>
     </div>
     <div fxFlex.lt-sm="100" fxFlex.lt-md="50" fxFlex="25">
-        <cdk-round-progressbar [title]="'ASSETS'" [current]="'78'" [max]="'100'" [background]="'#FFC368'" [color]="'#A7F0FF'" [boxcolor]="'#26A69A'"></cdk-round-progressbar>
+        <cdk-round-progressbar [title]="'FINANCE AND COMMERCIAL'" [current]="'78'" [max]="'100'" [background]="'#FFC368'" [color]="'#A7F0FF'" [boxcolor]="'#26A69A'"></cdk-round-progressbar>
     </div>
     <div fxFlex.lt-sm="100" fxFlex.lt-md="50" fxFlex="25">
-        <cdk-round-progressbar [title]="'BANKING'" [current]="'90'" [max]="'100'" [background]="'#FFCF68'" [color]="'#A7DEFF'" [boxcolor]="'#26C6DA'"></cdk-round-progressbar>
+        <cdk-round-progressbar [title]="'PRODUCTION'" [current]="'90'" [max]="'100'" [background]="'#FFCF68'" [color]="'#A7DEFF'" [boxcolor]="'#26C6DA'"></cdk-round-progressbar>
     </div>
-</div>
+</div>-->
 
-<div fxLayout="row" fxLayout="row wrap" >
+<!--<div fxLayout="row" fxLayout="row wrap" >
     <cdk-world-map fxFlex="100" [tableData]="tableData"></cdk-world-map>
-</div>
+</div>-->

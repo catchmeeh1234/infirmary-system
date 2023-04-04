@@ -8,7 +8,6 @@ import { StringDecoder } from 'string_decoder';
   providedIn: 'root'
 })
 export class PrService {
-  public dataSource:any;
 
   constructor(private http:HttpClient) { }
 
@@ -29,12 +28,29 @@ export class PrService {
   }
 
   updateApproveStatus(prnum, status, username, button) {
-    return this.http.get(API_URL + `/prApproveStatus.php?prnum=${prnum}&status=${status}&name=${username}&stat=${button}`, {responseType: 'text'});
+    return this.http.get(API_URL + `/prApproveStatus.php?prnum=${prnum}&status=${status}&name=${username}&stat=${button}`, {responseType: 'json'});
   }
+
+  loadTotalAS() {
+    return this.http.get(API_URL + '/api/LoadTotalAS.php', {responseType: 'text'});
+  }
+
+  loadTotalEM() {
+    return this.http.get(API_URL + '/api/loadTotalEC.php', {responseType: 'text'});
+  }
+
+  loadTotalFC() {
+    return this.http.get(API_URL + '/api/loadTotalFC.php', {responseType: 'text'});
+  }
+
+  loadTotalPR() {
+    return this.http.get(API_URL + '/api/loadTotalPR.php', {responseType: 'text'});
+  }  
 
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
   addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string) {
     let json = JSON.stringify(items);
+    console.log(json);
     let params = new FormData();
     params.append('prno', prno);
     params.append('datecreated', datecreated);

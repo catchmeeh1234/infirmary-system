@@ -3,7 +3,6 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Router } from '@angular/router';
 
 import { SessionStorageService } from '../services/session-storage.service';
-import { WebSocketService } from '../services/web-socket.service';
 
 
 @Component({
@@ -26,16 +25,9 @@ export class AuthComponent implements OnInit{
    this.visibility = this.isVisible ? 'shown' : 'hidden';
   }
 
-	constructor(
-    private media: MediaObserver,
-    private sessionStorageService: SessionStorageService,
-    private router:Router,
-    private websock: WebSocketService
-  ) { }
+	constructor(private media: MediaObserver, private sessionStorageService: SessionStorageService, private router:Router) { }
 
 	ngOnInit() {
-    this.websock.showDesktopNotification();
-
 		this.media.asObservable().subscribe(() => {
         this.toggleView();
     });
