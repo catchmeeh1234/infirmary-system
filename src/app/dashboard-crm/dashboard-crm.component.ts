@@ -44,17 +44,16 @@ export class DashboardCrmComponent implements OnInit {
         .subscribe(data => {
         this.totalas = parseInt(data);
         let object = {colorDark: '#5C6BC0', colorLight: '#7986CB', number: this.totalas, title: 'ADMINISTRATIVE SERVICE', icon: 'account_circle'}
-        this.dashCard.push(object);
+        this.dashCard.push(object);     
         });
     }
-
 
     LoadTotalEM() {
         this.document.loadTotalEM()
         .subscribe(data => {
         this.totalem = parseInt(data);
         let object = {colorDark: '#42A5F5', colorLight: '#64B5F6', number: this.totalem, title: 'ENGINEERING AND MAINTENANCE', icon: 'build'}
-        this.dashCard.push(object);
+        this.dashCard.push(object);     
         });
     }
 
@@ -63,7 +62,7 @@ export class DashboardCrmComponent implements OnInit {
         .subscribe(data => {
         this.totalfc = parseInt(data);
         let object = {colorDark: '#26A69A', colorLight: '#4DB6AC', number: this.totalfc, title: 'FINANCE AND COMMERCIAL', icon: 'library_books'}
-        this.dashCard.push(object);
+        this.dashCard.push(object);     
         });
     }
 
@@ -72,7 +71,7 @@ export class DashboardCrmComponent implements OnInit {
         .subscribe(data => {
         this.totalpr = parseInt(data);
         let object = {colorDark: '#66BB6A', colorLight: '#81C784', number: this.totalpr, title: 'PRODUCTION', icon: 'waves'}
-        this.dashCard.push(object);
+        this.dashCard.push(object);     
         });
     }
 
