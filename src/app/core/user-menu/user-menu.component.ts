@@ -11,7 +11,7 @@ export class UserMenuComponent implements OnInit {
 	isOpen: boolean = false;
 
   	//currentUser = null;
-  	Hari;
+    public user_name:string;
 
 
   	@Input() currentUser = null;
@@ -32,6 +32,7 @@ export class UserMenuComponent implements OnInit {
 
 
   	ngOnInit() {
+      this.user_name = this.sessionStorageService.getSession('username');
   	}
 
     logout() {

@@ -9,7 +9,7 @@ $prefix: 'toolbar-notification';
   	height: 13px;
   	padding: 5px;
     border-radius: 26%;
-    width: 30%;
+    width: 55%;
     background-color: #f44336;
   	color: #fff;
   	border-color:#f44336
@@ -33,7 +33,7 @@ $prefix: 'toolbar-notification';
 	position: absolute;
 	top: 42px;
 	right: 28px;
-	min-width: 350px;
+	min-width: 400px;
 	z-index: 1000;
 	transform: translateY(0) scale(0);
 	transform-origin: top right;
@@ -53,7 +53,7 @@ $prefix: 'toolbar-notification';
 	    visibility: visible;
 	}
 	.card {
-      
+
 	    .header {
 	      background: #EEEEEE;
 	      min-height: 54px;
