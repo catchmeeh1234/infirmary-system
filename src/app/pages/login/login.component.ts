@@ -92,11 +92,10 @@ export class LoginComponent implements OnInit {
     this.user.getUser(username, password).subscribe(
       data => {
         this.statusMessage = data;
+        console.log(this.statusMessage);
 
         if (this.statusMessage.status === "Invalid Credentials") {
-            //this.router.navigate(['/login']);
-            this.formErrors.password = this.statusMessage.status;
-
+            this.router.navigate(['/login']);
         } else {
           this.sessionStorageService.setSession('userid', this.statusMessage.uid);
           this.sessionStorageService.setSession('username', this.statusMessage.username);
