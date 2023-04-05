@@ -70,6 +70,4 @@ export class AuthComponent implements OnInit{
             this.matDrawerShow = false;
         }
 	}
-
-
 }
