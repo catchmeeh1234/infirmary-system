@@ -1,0 +1,258 @@
+<div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px">
+
+	<div fxFlex class="table-component-holder mat-elevation-z4">
+	  <mat-toolbar class="table-header">
+		<h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
+	  </mat-toolbar>
+	  <div class="table-container">
+		<form>
+		<table class="mat-table">
+		  <!--<tr class="mat-header-row">
+			  <th align="center" class="mat-header-cell">PR no.</th>
+			  <th align="center" class="mat-header-cell">Date Created</th>
+			  <th align="center" class="mat-header-cell">Requestor</th>
+			  <th align="center" class="mat-header-cell">Designation</th>
+			  <th align="center" class="mat-header-cell">Division</th>
+			  <th align="center" class="mat-header-cell">Purpose</th>
+			  <th align="center" class="mat-header-cell">Status</th>
+		  </tr>-->
+		  <thead>
+			<tr>
+				<th>PR no.</th>
+				<th>Date Created</th>
+				<th>Requestor</th>
+				<th>Designation</th>
+				<th>Division</th>
+				<th>Purpose</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		  <tr class="mat-row">
+			  <td align="center" class="mat-cell">
+				<input type="text" size="6" placeholder="PR No." class="prno" [value]="result" />
+				<!--<input type="text" size="6" placeholder="PR No." class="prno" [value]="result" required minlength="4" [(ngModel)]="pr.name" #name="ngModel" />
+				<div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+
+  					<div *ngIf="name.errors?.['required']">Name is required.</div>
+  					<div *ngIf="name.errors?.['minlength']">Name must be at least 4 characters long.</div>
+				</div> -->
+			</td>
+
+			  <td align="center" class="mat-cell">
+			    <input [matDatepicker]="basicDatepicker" [formControl]="date1" size="6" placeholder="Date" class="datecreated" />
+			    <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
+			    <mat-datepicker #basicDatepicker></mat-datepicker>
+			  </td>
+			  <td align="center" class="mat-cell"> 
+				
+				  <input matInput type="text" size="25" placeholder="Requestor" class="requestor" [formControl]="myControl" [matAutocomplete]="auto" /> 
+				  <mat-autocomplete #auto="matAutocomplete">
+					<mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
+					  {{option.unit_name}}
+					</mat-option>
+				  </mat-autocomplete>
+			
+			  </td>
+			  <td align="center" class="mat-cell"> <input type="text" size="30" placeholder="Designation" class="designation" /> </td>
+			  <td align="center" class="mat-cell">
+			    <select class="division">
+				  <option *ngFor="let division of divisions" [value]="division.division_name">{{division.division_name}}</option>
+			    </select>
+			  </td>
+			  <td align="center" class="mat-cell"> <input type="text" size="30"placeholder="Purpose" class="purpose" /> </td>
+			  <td align="center" class="mat-cell"> <input type="text" size="7" placeholder="PR Status" class="prstatus" value="For Approve" disabled /> </td>
+		  </tr>
+		  <!--<tr>
+			  <td align="center" colspan="7"> <button type="button" (click)="addPurchaseRequest()">Upload</button> </td>
+		  </tr>-->
+		</table>
+		</form>
+	</div>
+</div>
+
+<!-- sample -->
+<div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px">
+
+	<div fxFlex class="table-component-holder mat-elevation-z4">
+	  <mat-toolbar class="table-header">
+		<h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
+	  </mat-toolbar>
+		<div class="table-container">
+
+			<form [formGroup]="productForm">
+				<table class="table table-bordered" formArrayName="quantities">
+				<thead>
+				  <tr>
+					<th width="20%">Item</th>
+					<th width="20%">Quantity</th>
+					<th width="20%">Unit</th>
+					<th width="20%">Cost</th>
+					<th width="20%"><button type="button" (click)="addQuantity()" class="btn btn-primary">Add Item</button></th>
+				  </tr>
+				</thead>
+				  <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+					<td align="center">
+					  <input type="text" formControlName="item" class="form-control" size="40">
+					</td>
+					<td align="center">
+					  <input type="text" formControlName="qty" class="form-control" size="10">
+					</td>
+					<td align="center">
+					  <select id="role" formControlName="unit" class="form-control">
+					  <option *ngFor="let unit of units" [value]="unit.unit_name"> {{unit.unit_name}} </option>
+					  </select>
+					</td>
+					<td align="center">
+					  <input type="text" formControlName="price" class="form-control" size="15">
+					</td>
+					<td align="center">
+					  <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
+					</td>
+				  </tr>
+				  <tr></tr>
+				  <tr>
+					<td align="center" colspan="5"> <button type="button" (click)="addPurchaseRequest()">Upload</button> </td>
+				  </tr>
+				  <tr></tr>
+				</table>		  
+			  </form>
+
+	  </div>
+	</div>
+</div>
+	<!--
+
+	div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px">
+  <div class="container">
+
+    <h1>Add Purchase Requests Items</h1>
+
+    <form [formGroup]="productForm">
+      <table class="table table-bordered" formArrayName="quantities">
+        <tr>
+          <th colspan="4">Add Multiple Quantity:</th>
+          <th width="150px"><button type="button" (click)="addQuantity()" class="btn btn-primary">Add More</button></th>
+        </tr>
+        <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+          <td>
+              Item:
+              <input type="text" formControlName="item" class="form-control">
+          </td>
+          <td>
+              Quantity:
+              <input type="text" formControlName="qty" class="form-control">
+          </td>
+          <td>
+            Unit:
+            <select id="role" formControlName="unit" class="form-control">
+              <option *ngFor="let unit of units" [value]="unit.unit_name"> {{unit.unit_name}} </option>
+            </select>
+          </td>
+          <td>
+            Cost:
+            <input type="text" formControlName="price" class="form-control">
+          </td>
+          <td>
+              <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
+          </td>
+        </tr>
+      </table>
+
+    </form>
+
+    <br/>-->
+    <!-- {{this.productForm.value | json}} 
+  </div>-->
+
+	<!-- <div fxFlex class="table-component-holder mat-elevation-z4">
+	  <mat-toolbar class="table-header">
+		<h1 class="mat-headline center-align" >Add Purchase Requests Items</h1>
+	  </mat-toolbar>
+	  <div class="table-container">
+
+	<table class="mat-table">
+	<thead>
+		<tr>
+			<th>Items</th>
+			<th>Quantity</th>
+			<th>Unit</th>
+			<th>Cost</th>
+			<th>Actions</th>
+		</tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let field of fieldArray; let i = index">
+            <td align="center">
+                <input class="items" type="text" name="items[]" />
+            </td>
+            <td align="center">
+                <input class="quantity" type="text" name="quantity[]" />
+            </td>
+            <td align="center">
+                <input class="unit" type="text" name="unit[]" />
+				<select class="unit" name="unit[]">
+					<option value=""></option>
+					<option value="Bag">Bag</option>
+					<option value="Box">Box</option>
+					<option value="Kilo">Kilo</option>
+					<option value="Linear Meter">Linear Meter</option>
+					<option value="Load">Load</option>
+					<option value="Lot">Lot</option>
+					<option value="Meter">Meter</option>
+					<option value="Pack">Pack</option>
+					<option value="Pail">Pail</option>
+				    <option value="Piece">Piece</option>
+					<option value="Ream">Ream</option>
+					<option value="Roll">Roll</option>
+					<option value="Set">Set</option>
+					<option value="Square Meter">Square Meter</option>
+					<option value="Unit">Unit</option>
+			    </select>
+            </td>
+			<td align="center">
+                <input class="cost" type="text" name="cost[]" />
+            </td>
+            <td align="center">
+                <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Delete</button>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <input class="items" type="text" name="items[]" />
+            </td>
+            <td align="center">
+                <input class="quantity" type="text" name="quantity[]" />
+            </td>
+            <td align="center">
+                <input class="unit" type="text" name="unit[]" />
+				<select class="unit" name="unit[]">
+					<option value=""></option>
+					<option value="Bag">Bag</option>
+					<option value="Box">Box</option>
+					<option value="Kilo">Kilo</option>
+					<option value="Linear Meter">Linear Meter</option>
+					<option value="Load">Load</option>
+					<option value="Lot">Lot</option>
+					<option value="Meter">Meter</option>
+					<option value="Pack">Pack</option>
+					<option value="Pail">Pail</option>
+				    <option value="Piece">Piece</option>
+					<option value="Ream">Ream</option>
+					<option value="Roll">Roll</option>
+					<option value="Set">Set</option>
+					<option value="Square Meter">Square Meter</option>
+					<option value="Unit">Unit</option>
+			    </select>
+            </td>
+			<td align="center">
+                <input class="cost" type="text" name="cost[]" />
+            </td>
+            <td align="center">
+                <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button>
+            </td>
+        </tr>
+		</table>
+	  </div>
+	</div> 
+	<button type="button" (click)="addPurchaseRequest()">Upload</button>
+</div>-->
