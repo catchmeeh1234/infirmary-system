@@ -119,4 +119,10 @@ export class ApprovePrComponent implements OnInit {
 
   }
 
+  //table controls
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.document.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

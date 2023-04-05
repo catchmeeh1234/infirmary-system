@@ -3,6 +3,12 @@
 		<mat-toolbar class="table-header">
 			<h1 class="mat-headline center-align" >Purchase Requests</h1>
 		</mat-toolbar>
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 20px;padding-bottom: 10px;">
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Customer Name" #input>
+      </mat-form-field>
+    </div>
 		<div class="table-container">
       <div *ngIf="!document.dataSource || document.dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center">
         <p>No Purchase Request found.</p>

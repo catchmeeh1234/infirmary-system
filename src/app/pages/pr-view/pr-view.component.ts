@@ -38,8 +38,8 @@ export class PrViewComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.result);
 
       this.dataSource.paginator = this.paginator;
-      
-      
+
+
     });
 
   }
@@ -49,6 +49,12 @@ export class PrViewComponent implements OnInit {
       return;
     }
     this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
+  }
+
+   //table controls
+   applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }
