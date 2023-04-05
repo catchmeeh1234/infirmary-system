@@ -12,3 +12,4 @@ for bugs use github issue tracker
 - Chat
 - Mail
 - Editor
+- Auto complete
