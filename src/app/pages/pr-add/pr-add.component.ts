@@ -27,7 +27,9 @@ export class PrAddComponent implements OnInit {
   public units:any;
   public divisions:any;
 
-  date1 = new FormControl(new Date())
+  date1 = new FormControl(new Date());
+
+  requestor = new FormControl('');
 
   public fieldArray: Array<any> = [];
   public newAttribute: any = {};
@@ -39,9 +41,12 @@ export class PrAddComponent implements OnInit {
 
   productForm: FormGroup;
 
-  myControl = new FormControl('');
-  options: any[];
-  filteredOptions: Observable<string[]>;
+  addForm = new FormGroup({
+    requestor: new FormControl()
+  });
+  options: any;
+  //options: any = [{"division_id":"1","division_name":"Administrative Services"},{"division_id":"2","division_name":"Engineering and Maintenance"},{"division_id":"3","division_name":"Finance and Commercial"},{"division_id":"4","division_name":"Production"}];
+  filteredOptions: any;
 
   addFieldValue() {
     this.fieldArray.push(this.newAttribute)
@@ -65,10 +70,6 @@ export class PrAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
 
     this.document.loadPRNo()
     .subscribe(data => {
@@ -81,6 +82,13 @@ export class PrAddComponent implements OnInit {
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
     this.getAllData();
+
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.full_name.toLowerCase().includes(filterValue));
   }
 
   onDisplayUnitMeasurements() {
@@ -199,17 +207,21 @@ export class PrAddComponent implements OnInit {
       prstatus.value = "For Approve";*/
   }
 
-  getAllData(){
-    this.document.getEmp().subscribe((res:any) => {
-      this.options = res
-      console.log(this.options);
-    })
-  }
+  async getAllData() {
+      try {
+        await this.document.getEmp().toPromise().then((res:any) => {
+          this.options = res;
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+          this.filteredOptions = this.requestor.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value || '')),
+          );
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
   }
 
 }
