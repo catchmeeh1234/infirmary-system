@@ -67,7 +67,8 @@ export class PrAddComponent implements OnInit {
     private sessionStorageService: SessionStorageService,
     private notif: NotificationsService,
     public websock: WebSocketService,
-    private employee: EmployeeService
+    private employee: EmployeeService,
+    private snackBar: MatSnackBar
   ) {
     this.productForm = this.fb.group({
       quantities: this.fb.array([]) ,
@@ -145,13 +146,15 @@ export class PrAddComponent implements OnInit {
     this.quantities().removeAt(i);
   }
 
-  openStatusMessage() {
+  openStatusMessage(message) {
     const config: MatSnackBarConfig = {
       verticalPosition: 'top',
       duration: 0,
-      panelClass: ['style-snackbar']
+      panelClass: ['style-snackbar-error']
     };
     //this.snackBar.openFromComponent(StatusMessageComponent, config);
+
+    this.snackBar.open(message, 'Dismiss', config);
   }
 
   clearAddPRForm() {
@@ -182,7 +185,7 @@ export class PrAddComponent implements OnInit {
     // let cost = <HTMLInputElement>document.querySelector('.cost');
 
     if (!this.productForm.valid || prno.value == "" || purpose.value == "" || requestor.value == "" || designation.value == "") {
-      this.openStatusMessage();
+      this.openStatusMessage('Please Fill up necessary details');
       return;
     }
 

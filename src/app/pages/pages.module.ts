@@ -40,6 +40,7 @@ import { ItemsViewComponent } from './items-view/items-view.component';
 import { ApprovePrComponent } from './approve-pr/approve-pr.component';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SampleCompComponent } from './sample-comp/sample-comp.component';
 
 @NgModule({
@@ -73,6 +74,7 @@ import { SampleCompComponent } from './sample-comp/sample-comp.component';
         TablesRouterModule,
         MatMenuModule,
         MatAutocompleteModule,
+        MatSnackBarModule
       ],
     declarations: [
         ContactComponent,
