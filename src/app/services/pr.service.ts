@@ -73,16 +73,4 @@ export class PrService {
     return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
   }
 
-  // getEmp() {
-  //   return this.http.get(API_URL + `/api/getEmp.php`)
-  //     .pipe(
-  //       map((response:[]) => response.map(item => item['full_name']))
-  //     )
-  // }
-
-  getEmp() {
-    //return this.http.get(API_URL + `/viewUnits.php`, {responseType: 'json'});
-    return this.http.get(API_URL + `/api/getEmp.php`, {responseType: 'json'});
-  }
-
 }

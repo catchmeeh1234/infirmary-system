@@ -10,6 +10,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { NotificationsService } from '../../services/notifications.service';
 import { WebSocketService } from '../../services/web-socket.service';
+import { EmployeeService } from '../../services/employee.service';
 //import { StatusMessageComponent } from '../status-message/status-message.component';
 
 @Component({
@@ -26,15 +27,18 @@ export class PrAddComponent implements OnInit {
   public prNumber:any;
   public units:any;
   public divisions:any;
+  public selectedDivision:string;
+  public selectedDesignation:string;
 
   date1 = new FormControl(new Date());
-
+  name = new FormControl('');
   requestor = new FormControl('');
+  division = new FormControl('');
+  designation = new FormControl('');
 
   public fieldArray: Array<any> = [];
   public newAttribute: any = {};
 
-  name = new FormControl('');
 
   posts: any;
   //name1 = 'Angular';
@@ -42,10 +46,10 @@ export class PrAddComponent implements OnInit {
   productForm: FormGroup;
 
   addForm = new FormGroup({
-    requestor: new FormControl()
+    requestor: new FormControl(),
   });
+
   options: any;
-  //options: any = [{"division_id":"1","division_name":"Administrative Services"},{"division_id":"2","division_name":"Engineering and Maintenance"},{"division_id":"3","division_name":"Finance and Commercial"},{"division_id":"4","division_name":"Production"}];
   filteredOptions: any;
 
   addFieldValue() {
@@ -62,7 +66,8 @@ export class PrAddComponent implements OnInit {
     private fb:FormBuilder,
     private sessionStorageService: SessionStorageService,
     private notif: NotificationsService,
-    public websock: WebSocketService
+    public websock: WebSocketService,
+    private employee: EmployeeService
   ) {
     this.productForm = this.fb.group({
       quantities: this.fb.array([]) ,
@@ -89,6 +94,19 @@ export class PrAddComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.full_name.toLowerCase().includes(filterValue));
+  }
+
+  onOptionSelected(event: any) {
+    const selectedValue = event.option.value;
+
+    this.employee.selectEmployee(selectedValue)
+    .subscribe(data => {
+      let result:any = data;
+      this.division.setValue(result[0].division);
+      this.designation.setValue(result[0].designation);
+    });
+    // Update the other field with the selected value
+    // this.otherControl.setValue(selectedValue);
   }
 
   onDisplayUnitMeasurements() {
@@ -209,14 +227,13 @@ export class PrAddComponent implements OnInit {
 
   async getAllData() {
       try {
-        await this.document.getEmp().toPromise().then((res:any) => {
+        await this.employee.getEmp().toPromise().then((res:any) => {
           this.options = res;
 
           this.filteredOptions = this.requestor.valueChanges.pipe(
             startWith(''),
             map(value => this._filter(value || '')),
           );
-
         });
 
       } catch (error) {

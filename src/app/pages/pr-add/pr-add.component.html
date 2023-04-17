@@ -45,22 +45,22 @@
 			  </td>
 			  <td align="center" class="mat-cell">
 
-				  <input matInput type="text" size="25" placeholder="Requestor" class="requestor" matInput [matAutocomplete]="auto" [formControl]="requestor" />
+				  <input matInput type="text" size="25" placeholder="Requestor" class="requestor" matInput [matAutocomplete]="auto" [formControl]="requestor"/>
           <!-- <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of options" [value]="option.full_name">
               {{ option.full_name }}
             </mat-option>
           </mat-autocomplete> -->
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
               {{option.full_name}}
             </mat-option>
           </mat-autocomplete>
 			  </td>
-			  <td align="center" class="mat-cell"> <input type="text" size="30" placeholder="Designation" class="designation" /> </td>
+			  <td align="center" class="mat-cell"> <input type="text" size="30" placeholder="Designation" class="designation" [formControl]="designation" /> </td>
 			  <td align="center" class="mat-cell">
-			    <select class="division">
-				  <option *ngFor="let division of divisions" [value]="division.division_name">{{division.division_name}}</option>
+			    <select class="division" [formControl]="division">
+				  <option *ngFor="let division of divisions" [value]="division.division_name">{{ division.division_name}}</option>
 			    </select>
 			  </td>
 			  <td align="center" class="mat-cell"> <input type="text" size="30"placeholder="Purpose" class="purpose" /> </td>
