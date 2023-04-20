@@ -4,7 +4,7 @@
 - Autofill inputs in creating PR
 - Adjust notif toolbar size
 - Autocomplete requestor in create PR
+- Integration of file generator of PR
 
 ## Todo
-- Integration of file generator of PR
 - Layout of tables
