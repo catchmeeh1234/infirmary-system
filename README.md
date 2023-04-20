@@ -1,15 +1,10 @@
 # SRWD EPRMS
 
-for bugs use github issue tracker 
-
 ## Changelog
-- Integrated sort on Responsive Tables
-- Small Flex alignments
-- Replaced ngx-perfect-scrollbar with ngx-scrollbar
-- Replaced ng9-odometer with ng9-odometer
+- Autofill inputs in creating PR
+- Adjust notif toolbar size
+- Autocomplete requestor in create PR
 
 ## Todo
-- Chat
-- Mail
-- Editor
-- Auto complete
+- Integration of file generator of PR
+- Layout of tables
