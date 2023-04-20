@@ -117,3 +117,21 @@ table {
   .requestor {
     width: 100%;
   }
+
+  .add-item {
+    font-size: 26px;
+  }
+
+  .remove-item {
+    font-size: 26px;
+    color: red;
+  }
+  .save-item {
+    all: unset;
+    background-color: #7ebd32;
+    color: #ffffff;
+    font-size: 18px;
+    padding: 10px 15px 10px 15px;
+    cursor: pointer;
+    margin-top: 15px;
+  }

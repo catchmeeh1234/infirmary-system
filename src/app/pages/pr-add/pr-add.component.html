@@ -91,7 +91,7 @@
 					<th width="20%">Quantity</th>
 					<th width="20%">Unit</th>
 					<th width="20%">Cost</th>
-					<th width="20%"><button type="button" (click)="addQuantity()" class="btn btn-primary">Add Item</button></th>
+					<th width="20%"><button type="button" (click)="addQuantity()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
 				  </tr>
 				</thead>
 				  <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
@@ -110,12 +110,17 @@
 					  <input type="text" formControlName="price" class="form-control" size="15">
 					</td>
 					<td align="center">
-					  <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
+					  <button (click)="removeQuantity(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
 					</td>
 				  </tr>
 				  <tr></tr>
 				  <tr>
-					<td align="center" colspan="5"> <button type="button" (click)="addPurchaseRequest()">Upload</button> </td>
+					<td align="center" colspan="5">
+            <button type="button" (click)="addPurchaseRequest()" class="save-item">
+              Create Purchase Request
+              <i class="fa-solid fa-cart-arrow-down"></i>
+            </button>
+          </td>
 				  </tr>
 				  <tr></tr>
 				</table>

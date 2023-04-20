@@ -231,3 +231,11 @@ body{
     background-color: green !important;
     color: #fff;
   }
+
+  .no-style-btn {
+    all: unset;
+    cursor: pointer;
+  }
+  .no-style-btn:hover {
+    color: #ccc;
+  }
