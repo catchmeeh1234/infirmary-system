@@ -158,12 +158,13 @@ export class PrAddComponent implements OnInit {
   }
 
   clearAddPRForm() {
-    let requestor = <HTMLInputElement>document.querySelector('.requestor');
+    //let requestor = <HTMLInputElement>document.querySelector('.requestor');
     let designation = <HTMLInputElement>document.querySelector('.designation');
     let purpose = <HTMLInputElement>document.querySelector('.purpose');
 
     this.productForm.reset();
-    requestor.value = '';
+    //requestor.value = '';
+    this.requestor.setValue('');
     designation.value = '';
     purpose.value = '';
   }

@@ -57,4 +57,8 @@ export class PrViewComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  onPrintPr(prno) {
+    window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${prno}`, '_blank')
+  }
+
 }

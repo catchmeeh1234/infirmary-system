@@ -43,6 +43,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SampleCompComponent } from './sample-comp/sample-comp.component';
 
+// Import the required ngx-bootstrap modules and components here
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 @NgModule({
     imports: [
         MatCardModule,
@@ -74,7 +78,10 @@ import { SampleCompComponent } from './sample-comp/sample-comp.component';
         TablesRouterModule,
         MatMenuModule,
         MatAutocompleteModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        // Add the imported ngx-bootstrap modules here
+        AlertModule.forRoot(),
+        BsDropdownModule.forRoot(),
       ],
     declarations: [
         ContactComponent,

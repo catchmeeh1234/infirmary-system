@@ -44,13 +44,7 @@
 			    <mat-datepicker #basicDatepicker></mat-datepicker>
 			  </td>
 			  <td align="center" class="mat-cell">
-
-				  <input matInput type="text" size="25" placeholder="Requestor" class="requestor" matInput [matAutocomplete]="auto" [formControl]="requestor"/>
-          <!-- <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of options" [value]="option.full_name">
-              {{ option.full_name }}
-            </mat-option>
-          </mat-autocomplete> -->
+          <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" [formControl]="requestor"/>
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
               {{option.full_name}}
@@ -96,10 +90,10 @@
 				</thead>
 				  <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
 					<td align="center">
-					  <input type="text" formControlName="item" class="form-control" size="40">
+					  <input type="text" formControlName="item" class="form-control" size="40" placeholder="Enter Item">
 					</td>
 					<td align="center">
-					  <input type="text" formControlName="qty" class="form-control" size="10">
+					  <input type="text" formControlName="qty" class="form-control" size="10" placeholder="Enter Quantity">
 					</td>
 					<td align="center">
 					  <select id="role" formControlName="unit" class="form-control">
@@ -107,7 +101,7 @@
 					  </select>
 					</td>
 					<td align="center">
-					  <input type="text" formControlName="price" class="form-control" size="15">
+					  <input type="text" formControlName="price" class="form-control" size="15" placeholder="Enter Cost">
 					</td>
 					<td align="center">
 					  <button (click)="removeQuantity(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>

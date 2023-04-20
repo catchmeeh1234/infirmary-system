@@ -41,6 +41,7 @@
     "leaflet": "^1.7.1",
     "ng2-nvd3": "^2.0.0",
     "ng9-odometer": "^2.1.0",
+    "ngx-bootstrap": "^6.0.0",
     "ngx-highlightjs": "^4.1.2",
     "ngx-quill": "^13.0.0",
     "ngx-scrollbar": "^7.4.1",

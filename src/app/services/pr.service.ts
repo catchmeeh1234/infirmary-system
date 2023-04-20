@@ -72,5 +72,4 @@ export class PrService {
   getDivisions() {
     return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // import { AuthService } from '../../core/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,11 @@ import { SessionStorageService } from '../../services/session-storage.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
+
+  @ViewChild('inputusername') inputusername: ElementRef;
+
   private statusMessage:any;
 
   userForm: FormGroup;
@@ -45,6 +49,10 @@ export class LoginComponent implements OnInit {
     }
 
     this.buildForm();
+  }
+
+  ngAfterViewInit() {
+    this.inputusername.nativeElement.focus();
   }
 
   buildForm() {
