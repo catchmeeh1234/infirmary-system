@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { API_URL } from '../constants';
 import { observable } from 'rxjs';
 import { StringDecoder } from 'string_decoder';
+import { SessionStorageService } from './session-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,13 @@ import { StringDecoder } from 'string_decoder';
 export class PrService {
   public dataSource:any;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private sessionStorageService:SessionStorageService) { }
 
   loadPR() {
-    return this.http.get(API_URL + '/api/pr.php', {responseType: 'json'});
+    let div = this.sessionStorageService.getSession('division');
+    let role = this.sessionStorageService.getSession('access');
+
+    return this.http.get(`${API_URL}/api/pr.php?division=${div}&role=${role}`, {responseType: 'json'});
   }
 
   loadPRNo() {

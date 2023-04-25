@@ -36,12 +36,8 @@ export class PrViewComponent implements OnInit {
     .subscribe(data => {
       this.result = data;
       this.dataSource = new MatTableDataSource(this.result);
-
       this.dataSource.paginator = this.paginator;
-
-
     });
-
   }
 
   viewpritems(selectedPrNO) {

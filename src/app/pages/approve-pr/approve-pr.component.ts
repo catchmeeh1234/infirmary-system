@@ -46,22 +46,31 @@ export class ApprovePrComponent implements OnInit {
     });
   }
 
-  updateApproveStatusx(selectedPrNO, selectedStatus, selectedDivision) {
+  onUpdateApproveStatus(selectedPrNO, selectedStatus, selectedDivision, stat) {
 
     var username = sessionStorage.getItem('fullname')
-    var button = "Approve"
     if (selectedPrNO == null) {
       return;
     }
-    this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, button)
+    this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, stat)
     .subscribe(data=>{
       let status:string;
+      let title:string;
+      let message:string;
 
       if (data === "PR Status Updated") {
         this.websock.updateApprovePR();
 
-        let title = 'Purchase Request Approved';
-        let message = `Purchase Request: ${selectedPrNO} has been approved by ${this.sessionStorageService.getSession('username')}`;
+        if (stat === "Approve") {
+          title = 'Purchase Request Approved';
+          message = `Purchase Request: ${selectedPrNO} has been approved by ${this.sessionStorageService.getSession('username')}`;
+        }
+
+        if (stat === "Disapprove") {
+          title = 'Purchase Request Disapproved';
+          message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
+        }
+
         if (selectedStatus === "For Approve") {
           status = "For Budget Checking";
         }else if (selectedStatus === "For Budget Checking") {
@@ -86,38 +95,37 @@ export class ApprovePrComponent implements OnInit {
 
   }
 
-  updateApproveStatusy(selectedPrNO, selectedStatus, selectedDivision) {
-    var username = sessionStorage.getItem('fullname')
-    var button = "Disapprove"
-    if (selectedPrNO == null) {
-      return;
-    }
-    this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, button).subscribe(data=>{
-      let status:string;
+  // updateApproveStatusy(selectedPrNO, selectedStatus, selectedDivision, stat) {
+  //   var username = sessionStorage.getItem('fullname')
+  //   if (selectedPrNO == null) {
+  //     return;
+  //   }
+  //   this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, stat).subscribe(data=>{
+  //     let status:string;
 
-      if (data === "PR Status Updated") {
-        this.websock.updateApprovePR();
+  //     if (data === "PR Status Updated") {
+  //       this.websock.updateApprovePR();
 
-        let title = 'Purchase Request Disapproved';
-        let message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
+  //       let title = 'Purchase Request Disapproved';
+  //       let message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
 
-        status = "Disapproved";
+  //       status = "Disapproved";
 
-        this.notif.insertNotification(title, message, this.access, selectedDivision, status, selectedPrNO).subscribe(data => {
-          //this.websock.status_message = devicedeveui;
-          console.log(data);
-        });
+  //       this.notif.insertNotification(title, message, this.access, selectedDivision, status, selectedPrNO).subscribe(data => {
+  //         //this.websock.status_message = devicedeveui;
+  //         console.log(data);
+  //       });
 
-        this.websock.sendNotif(message);
-        this.websock.updateNotification();
+  //       this.websock.sendNotif(message);
+  //       this.websock.updateNotification();
 
-      } else {
-        console.log(data);
-      }
+  //     } else {
+  //       console.log(data);
+  //     }
 
-    });
+  //   });
 
-  }
+  // }
 
   //table controls
   applyFilter(event: Event) {

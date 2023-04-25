@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 // import { AuthService } from '../../core/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+
     const userid:any = this.sessionStorageService.getSession("userid");
     if (userid !== null) {
       this.router.navigate(['auth/dashboard'], { queryParams: { id: userid } });
@@ -52,7 +53,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.inputusername.nativeElement.focus();
+    setTimeout(() => {
+      this.inputusername.nativeElement.focus();
+    }, 0);
   }
 
   buildForm() {
