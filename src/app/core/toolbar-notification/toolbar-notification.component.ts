@@ -16,7 +16,7 @@ export class ToolbarNotificationComponent implements OnInit {
   private division = this.sessionStorageService.getSession('division');
   private role = this.sessionStorageService.getSession('access');
 
-    /*@HostListener('document:click', ['$event', '$event.target'])
+    @HostListener('document:click', ['$event', '$event.target'])
       onClick(event: MouseEvent, targetElement: HTMLElement) {
         if (!targetElement) {
           return;
@@ -25,7 +25,7 @@ export class ToolbarNotificationComponent implements OnInit {
         if (!clickedInside) {
           this.isOpen = false;
         }
-      }*/
+    }
 
   	constructor(
       private elementRef: ElementRef,
@@ -53,6 +53,8 @@ export class ToolbarNotificationComponent implements OnInit {
       setTimeout(() => {
           this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
       }, 0);
+
+      this.isOpen = false;
 
   	}
 

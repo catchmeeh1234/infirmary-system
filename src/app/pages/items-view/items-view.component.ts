@@ -16,11 +16,11 @@ export class ItemsViewComponent implements OnInit {
   public arrayOfYears:any;
   public selectedYear:string;
   public yearButton:string;
-
+  public remarks:string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private document:PrService, private router:Router) { 
+  constructor(private document:PrService, private router:Router) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
     this.yearButton = this.selectedYear;
@@ -29,8 +29,9 @@ export class ItemsViewComponent implements OnInit {
   ngOnInit(): void {
     var url = new URL(window.location.href);
     var prnum = url.searchParams.get("prnum");
+    this.remarks = url.searchParams.get("remarks");
     //console.log(prnum);
-    
+
     this.document.loadItems(prnum)
     .subscribe(data => {
       this.result = data;
