@@ -5,8 +5,8 @@
 - Adjust notif toolbar size
 - Autocomplete requestor in create PR
 - Integration of file generator of PR
+- Cancelled PR
 
 ## Todo
 - Layout of tables
-- Cancelled PR
 - Delete PR?
