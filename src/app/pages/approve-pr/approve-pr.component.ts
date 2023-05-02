@@ -18,8 +18,8 @@ export class ApprovePrComponent implements OnInit {
   public displayedColumns = ['PRNo', 'PRDate', 'PRRequestor', 'PRDesignation', 'PRDivision', 'PRPurpose', 'PrAction'];
   public sessionStorage = sessionStorage;
 
-  public div = sessionStorage.getItem('division');
-  public access = sessionStorage.getItem('access');
+  public div = localStorage.getItem('division');
+  public access = localStorage.getItem('access');
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -48,7 +48,7 @@ export class ApprovePrComponent implements OnInit {
 
   onUpdateApproveStatus(selectedPrNO, selectedStatus, selectedDivision, stat) {
 
-    var username = sessionStorage.getItem('fullname')
+    var username = localStorage.getItem('fullname')
     if (selectedPrNO == null) {
       return;
     }

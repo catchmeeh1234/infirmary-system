@@ -1,0 +1,18 @@
+<app-modal
+[headerText]="data.headerText"
+[headerWith]="'100%'"
+>
+<div class="modal-container">
+  <i class="fas fa-check-circle"></i>
+  <div class="modal-message">{{data.message}}</div>
+  <div>
+    <form [formGroup]="cancel_pr">
+      <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea>
+    </form>
+  </div>
+  <div class="modal-buttons">
+    <button mat-flat-button color="primary" class="modal-confirm" (click)="onConfirm(data.number)" style="margin-right: 5px;">Confirm</button>
+    <button mat-flat-button color="warn" class="modal-cancel" (click)="onCancel()">Cancel</button>
+  </div>
+</div>
+</app-modal>

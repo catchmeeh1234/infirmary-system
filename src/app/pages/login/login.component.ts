@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 // import { AuthService } from '../../core/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserService } from '../../services/user.service';
 import { SessionStorageService } from '../../services/session-storage.service';
+import { HttpClient } from '@angular/common/http';
+import { loginBackgroundCount } from '../../constants';
 
 @Component({
   selector: 'app-login',
@@ -36,20 +38,41 @@ export class LoginComponent implements OnInit {
     }
   };
 
-  constructor(private router: Router,
-              private fb: FormBuilder, private user:UserService, private sessionStorageService:SessionStorageService) {
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private user:UserService,
+    private sessionStorageService:SessionStorageService,
+    private renderer: Renderer2,
+    private el: ElementRef,
+    private http: HttpClient
+  ) {
   }
 
   ngOnInit() {
-
+    this.setBackgroundImage();
     const userid:any = this.sessionStorageService.getSession("userid");
-    if (userid !== null) {
-      this.router.navigate(['auth/dashboard'], { queryParams: { id: userid } });
-    } else {
-      this.router.navigate(['/login']);
+    const username:any = this.sessionStorageService.getSession("username");
+    const password:any = this.sessionStorageService.getSession("password");
+
+    if (username && password) {
+      // Credentials are stored in cookies, so redirect to dashboard
+      this.router.navigate(['/auth/dashboard']);
     }
 
+    // if (userid !== null) {
+    //   this.router.navigate(['auth/dashboard'], { queryParams: { id: userid } });
+    // } else {
+    //   this.router.navigate(['/login']);
+    // }
+
     this.buildForm();
+  }
+  setBackgroundImage() {
+    const randomNum = Math.floor(Math.random() * loginBackgroundCount) + 1;
+    const bgImg = `url(assets/login_backgrounds/bg${randomNum}.jpg)`; // construct the URL for the random background image
+    const div = document.getElementById('div_login'); // get the div element by its ID
+    div.style.backgroundImage = bgImg; // set the background image style
   }
 
   ngAfterViewInit() {
@@ -111,6 +134,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.sessionStorageService.setSession('userid', this.statusMessage.uid);
           this.sessionStorageService.setSession('username', this.statusMessage.username);
+          this.sessionStorageService.setSession('password', password);
           this.sessionStorageService.setSession('fullname', this.statusMessage.fullname);
           this.sessionStorageService.setSession('division', this.statusMessage.division);
           this.sessionStorageService.setSession('access', this.statusMessage.access);

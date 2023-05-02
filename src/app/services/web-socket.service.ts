@@ -27,7 +27,7 @@ export class WebSocketService {
 
   }
   openSocket() {
-    this.socket = io('https://backend.smartmetersystem.home:4302', {
+    this.socket = io('https://backend.eprms.home:4301', {
       //transports: ['websocket'],
       rejectUnauthorized: false
     });
@@ -113,6 +113,17 @@ export class WebSocketService {
       });
     });
 
+    this.socket.on('updatePRTable', (data: any) => {
+      this.pr.loadPR()
+      .subscribe(res => {
+        let result:any = res;
+        if (this.pr.dataSourcePRTable !== undefined && this.pr.dataSourcePRTable !== null) {
+          this.pr.dataSourcePRTable.data = result;
+        }
+      });
+
+    });
+
     this.socket.on('updateSmartMeters', (data: any) => {
       let result:any = JSON.parse(data);
 
@@ -144,6 +155,12 @@ export class WebSocketService {
 
   sendNotif(message) {
     return this.socket.emit('message', message);
+  }
+
+  updatePRTable() {
+    let sql:string = 'PR TABLE';
+
+    return this.socket.emit('updatePRTable', sql);
   }
 
   updateNotification() {

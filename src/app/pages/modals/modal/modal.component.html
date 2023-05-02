@@ -1,0 +1,11 @@
+<div class="container" [ngStyle]="{'width': '500px', 'height': 'auto'}">
+  <div class="header"
+      [ngStyle]="{'background-color': '#327ebd', 'color': '#ffffff', 'padding': '14px 10px 14px 10px', 'height': 'auto'}"
+  >
+    <h2>{{headerText}}</h2>
+    <button [ngStyle]="{'display': 'block'}" class="_btnClose" (click)="closeModal()"><i class="fa-solid fa-circle-xmark"></i></button>
+  </div>
+  <div style="padding:12px 18px;">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -39,9 +39,8 @@ export class AuthComponent implements OnInit{
 		this.media.asObservable().subscribe(() => {
         this.toggleView();
     });
-
-    if (sessionStorage.getItem('userid') !== null) {
-      this.router.navigate(['/auth/dashboard'], { queryParams: { id: sessionStorage.getItem('userid') } });
+    if (this.sessionStorageService.getSession('userid') !== null) {
+      this.router.navigate(['/auth/dashboard'], { queryParams: { id: this.sessionStorageService.getSession('userid') } });
     } else {
       this.router.navigate(['/login']);
     }

@@ -1,0 +1,57 @@
+input[type=text], input[type=date], select {
+  width: auto;
+  height: 40px;
+  margin: 10px 15px 15px;
+  border-bottom: 1px solid #d9569f;
+  outline: none;
+  font-family: sofia-pro-soft, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 15px;
+  // text-align-last: left;
+}
+
+#btnUpdateInformation, #btnToggleUpdateBtn {
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 20px;
+  margin: 10px 15px 15px;
+  width: 95% !important;
+  background-color: #5c6bc0;
+  border-radius: 4px;
+}
+
+#btnUpdateInformation {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#btnToggleUpdateBtn {
+  cursor: pointer;
+
+}
+
+label {
+  font-family: sofia-pro-soft, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: #555;
+  margin-left: 30px;
+}
+
+input, label, .btnMeterNo {
+  display: block;
+}
+
+.btnupdate, .btnMeterNo {
+  padding: 10px 20px;
+  font-size: 20px;
+  margin: 10px 15px 15px;
+}
+form {
+  margin-top: 35px;
+}
+.cdk-round-progressbar {
+  font-size: 14px !important;
+}

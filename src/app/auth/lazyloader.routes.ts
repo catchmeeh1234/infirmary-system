@@ -1,6 +1,8 @@
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { DashboardCrmComponent } from '../dashboard-crm/dashboard-crm.component';
+import { AuthGuard } from '../auth.guard';
+import { LoginComponent } from '../pages/login/login.component';
 
 export const appRoutes: Routes = [{
     path: '', component: AuthComponent, children: [
@@ -16,5 +18,7 @@ export const appRoutes: Routes = [{
         { path: 'guarded-routes', loadChildren: () => import('../guarded-routes/guarded-routes.module').then(m => m.GuardedRoutesModule) },
         // { path: 'editor', loadChildren: () => import('../editor/editor.module').then(m => m.EditorModule) },
         { path: 'scrumboard', loadChildren: () => import('../scrumboard/scrumboard.module').then(m => m.ScrumboardModule) },
+        {path: '**', redirectTo: '/login', pathMatch: 'full'},
+        {path: 'login', component: LoginComponent, canActivate: [AuthGuard]}
     ]
 }];

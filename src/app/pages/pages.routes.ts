@@ -20,6 +20,7 @@ const pagesRoutes: Routes = [
     { path: 'viewItems', component: ItemsViewComponent ,data: { animation: 'viewItems' }},
     { path: 'approvePr', component: ApprovePrComponent ,data: { animation: 'approvePr' }},
     { path: 'samplecomp', component: SampleCompComponent ,data: { animation: 'samplecomp' }},
+
 ]
 @NgModule({
   imports: [

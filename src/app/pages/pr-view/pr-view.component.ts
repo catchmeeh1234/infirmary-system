@@ -3,6 +3,9 @@ import { PrService } from '../../services/pr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-pr-view',
@@ -18,25 +21,26 @@ export class PrViewComponent implements OnInit {
   public yearButton:string;
   public selectedPrNO:string;
 
-  public sessionStorage1 = sessionStorage;
+  public role: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private document:PrService, private router:Router) {
+  constructor(public document:PrService, private router:Router, public dialog: MatDialog, private sessionStorageService:SessionStorageService) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
     this.yearButton = this.selectedYear;
    }
 
   ngOnInit(): void {
-    var prdivision = sessionStorage.getItem("division")
-    console.log(prdivision);
+    var prdivision = localStorage.getItem("division")
+
+    this.role = this.sessionStorageService.getSession("access");
 
     this.document.loadPR()
     .subscribe(data => {
       this.result = data;
-      this.dataSource = new MatTableDataSource(this.result);
-      this.dataSource.paginator = this.paginator;
+      this.document.dataSourcePRTable = new MatTableDataSource(this.result);
+      this.document.dataSourcePRTable.paginator = this.paginator;
     });
   }
 
@@ -50,11 +54,23 @@ export class PrViewComponent implements OnInit {
    //table controls
    applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.document.dataSourcePRTable.filter = filterValue.trim();
   }
 
   onPrintPr(prno) {
     window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${prno}`, '_blank')
+  }
+
+  cancelpritems(prno) {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        headerText: 'Confirmation',
+        message: 'Are you sure you want to cancel this pr?',
+        number: prno
+      }
+    });
+
   }
 
 }

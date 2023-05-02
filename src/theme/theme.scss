@@ -239,3 +239,30 @@ body{
   .no-style-btn:hover {
     color: #ccc;
   }
+
+  .no-padding .mat-dialog-container {
+    padding: 0;
+    //width: 1000px;
+    height: auto;
+    box-shadow: none !important;
+    width: auto;
+  }
+
+  .statusFailed {
+    color: white;
+    font-size: 12px;
+    margin-bottom: 10px;
+    background-color: red;
+    padding: 14px 20px;
+  }
+
+  .statusSuccess {
+    color: white;
+    font-size: 12px;
+    margin-bottom: 10px;
+    background-color: green;
+    padding: 14px 20px;
+  }
+  snack-bar-container > div > div > simple-snack-bar > div > button > span.mat-button-wrapper {
+    color: #fff; /* Replace with your desired font color */
+  }

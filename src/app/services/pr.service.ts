@@ -10,6 +10,7 @@ import { SessionStorageService } from './session-storage.service';
 })
 export class PrService {
   public dataSource:any;
+  public dataSourcePRTable:any;
 
   constructor(private http:HttpClient, private sessionStorageService:SessionStorageService) { }
 
@@ -75,5 +76,9 @@ export class PrService {
 
   getDivisions() {
     return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
+  }
+
+  cancelPR(prDetails:any) {
+    return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }
 }

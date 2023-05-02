@@ -32,8 +32,8 @@ You have {{ notif.notificationContent.length }} new notifications</div>
   <ng-scrollbar class="content">
     <div *ngFor="let notification of notif.notificationContent last as isLast">
       <div class="notification" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
-        <mat-icon class="icon">notifications</mat-icon>
-        <div class="title" fxLayout="column">
+        <mat-icon class="icon" (click)="select(notification.notif_prno)">notifications</mat-icon>
+        <div class="title" fxLayout="column" (click)="select(notification.notif_prno)">
           <div class="name">{{ notification.notif_title }}</div>
           <div class="time">{{ notification.notif_message }}</div>
         </div>

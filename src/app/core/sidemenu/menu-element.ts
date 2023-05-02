@@ -2,7 +2,7 @@ export const menus = [
     {
         'name': 'Dashboard',
         'icon': 'home',
-        'link': `/auth/dashboard?id=${sessionStorage.getItem("userid")}`,
+        'link': `dashboard?id=${localStorage.getItem('userid')}`,
         'open': false,
         // 'chip': { 'value': 1, 'color': 'accent' },
     },
@@ -15,21 +15,21 @@ export const menus = [
         {
           'name': 'View PR',
           'link': 'pages/viewPR',
-          'icon': '',
+          'icon': 'remove_red_eye',
           'chip': false,
           'open': false,
         },
         {
           'name': 'Create PR',
           'link': 'pages/addPR',
-          'icon': '',
+          'icon': 'insert_drive_file',
           'chip': false,
           'open': false,
         },
         {
           'name': 'Approve PR',
           'link': 'pages/approvePr',
-          'icon': '',
+          'icon': 'thumbs_up_down',
           'chip': false,
           'open': false,
         },

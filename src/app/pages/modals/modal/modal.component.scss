@@ -1,0 +1,21 @@
+.container {
+  padding: 0;
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.header h2 {
+  margin: 0;
+}
+._btnClose {
+  all:unset;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}

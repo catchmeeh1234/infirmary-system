@@ -46,6 +46,9 @@ import { SampleCompComponent } from './sample-comp/sample-comp.component';
 // Import the required ngx-bootstrap modules and components here
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationComponent } from './modals/confirmation/confirmation.component';
+import { ModalComponent } from './modals/modal/modal.component';
 
 @NgModule({
     imports: [
@@ -82,6 +85,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
         // Add the imported ngx-bootstrap modules here
         AlertModule.forRoot(),
         BsDropdownModule.forRoot(),
+        MatDialogModule
       ],
     declarations: [
         ContactComponent,
@@ -93,7 +97,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
         PrItemComponent,
         ItemsViewComponent,
         ApprovePrComponent,
-        SampleCompComponent
+        SampleCompComponent,
+        ConfirmationComponent,
+        ModalComponent
     ],
     exports: [
     ],

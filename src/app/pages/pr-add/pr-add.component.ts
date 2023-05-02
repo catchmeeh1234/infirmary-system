@@ -80,7 +80,6 @@ export class PrAddComponent implements OnInit {
     this.document.loadPRNo()
     .subscribe(data => {
       this.websock.response = data;
-      //console.log(this.result)
     });
 
     this.dataSource = new MatTableDataSource(this.websock.response);
@@ -161,12 +160,15 @@ export class PrAddComponent implements OnInit {
     //let requestor = <HTMLInputElement>document.querySelector('.requestor');
     let designation = <HTMLInputElement>document.querySelector('.designation');
     let purpose = <HTMLInputElement>document.querySelector('.purpose');
+    let prno = <HTMLInputElement>document.querySelector('.prno');
 
     this.productForm.reset();
     //requestor.value = '';
     this.requestor.setValue('');
     designation.value = '';
     purpose.value = '';
+
+    prno.value = this.websock.response;
   }
 
 
@@ -190,7 +192,7 @@ export class PrAddComponent implements OnInit {
       return;
     }
 
-    var username = sessionStorage.getItem('fullname')
+    var username = localStorage.getItem('fullname')
     // if (prno.value == "" || purpose.value == "" || requestor.value == "" || designation.value == "") {
     //   return;
     // }
