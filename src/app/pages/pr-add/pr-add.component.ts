@@ -30,24 +30,16 @@ export class PrAddComponent implements OnInit {
   public selectedDivision:string;
   public selectedDesignation:string;
 
-  date1 = new FormControl(new Date());
-  name = new FormControl('');
-  requestor = new FormControl('');
-  division = new FormControl('');
-  designation = new FormControl('');
+  public addForm: FormGroup;
+  public isAddFormValid: boolean = false;
 
   public fieldArray: Array<any> = [];
   public newAttribute: any = {};
 
 
   posts: any;
-  //name1 = 'Angular';
 
   productForm: FormGroup;
-
-  addForm = new FormGroup({
-    requestor: new FormControl(),
-  });
 
   options: any;
   filteredOptions: any;
@@ -76,6 +68,23 @@ export class PrAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addForm = new FormGroup({
+      requestor: new FormControl('',[Validators.required]),
+      date1: new FormControl(new Date(), [Validators.required]),
+      //name: new FormControl(''),
+      division: new FormControl('', [Validators.required]),
+      designation: new FormControl('', [Validators.required]),
+      purpose: new FormControl('', [Validators.required]),
+    });
+
+     //listen to any value change on add form
+     this.addForm.valueChanges.subscribe(val => {
+      if (this.addForm.valid === true) {
+        this.isAddFormValid = true;
+      } else {
+        this.isAddFormValid = false;
+      }
+    });
 
     this.document.loadPRNo()
     .subscribe(data => {
@@ -87,8 +96,8 @@ export class PrAddComponent implements OnInit {
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
     this.getAllData();
-
   }
+
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -102,8 +111,9 @@ export class PrAddComponent implements OnInit {
     this.employee.selectEmployee(selectedValue)
     .subscribe(data => {
       let result:any = data;
-      this.division.setValue(result[0].division);
-      this.designation.setValue(result[0].designation);
+      this.addForm.get('division').setValue(result[0].division);
+      this.addForm.get('designation').setValue(result[0].designation);
+      //this.designation.setValue(result[0].designation);
     });
     // Update the other field with the selected value
     // this.otherControl.setValue(selectedValue);
@@ -163,8 +173,9 @@ export class PrAddComponent implements OnInit {
     let prno = <HTMLInputElement>document.querySelector('.prno');
 
     this.productForm.reset();
-    //requestor.value = '';
-    this.requestor.setValue('');
+    //this.requestor.setValue('');
+    this.addForm.get('requestor').setValue('');
+
     designation.value = '';
     purpose.value = '';
 
@@ -236,7 +247,7 @@ export class PrAddComponent implements OnInit {
         await this.employee.getEmp().toPromise().then((res:any) => {
           this.options = res;
 
-          this.filteredOptions = this.requestor.valueChanges.pipe(
+          this.filteredOptions = this.addForm.get("requestor").valueChanges.pipe(
             startWith(''),
             map(value => this._filter(value || '')),
           );
