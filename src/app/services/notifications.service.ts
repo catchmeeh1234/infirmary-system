@@ -14,7 +14,7 @@ export class NotificationsService {
   viewNotifications(division, role) {
     let status:string;
     if (role === "Approver") {
-      status = "For Approve";
+      status = "For DM Approval";
     } else if (role === "Budget") {
       status = "For Budget Checking";
     } else if (role === "Cash") {

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
+import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
@@ -65,11 +66,29 @@ export class PrViewComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
+        containerWidth: '500px',
         headerText: 'Confirmation',
         message: 'Are you sure you want to cancel this pr?',
         number: prno
       }
     });
+
+  }
+
+  editPr(prno:string) {
+    if (prno === null || prno === "") {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(PrEditComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '1000px',
+        headerText: 'Edit Purchase Request',
+        number: prno
+      }
+    });
+
 
   }
 

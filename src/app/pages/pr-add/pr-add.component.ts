@@ -33,25 +33,12 @@ export class PrAddComponent implements OnInit {
   public addForm: FormGroup;
   public isAddFormValid: boolean = false;
 
-  public fieldArray: Array<any> = [];
-  public newAttribute: any = {};
-
-
   posts: any;
 
   productForm: FormGroup;
 
   options: any;
   filteredOptions: any;
-
-  addFieldValue() {
-    this.fieldArray.push(this.newAttribute)
-    this.newAttribute = {};
-  }
-
-  deleteFieldValue(index) {
-    this.fieldArray.splice(index, 1);
-  }
 
   constructor(
     private document:PrService,
