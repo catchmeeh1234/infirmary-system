@@ -53,6 +53,10 @@ export class PrService {
     return this.http.get(API_URL + '/api/loadTotalPR.php', {responseType: 'text'});
   }
 
+  loadDocumentCounter(division:string) {
+    return this.http.get(API_URL + `/loadDocumentCounter.php?division=${division}`, {responseType: 'text'});
+  }
+
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
   addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string) {
     let json = JSON.stringify(items);
