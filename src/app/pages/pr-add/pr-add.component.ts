@@ -59,8 +59,8 @@ export class PrAddComponent implements OnInit {
       requestor: new FormControl('',[Validators.required]),
       date1: new FormControl(new Date(), [Validators.required]),
       //name: new FormControl(''),
-      division: new FormControl('', [Validators.required]),
-      designation: new FormControl('', [Validators.required]),
+      division: new FormControl({value: '', disabled: true}, [Validators.required]),
+      designation: new FormControl({value: '', disabled: true}, [Validators.required]),
       purpose: new FormControl('', [Validators.required]),
     });
 
@@ -195,10 +195,8 @@ export class PrAddComponent implements OnInit {
     //   return;
     // }
 
-
-
     //let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value);
-    let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value, username);
+    let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, this.addForm.get('division').value, purpose.value, prstatus.value, this.productForm.value, username);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
 
@@ -209,7 +207,7 @@ export class PrAddComponent implements OnInit {
         let message = `Purchase Request: ${prno.value} has been created by ${this.sessionStorageService.getSession('username')}`;
 
 
-        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), division.value, prstatus.value, prno.value).subscribe(data => {
+        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('division').value, prstatus.value, prno.value).subscribe(data => {
           //this.websock.status_message = devicedeveui;
           console.log(data);
         });
