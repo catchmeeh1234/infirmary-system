@@ -57,13 +57,17 @@
 	<div fxFlex class="table-component-holder mat-elevation-z4">
 	  <mat-toolbar class="table-header">
 		<h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
+    <button type="button" (click)="addPurchaseRequest()" class="save-item">
+      <i class="fa-solid fa-cart-arrow-down"></i>
+      Create Purchase Request
+    </button>
 	  </mat-toolbar>
-		<div class="table-container">
+		<div class="table-container pr-items">
 
 			<form [formGroup]="productForm">
-				<table class="table table-bordered" formArrayName="quantities">
+				<table formArrayName="quantities">
 				<thead>
-				  <tr>
+				  <tr class="sticky-header">
             <th width="20%">Item</th>
             <th width="20%">Quantity</th>
             <th width="20%">Unit</th>
@@ -102,155 +106,8 @@
 					  <button (click)="removeQuantity(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
 					</td>
 				  </tr>
-				  <tr></tr>
-				  <tr>
-					<td align="center" colspan="5">
-            <button type="button" (click)="addPurchaseRequest()" class="save-item">
-              <i class="fa-solid fa-cart-arrow-down"></i>
-              Create Purchase Request
-            </button>
-          </td>
-				  </tr>
-				  <tr></tr>
 				</table>
 			  </form>
-
 	  </div>
 	</div>
 </div>
-	<!--
-
-	div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px">
-  <div class="container">
-
-    <h1>Add Purchase Requests Items</h1>
-
-    <form [formGroup]="productForm">
-      <table class="table table-bordered" formArrayName="quantities">
-        <tr>
-          <th colspan="4">Add Multiple Quantity:</th>
-          <th width="150px"><button type="button" (click)="addQuantity()" class="btn btn-primary">Add More</button></th>
-        </tr>
-        <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
-          <td>
-              Item:
-              <input type="text" formControlName="item" class="form-control">
-          </td>
-          <td>
-              Quantity:
-              <input type="text" formControlName="qty" class="form-control">
-          </td>
-          <td>
-            Unit:
-            <select id="role" formControlName="unit" class="form-control">
-              <option *ngFor="let unit of units" [value]="unit.unit_name"> {{unit.unit_name}} </option>
-            </select>
-          </td>
-          <td>
-            Cost:
-            <input type="text" formControlName="price" class="form-control">
-          </td>
-          <td>
-              <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
-          </td>
-        </tr>
-      </table>
-
-    </form>
-
-    <br/>-->
-    <!-- {{this.productForm.value | json}}
-  </div>-->
-
-	<!-- <div fxFlex class="table-component-holder mat-elevation-z4">
-	  <mat-toolbar class="table-header">
-		<h1 class="mat-headline center-align" >Add Purchase Requests Items</h1>
-	  </mat-toolbar>
-	  <div class="table-container">
-
-	<table class="mat-table">
-	<thead>
-		<tr>
-			<th>Items</th>
-			<th>Quantity</th>
-			<th>Unit</th>
-			<th>Cost</th>
-			<th>Actions</th>
-		</tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let field of fieldArray; let i = index">
-            <td align="center">
-                <input class="items" type="text" name="items[]" />
-            </td>
-            <td align="center">
-                <input class="quantity" type="text" name="quantity[]" />
-            </td>
-            <td align="center">
-                <input class="unit" type="text" name="unit[]" />
-				<select class="unit" name="unit[]">
-					<option value=""></option>
-					<option value="Bag">Bag</option>
-					<option value="Box">Box</option>
-					<option value="Kilo">Kilo</option>
-					<option value="Linear Meter">Linear Meter</option>
-					<option value="Load">Load</option>
-					<option value="Lot">Lot</option>
-					<option value="Meter">Meter</option>
-					<option value="Pack">Pack</option>
-					<option value="Pail">Pail</option>
-				    <option value="Piece">Piece</option>
-					<option value="Ream">Ream</option>
-					<option value="Roll">Roll</option>
-					<option value="Set">Set</option>
-					<option value="Square Meter">Square Meter</option>
-					<option value="Unit">Unit</option>
-			    </select>
-            </td>
-			<td align="center">
-                <input class="cost" type="text" name="cost[]" />
-            </td>
-            <td align="center">
-                <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Delete</button>
-            </td>
-        </tr>
-        <tr>
-            <td align="center">
-                <input class="items" type="text" name="items[]" />
-            </td>
-            <td align="center">
-                <input class="quantity" type="text" name="quantity[]" />
-            </td>
-            <td align="center">
-                <input class="unit" type="text" name="unit[]" />
-				<select class="unit" name="unit[]">
-					<option value=""></option>
-					<option value="Bag">Bag</option>
-					<option value="Box">Box</option>
-					<option value="Kilo">Kilo</option>
-					<option value="Linear Meter">Linear Meter</option>
-					<option value="Load">Load</option>
-					<option value="Lot">Lot</option>
-					<option value="Meter">Meter</option>
-					<option value="Pack">Pack</option>
-					<option value="Pail">Pail</option>
-				    <option value="Piece">Piece</option>
-					<option value="Ream">Ream</option>
-					<option value="Roll">Roll</option>
-					<option value="Set">Set</option>
-					<option value="Square Meter">Square Meter</option>
-					<option value="Unit">Unit</option>
-			    </select>
-            </td>
-			<td align="center">
-                <input class="cost" type="text" name="cost[]" />
-            </td>
-            <td align="center">
-                <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button>
-            </td>
-        </tr>
-		</table>
-	  </div>
-	</div>
-	<button type="button" (click)="addPurchaseRequest()">Upload</button>
-</div>-->

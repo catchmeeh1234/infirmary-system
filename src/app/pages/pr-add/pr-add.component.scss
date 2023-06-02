@@ -1,6 +1,11 @@
 table {
     width: 100%;
-  }
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+}
 
   .mat-column-PRNo {
     word-wrap: break-word !important;
@@ -133,11 +138,22 @@ table {
     font-size: 18px;
     padding: 10px 15px 10px 15px;
     cursor: pointer;
-    margin-top: 15px;
+    border-radius: 0.3em;
   }
 
   .inline-form {
     display: flex;
     gap: 5px;       /* Adds a 10px gap between flex items */
     width: 100%;     /* Sets the width to 100% of the container */
+  }
+  .pr-items {
+    overflow: auto;
+    height: 150px;
+  }
+
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #327ebd;
+    color: white;
   }

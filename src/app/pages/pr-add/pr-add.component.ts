@@ -136,6 +136,11 @@ export class PrAddComponent implements OnInit {
 
   addQuantity() {
     this.quantities().push(this.newQuantity());
+
+    const div = document.querySelector(".pr-items");
+    setTimeout(() => {
+      div.scrollTop = div.scrollHeight;
+    }, 0);
   }
 
   removeQuantity(i:number) {
