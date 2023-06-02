@@ -99,6 +99,7 @@ export class PrService {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }
   loadPrAndItems(prno:string) {
+    console.log(prno);
     return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
 }
