@@ -28,7 +28,7 @@ export class PrEditComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private pr:PrService,
+    private pr: PrService,
     private formBuilder:FormBuilder,
     private dialogRef:MatDialogRef<PrEditComponent>,
     private employee:EmployeeService

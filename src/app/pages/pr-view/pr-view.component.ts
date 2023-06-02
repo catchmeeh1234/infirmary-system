@@ -36,7 +36,7 @@ export class PrViewComponent implements OnInit {
     var prdivision = localStorage.getItem("division")
 
     this.role = this.sessionStorageService.getSession("access");
-
+    console.log(this.role);
     this.document.loadPR()
     .subscribe(data => {
       this.result = data;
