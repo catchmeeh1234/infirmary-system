@@ -51,6 +51,8 @@ import { ConfirmationComponent } from './modals/confirmation/confirmation.compon
 import { ModalComponent } from './modals/modal/modal.component';
 import { PrEditComponent } from './modals/pr-edit/pr-edit.component';
 
+import {MatSelectModule} from '@angular/material/select';
+
 @NgModule({
     imports: [
         MatCardModule,
@@ -87,6 +89,7 @@ import { PrEditComponent } from './modals/pr-edit/pr-edit.component';
         AlertModule.forRoot(),
         BsDropdownModule.forRoot(),
         MatDialogModule,
+        MatSelectModule
       ],
     declarations: [
         ContactComponent,

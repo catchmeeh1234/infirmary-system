@@ -6,43 +6,44 @@
   <div>
 	  <div class="table-container">
       <form [formGroup]="editForm">
-      <table class="mat-table">
-        <thead>
-        <tr>
-          <th>PR no.</th>
-          <th>Requestor</th>
-          <th>Designation</th>
-          <th>Division</th>
-          <th>Purpose</th>
-        </tr>
-      </thead>
-        <tr class="mat-row">
-          <td align="center" class="mat-cell">
-          <input type="text" size="6" placeholder="PR No." class="prno" formControlName="pr_number" />
-        </td>
-          <td align="center" class="mat-cell">
+        <input type="hidden" size="6" placeholder="PR Details ID" class="pr_no_hidden" formControlName="pr_no_hidden"/>
+
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>PR Number</mat-label>
+            <input matInput type="text" size="6" placeholder="PR No." class="prno" formControlName="pr_number" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Requestor</mat-label>
             <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="requestor"/>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
               <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
                 {{option.full_name}}
               </mat-option>
             </mat-autocomplete>
-          </td>
-          <td align="center" class="mat-cell"> <input type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" /> </td>
-          <td align="center" class="mat-cell">
-            <select class="division" formControlName="division">
-            <option *ngFor="let division of divisions" [value]="division.division_name">{{ division.division_name}}</option>
-            </select>
-          </td>
-          <td align="center" class="mat-cell"> <input type="text" size="30"placeholder="Purpose" class="purpose" formControlName="purpose" /> </td>
-        </tr>
-        <!--<tr>
-          <td align="center" colspan="7"> <button type="button" (click)="addPurchaseRequest()">Upload</button> </td>
-        </tr>-->
-      </table>
-      <br>
-          <p>PR Items</p> <br>
-              <table style="border: 1px solid black;">
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Designation</mat-label>
+            <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Division</mat-label>
+            <mat-select class="division" formControlName="division">
+              <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Purpose</mat-label>
+            <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="purpose" />
+          </mat-form-field>
+        </div>
+          <h3 class="md-title" style="text-align: left !important;">PR Items</h3>
+              <table>
               <thead>
                 <tr>
                 <th width="20%">Item</th>
@@ -52,44 +53,46 @@
                 <th width="20%"><button type="button" (click)="addQuantity()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
                 </tr>
               </thead>
-                <tr *ngFor="let pritem of pr_items">
+                <tr *ngFor="let pritem of pr_items;let i = index ">
                   <td align="center">
-                    <input type="text" class="form-control" size="40" placeholder="Enter Item" [value]="pritem.pr_items">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="40" placeholder="Enter Item" [formControlName]="'item_' + i">
+                    </mat-form-field>
                   </td>
                   <td align="center">
-                    <input type="text" class="form-control" size="10" placeholder="Enter Quantity" [value]="pritem.pr_quantity">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="10" placeholder="Enter Quantity" [formControlName]="'qty_' + i">
+                    </mat-form-field>
                   </td>
                   <td align="center">
-                    <select id="role" class="form-control" [value]="pritem.pr_unit">
-                      <option *ngFor="let unit of units" [value]="unit.unit_name"> {{unit.unit_name}} </option>
-                    </select>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Unit</mat-label>
+                      <mat-select id="role" [formControlName]="'unit_' + i" class="form-control">
+                        <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </td>
                   <td align="center">
-                    <input type="text" class="form-control" size="15" placeholder="Enter Cost" [value]="pritem.pr_cost">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="15" placeholder="Enter Cost" [formControlName]="'cost_' + i">
+                    </mat-form-field>
                   </td>
                   <td align="center">
                     <button (click)="removeQuantity(pritem)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
                   </td>
                 </tr>
-                <tr></tr>
-                <tr>
-                <td align="center" colspan="5">
-                  <button type="button"  class="save-item">
-                    <i class="fa-solid fa-cart-arrow-down"></i>
-                    Create Purchase Request
-                  </button>
-                </td>
-                </tr>
-                <tr></tr>
               </table>
-            <br>
               <div>
-                <p>Remarks</p> <br>
-                <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea>
+                <h3 class="md-title" style="text-align: left !important;">Remarks</h3>
+                <textarea placeholder="Please enter your remarks here .." formControlName="cancel_remarks" class="remarks"></textarea>
               </div>
+              <button mat-flat-button color="primary" id="btnSavePrRequest" (click)="onSavePR()">Save Purchase Request</button>
       <!-- Remarks
       <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea> -->
-      </form>
+    </form>
     </div>
     <!-- <form [formGroup]="cancel_pr">
       <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea>

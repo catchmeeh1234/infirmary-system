@@ -74,6 +74,15 @@ export class PrService {
     return this.http.post(API_URL +'/addPR.php', params, { responseType: 'text'});
   }
 
+  editPR(prDetails:any, numberofitems) {
+    let params = new FormData();
+    let json = JSON.stringify(prDetails);
+    params.append('details', json);
+    params.append('number_of_items', numberofitems);
+
+    return this.http.post(API_URL +'/editPR.php', params, { responseType: 'text'});
+  }
+
   getUnitMeasurements() {
     return this.http.get(API_URL + `/viewUnits.php`, {responseType: 'json'});
   }
