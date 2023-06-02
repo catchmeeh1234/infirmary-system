@@ -1,0 +1,106 @@
+<app-modal
+[headerText]="data.headerText"
+[containerWidth]="data.containerWidth"
+>
+<div class="modal-container">
+  <div>
+	  <div class="table-container">
+      <form [formGroup]="editForm">
+        <input type="hidden" size="6" placeholder="PR Details ID" class="pr_no_hidden" formControlName="pr_no_hidden"/>
+
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>PR Number</mat-label>
+            <input matInput type="text" size="6" placeholder="PR No." class="prno" formControlName="pr_number" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Requestor</mat-label>
+            <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="requestor"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
+                {{option.full_name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Designation</mat-label>
+            <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Division</mat-label>
+            <mat-select class="division" formControlName="division">
+              <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Purpose</mat-label>
+            <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="purpose" />
+          </mat-form-field>
+        </div>
+          <h3 class="md-title" style="text-align: left !important;">PR Items</h3>
+              <table>
+              <thead>
+                <tr>
+                <th width="20%">Item</th>
+                <th width="20%">Quantity</th>
+                <th width="20%">Unit</th>
+                <th width="20%">Cost</th>
+                <th width="20%"><button type="button" (click)="addQuantity()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
+                </tr>
+              </thead>
+                <tr *ngFor="let pritem of pr_items;let i = index ">
+                  <td align="center">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="40" placeholder="Enter Item" [formControlName]="'item_' + i">
+                    </mat-form-field>
+                  </td>
+                  <td align="center">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="10" placeholder="Enter Quantity" [formControlName]="'qty_' + i">
+                    </mat-form-field>
+                  </td>
+                  <td align="center">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Unit</mat-label>
+                      <mat-select id="role" [formControlName]="'unit_' + i" class="form-control">
+                        <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </td>
+                  <td align="center">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput type="text" class="form-control" size="15" placeholder="Enter Cost" [formControlName]="'cost_' + i">
+                    </mat-form-field>
+                  </td>
+                  <td align="center">
+                    <button (click)="removeQuantity(pritem)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <div>
+                <h3 class="md-title" style="text-align: left !important;">Remarks</h3>
+                <textarea placeholder="Please enter your remarks here .." formControlName="cancel_remarks" class="remarks"></textarea>
+              </div>
+              <button mat-flat-button color="primary" id="btnSavePrRequest" (click)="onSavePR()">Save Purchase Request</button>
+      <!-- Remarks
+      <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea> -->
+    </form>
+    </div>
+    <!-- <form [formGroup]="cancel_pr">
+      <textarea cols="30" rows="10" placeholder="Please enter your remarks here .." formControlName="cancel_remarks"></textarea>
+    </form> -->
+  </div>
+  <!-- <div class="modal-buttons">
+    <button mat-flat-button color="primary" class="modal-confirm" (click)="onConfirm(data.number)" style="margin-right: 5px;">Confirm</button>
+    <button mat-flat-button color="warn" class="modal-cancel" (click)="onCancel()">Cancel</button>
+  </div> -->
+</div>
+</app-modal>

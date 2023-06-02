@@ -13,6 +13,7 @@ export class ModalComponent implements OnInit {
   @Input() headerWith: string;
   @Input() btnStyle: string;
   @Input() headerHeight: string;
+  @Input() containerWidth: string;
 
   constructor(private dialogRef:MatDialogRef<ModalComponent>) { }
 

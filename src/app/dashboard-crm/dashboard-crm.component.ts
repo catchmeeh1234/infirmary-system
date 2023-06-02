@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrService } from '../services/pr.service';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
     selector: 'app-dashboard-crm',
@@ -30,13 +31,27 @@ export class DashboardCrmComponent implements OnInit {
         { country: 'Brazil', sales: 100, percentage: '2.50%' },
     ];
 
-    constructor(private document:PrService) { }
+    constructor(private document:PrService, private sessionStorageService: SessionStorageService) { }
 
     ngOnInit() {
-        this.LoadTotalAS();
-        this.LoadTotalEM();
-        this.LoadTotalFC();
-        this.LoadTotalPR();
+      this.onLoadDivisionsDashCard();
+    }
+
+    onLoadDivisionsDashCard() {
+      this.document.getDivisions()
+      .subscribe(data => {
+        let result:any = data;
+        for (const div of result) {
+          const divisionName:string = div.division_name;
+          this.document.loadDocumentCounter(divisionName)
+          .subscribe(data => {
+            let count_documents:any = data;
+            let object = {colorDark: '#5C6BC0', colorLight: '#7986CB', number: count_documents, title: divisionName, icon: 'account_circle'}
+            this.dashCard.push(object);
+          });
+        }
+
+      });
     }
 
     LoadTotalAS() {
@@ -47,32 +62,4 @@ export class DashboardCrmComponent implements OnInit {
         this.dashCard.push(object);
         });
     }
-
-    LoadTotalEM() {
-        this.document.loadTotalEM()
-        .subscribe(data => {
-        this.totalem = parseInt(data);
-        let object = {colorDark: '#42A5F5', colorLight: '#64B5F6', number: this.totalem, title: 'ENGINEERING AND MAINTENANCE', icon: 'build'}
-        this.dashCard.push(object);
-        });
-    }
-
-    LoadTotalFC() {
-        this.document.loadTotalFC()
-        .subscribe(data => {
-        this.totalfc = parseInt(data);
-        let object = {colorDark: '#26A69A', colorLight: '#4DB6AC', number: this.totalfc, title: 'FINANCE AND COMMERCIAL', icon: 'library_books'}
-        this.dashCard.push(object);
-        });
-    }
-
-    LoadTotalPR() {
-        this.document.loadTotalPR()
-        .subscribe(data => {
-        this.totalpr = parseInt(data);
-        let object = {colorDark: '#66BB6A', colorLight: '#81C784', number: this.totalpr, title: 'PRODUCTION', icon: 'waves'}
-        this.dashCard.push(object);
-        });
-    }
-
 }

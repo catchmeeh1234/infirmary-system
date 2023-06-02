@@ -72,7 +72,7 @@ export class ApprovePrComponent implements OnInit {
           message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
         }
 
-        if (selectedStatus === "For Approve") {
+        if (selectedStatus === "For DM Approval") {
           status = "For Budget Checking";
         }else if (selectedStatus === "For Budget Checking") {
           status = "For Cash";

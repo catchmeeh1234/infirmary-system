@@ -57,6 +57,10 @@ export class PrService {
     return this.http.get(API_URL + '/api/loadTotalPR.php', {responseType: 'text'});
   }
 
+  loadDocumentCounter(division:string) {
+    return this.http.get(API_URL + `/loadDocumentCounter.php?division=${division}`, {responseType: 'text'});
+  }
+
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
   addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string) {
     let json = JSON.stringify(items);
@@ -74,6 +78,15 @@ export class PrService {
     return this.http.post(API_URL +'/addPR.php', params, { responseType: 'text'});
   }
 
+  editPR(prDetails:any, numberofitems) {
+    let params = new FormData();
+    let json = JSON.stringify(prDetails);
+    params.append('details', json);
+    params.append('number_of_items', numberofitems);
+
+    return this.http.post(API_URL +'/editPR.php', params, { responseType: 'text'});
+  }
+
   getUnitMeasurements() {
     return this.http.get(API_URL + `/viewUnits.php`, {responseType: 'json'});
   }
@@ -84,5 +97,8 @@ export class PrService {
 
   cancelPR(prDetails:any) {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
+  }
+  loadPrAndItems(prno:string) {
+    return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
 }

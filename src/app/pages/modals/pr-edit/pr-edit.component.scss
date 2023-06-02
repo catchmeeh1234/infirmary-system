@@ -1,0 +1,41 @@
+.modal-container {
+  text-align: center;
+  margin-top: 3em;
+}
+
+.modal-message {
+  margin-bottom: 5px;
+}
+
+.add-item {
+  font-size: 26px;
+}
+
+.remove-item {
+  font-size: 2em;
+  color: red;
+  margin-bottom: 0.5em;
+}
+
+.inline-form {
+  display: flex;
+  gap: 5px;       /* Adds a 10px gap between flex items */
+  width: 100%;     /* Sets the width to 100% of the container */
+}
+
+.remarks {
+  text-align: left !important;
+  width: 99.5%;
+  height: 50px;
+}
+
+#btnSavePrRequest {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px 16px;
+}
+
+.table-container {
+  overflow: auto;
+  height: 500px;
+}
