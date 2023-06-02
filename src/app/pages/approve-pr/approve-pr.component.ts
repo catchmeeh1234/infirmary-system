@@ -33,6 +33,7 @@ export class ApprovePrComponent implements OnInit {
 
   ngOnInit(): void {
     this.onDisplayApprovedPr();
+    console.log(this.div, this.access)
   }
 
   onDisplayApprovedPr() {
@@ -62,7 +63,7 @@ export class ApprovePrComponent implements OnInit {
         this.websock.updateApprovePR();
 
         if (stat === "Approve") {
-          title = 'Purchase Request Approved';
+          title = 'Purchase Request Approved by DM';
           message = `Purchase Request: ${selectedPrNO} has been approved by ${this.sessionStorageService.getSession('username')}`;
         }
 

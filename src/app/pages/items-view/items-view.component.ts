@@ -9,14 +9,22 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './items-view.component.html',
   styleUrls: ['./items-view.component.scss']
 })
+
 export class ItemsViewComponent implements OnInit {
   public dataSource:any;
-  public displayedColumns = ['PRNo', 'PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost', 'Actions'];
+  public dataSource1:any;
+  //public displayedColumns = ['PRNo', 'PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost', 'Actions'];
+  public displayedColumns = ['PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost'];
   public result:any;
   public arrayOfYears:any;
   public selectedYear:string;
   public yearButton:string;
   public remarks:string;
+  public prnumber:string;  
+
+  public prequeststatus:string;
+  public prequestdivision:string;
+  public purpose:string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -29,6 +37,7 @@ export class ItemsViewComponent implements OnInit {
   ngOnInit(): void {
     var url = new URL(window.location.href);
     var prnum = url.searchParams.get("prnum");
+    this.prnumber = url.searchParams.get("prnum");
     this.remarks = url.searchParams.get("remarks");
     //console.log(prnum);
 
@@ -40,6 +49,14 @@ export class ItemsViewComponent implements OnInit {
       //this.dataSource.paginator = this.paginator;
     });
 
+    this.document.getPurpose(prnum)
+    .subscribe(data => {
+      let result:any = data;
+      this.prequeststatus = result[0].pr_status;
+      this.prequestdivision = result[0].pr_division;
+      this.purpose = result[0].pr_purpose;
+    });
+
     const pr_title: any[] = [
       {
         Title: prnum
@@ -49,6 +66,13 @@ export class ItemsViewComponent implements OnInit {
 
   PRBack() {
     this.router.navigate(['/auth/pages/viewPR']);
+  }
+
+  onUpdateApproveStatus(pr_status:string) {
+    console.log(this.prnumber);
+    console.log(this.prequeststatus);
+    console.log(this.prequestdivision);
+    console.log(pr_status);
   }
 
 }
