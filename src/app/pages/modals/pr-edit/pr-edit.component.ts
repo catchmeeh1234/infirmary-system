@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { PrService } from '../../../services/pr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EmployeeService } from '../../../services/employee.service';
 import {map, startWith} from 'rxjs/operators';
+import { ConfirmationGenericComponent } from '../confirmation-generic/confirmation-generic.component';
 
 @Component({
   selector: 'app-pr-edit',
@@ -31,7 +32,8 @@ export class PrEditComponent implements OnInit {
     private pr: PrService,
     private formBuilder:FormBuilder,
     private dialogRef:MatDialogRef<PrEditComponent>,
-    private employee:EmployeeService
+    private employee:EmployeeService,
+    public dialog: MatDialog,
   ) {
   }
 
@@ -141,14 +143,29 @@ export class PrEditComponent implements OnInit {
   }
 
   removeQuantity(row) {
-    const index = this.pr_items.indexOf(row);
-    if (index > -1) {
-      this.pr_items.splice(index, 1);
 
-      setTimeout(() => {
-        this.displayPRItems(this.pr_items);
-      }, 0);
-    }
+    const dialogRef = this.dialog.open(ConfirmationGenericComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '500px',
+        headerText: 'Confirmation',
+        message: 'Are you sure you want to remove this item?',
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle the result if needed
+      if (result === 'yes') {
+        const index = this.pr_items.indexOf(row);
+        if (index > -1) {
+          this.pr_items.splice(index, 1);
+
+          setTimeout(() => {
+            this.displayPRItems(this.pr_items);
+          }, 0);
+        }
+      }
+    });
   }
 
 

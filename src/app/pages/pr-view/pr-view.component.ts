@@ -45,11 +45,11 @@ export class PrViewComponent implements OnInit {
     });
   }
 
-  viewpritems(selectedPrNO, selectedRemarks) {
+  viewpritems(selectedPrNO) {
     if (selectedPrNO == null) {
       return;
     }
-    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO, remarks: selectedRemarks } });
+    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
   }
 
    //table controls

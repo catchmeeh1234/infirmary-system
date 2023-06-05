@@ -1,8 +1,20 @@
 .table-container {
-    height:700px;
+    height:auto;
     //overflow: auto;
 }
 
 mat-table {
-    height: 300px;
+    height: auto;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inline-form {
+  display: flex;
+  gap: 15px;       /* Adds a 10px gap between flex items */
+  width: 100%;     /* Sets the width to 100% of the container */
+  align-items: center;
 }
