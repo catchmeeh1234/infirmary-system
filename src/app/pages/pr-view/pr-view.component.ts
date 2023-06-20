@@ -36,7 +36,7 @@ export class PrViewComponent implements OnInit {
     var prdivision = localStorage.getItem("division")
 
     this.role = this.sessionStorageService.getSession("access");
-
+    console.log(this.role);
     this.document.loadPR()
     .subscribe(data => {
       this.result = data;
@@ -45,11 +45,11 @@ export class PrViewComponent implements OnInit {
     });
   }
 
-  viewpritems(selectedPrNO, selectedRemarks) {
+  viewpritems(selectedPrNO) {
     if (selectedPrNO == null) {
       return;
     }
-    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO, remarks: selectedRemarks } });
+    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
   }
 
    //table controls
@@ -69,7 +69,8 @@ export class PrViewComponent implements OnInit {
         containerWidth: '500px',
         headerText: 'Confirmation',
         message: 'Are you sure you want to cancel this pr?',
-        number: prno
+        number: prno,
+        pr_status: 'Cancelled'
       }
     });
 

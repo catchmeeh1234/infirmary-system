@@ -32,7 +32,7 @@ export class ConfirmationComponent implements OnInit {
     });
   }
 
-  onConfirm(pr_num) {
+  onConfirm(pr_num:string) {
     const config: MatSnackBarConfig = {
       verticalPosition: 'top',
       duration: 5000,
@@ -45,6 +45,7 @@ export class ConfirmationComponent implements OnInit {
       let params = new FormData();
       params.append('prno', pr_num);
       params.append('remarks', cancel_remarks);
+      params.append('pr_status', this.data.pr_status);
 
       this.pr.cancelPR(params)
       .subscribe(data => {
@@ -52,11 +53,11 @@ export class ConfirmationComponent implements OnInit {
         if (result.status === "Success") {
           this.statusColor = 'statusSuccess';
 
-          let title = 'Purchase Request Cancelled';
-          let message = `Purchase Request: ${pr_num} has been cancelled by ${this.sessionStorageService.getSession('username')}`;
+          let title = `Purchase Request ${this.data.pr_status}`;
+          let message = `Purchase Request: ${pr_num} has been ${this.data.pr_status} by ${this.sessionStorageService.getSession('username')}`;
 
 
-          this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), 'Cancelled', pr_num).subscribe(data => {
+          this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), this.data.pr_status, pr_num).subscribe(data => {
             //this.websock.status_message = devicedeveui;
             console.log(data);
           });
@@ -70,7 +71,7 @@ export class ConfirmationComponent implements OnInit {
         }
         config.panelClass = [this.statusColor];
         this.snackBar.open(result.status, 'Close', config);
-        this.dialogRef.close();
+        this.dialogRef.close('yes');
       });
     } else {
       this.statusColor = 'statusFailed';

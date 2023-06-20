@@ -12,6 +12,8 @@ export class PrService {
   public dataSource:any;
   public dataSourcePRTable:any;
 
+  public prnumber:string;
+
   constructor(private http:HttpClient, private sessionStorageService:SessionStorageService) { }
 
   loadPR() {
@@ -27,6 +29,10 @@ export class PrService {
 
   loadItems(prnum) {
     return this.http.get(API_URL + `/api/pritems.php?prnum=${prnum}`, {responseType: 'json'});
+  }
+
+  getPurpose(prnum) {
+    return this.http.get(API_URL + `/api/getPurpose.php?prnum=${prnum}`, {responseType: 'json'});
   }
 
   approvePr(div, access) {
@@ -95,6 +101,7 @@ export class PrService {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }
   loadPrAndItems(prno:string) {
+    console.log(prno);
     return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
 }
