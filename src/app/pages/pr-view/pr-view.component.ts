@@ -69,7 +69,8 @@ export class PrViewComponent implements OnInit {
         containerWidth: '500px',
         headerText: 'Confirmation',
         message: 'Are you sure you want to cancel this pr?',
-        number: prno
+        number: prno,
+        pr_status: 'Cancelled'
       }
     });
 

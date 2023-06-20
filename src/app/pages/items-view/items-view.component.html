@@ -76,10 +76,10 @@
         </mat-form-field>
       </div>
       <div class="inline-form" style="justify-content: flex-end;">
-        <button *ngIf="this.prequeststatus === 'For DM Approval'" mat-flat-button color="primary" (click)="editPR()">
+        <button *ngIf="prequeststatus === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
           Edit PR
 				</button>
-				<button *ngIf="this.prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()">
+				<button *ngIf="prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()">
           Print PR
         </button>
         <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Approve')" [disabled]="isBtnApproval">
@@ -89,6 +89,9 @@
         <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Disapprove')" [disabled]="isBtnApproval">
           Disapprove PR
           <!-- <img src="./assets/reject.PNG" width="40px" height="40px" alt="image"> -->
+        </button>
+        <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="cancelPR(prnumber)" [disabled]="isBtnApproval">
+          Cancel PR
         </button>
       </div>
 		</div>

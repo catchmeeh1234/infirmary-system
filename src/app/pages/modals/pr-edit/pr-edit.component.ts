@@ -33,7 +33,7 @@ export class PrEditComponent implements OnInit {
     private formBuilder:FormBuilder,
     private dialogRef:MatDialogRef<PrEditComponent>,
     private employee:EmployeeService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
   }
 
@@ -42,11 +42,14 @@ export class PrEditComponent implements OnInit {
       pr_no_hidden: new FormControl('', [Validators.required]),
       pr_number: new FormControl('',[Validators.required]),
       requestor: new FormControl('', [Validators.required]),
-      designation: new FormControl({ value: '', disabled: true }, [Validators.required]),
-      division: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      designation: new FormControl('', [Validators.required]),
+      division: new FormControl('', [Validators.required]),
       purpose: new FormControl('', [Validators.required]),
       cancel_remarks: new FormControl('', [Validators.required]),
     });
+
+    this.editForm.get('designation')?.disable();
+    this.editForm.get('division')?.disable();
 
     this.displayDivisions();
     this.displayUnits();
@@ -70,13 +73,12 @@ export class PrEditComponent implements OnInit {
         cancel_remarks: result[0].remarks,
       });
       this.pr_items = result;
-      console.log(this.editForm.value);
+
       this.displayPRItems(this.pr_items);
     });
   }
 
   displayPRItems(pritems_param) {
-    //console.log(pritems_param);
     const controlNames: string[] = Object.keys(this.editForm.controls);
     // Remove each control from the form group
     controlNames.forEach((controlName: string) => {
@@ -86,7 +88,7 @@ export class PrEditComponent implements OnInit {
       }
     });
     for (const [index, pr_item] of pritems_param.entries()) {
-      console.log(pr_item.pr_items);
+
       //add item
       this.control_name_item = `item_${index}`;
       const item = new FormControl(null, [Validators.required]);
@@ -187,20 +189,27 @@ export class PrEditComponent implements OnInit {
   onSavePR() {
     // console.log(this.editForm.value);
     // console.log(this.pr_items.length);
-
+    this.editForm.get('designation')?.enable();
+    this.editForm.get('division')?.enable();
     this.pr.editPR(this.editForm.value, this.pr_items.length)
     .subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.pr.loadPR()
       .subscribe(data => {
         let res:any = data;
         if (this.pr.dataSourcePRTable !== undefined && this.pr.dataSourcePRTable !== null) {
           this.pr.dataSourcePRTable.data = res;
         }
+
+        this.editForm.get('designation')?.disable();
+        this.editForm.get('division')?.disable();
+
         setTimeout(() => {
-          this.dialogRef.close();
+          this.dialogRef.close(this.editForm.get('pr_number')?.value);
         }, 1000);
       });
+
+
     });
   }
 

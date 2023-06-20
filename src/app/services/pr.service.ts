@@ -12,6 +12,8 @@ export class PrService {
   public dataSource:any;
   public dataSourcePRTable:any;
 
+  public prnumber:string;
+
   constructor(private http:HttpClient, private sessionStorageService:SessionStorageService) { }
 
   loadPR() {
