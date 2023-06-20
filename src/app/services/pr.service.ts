@@ -104,4 +104,9 @@ export class PrService {
     console.log(prno);
     return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
+
+  //* monthly total pr */
+  PRTotalJan() {
+    return this.http.get(API_URL + '/api/JanTotalPR.php', {responseType: 'json'});
+  }
 }
