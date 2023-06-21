@@ -8,9 +8,7 @@
       </button>
 		</mat-toolbar>
 		<div class="table-container">
-
-            <mat-table #table [dataSource]="dataSource">
-
+      <mat-table #table [dataSource]="dataSource">
 				<!--- Note that these columns can be defined in any order.
 				The actual rendered columns are set as a property on the row definition" -->
 
@@ -90,7 +88,7 @@
           Disapprove PR
           <!-- <img src="./assets/reject.PNG" width="40px" height="40px" alt="image"> -->
         </button>
-        <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="cancelPR(prnumber)" [disabled]="isBtnApproval">
+        <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Cancelled')" [disabled]="isBtnApproval">
           Cancel PR
         </button>
       </div>

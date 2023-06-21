@@ -8,6 +8,7 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { NotificationsService } from '../../services/notifications.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-approve-pr',
@@ -23,6 +24,8 @@ export class ApprovePrComponent implements OnInit {
   public div = localStorage.getItem('division');
   public access = localStorage.getItem('access');
 
+  public statusColor:string;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -31,7 +34,8 @@ export class ApprovePrComponent implements OnInit {
     private websock: WebSocketService,
     private sessionStorageService: SessionStorageService,
     private notif: NotificationsService,
-     public dialog:MatDialog
+    public dialog:MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +51,10 @@ export class ApprovePrComponent implements OnInit {
       this.document.dataSource = new MatTableDataSource(this.result);
 
       this.document.dataSource.paginator = this.paginator;
+
     });
+
+
   }
 
   onUpdateApproveStatus(selectedPrNO:string, selectedStatus:string, selectedDivision:string, stat:string) {
@@ -55,58 +62,155 @@ export class ApprovePrComponent implements OnInit {
     if (selectedPrNO == null) {
       return;
     }
+    console.log("selected " + selectedStatus);
+    console.log(stat);
+
+    let is_remarks_visible:boolean;
+    if (stat === "Approve") {
+      is_remarks_visible = false;
+    } else if(stat === "Disapprove") {
+      is_remarks_visible = true;
+    } else {
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
         containerWidth: '500px',
         headerText: 'Confirmation',
-        message: 'Are you sure you want to Disapprove?',
-        number: selectedPrNO,
-        pr_status: 'Disapprove'
+        message: `Are you sure you want to ${stat}?`,
+        isRemarksVisible: is_remarks_visible,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'yes') {
-        this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, stat)
-        .subscribe(data=>{
-          let status:string;
-          let title:string;
-          let message:string;
+      if (result === undefined) {
+        return;
+      }
 
-          if (data === "PR Status Updated") {
-            this.websock.updateApprovePR();
+      if (result.confirm === 'yes') {
+        const config: MatSnackBarConfig = {
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: ['statusSuccess']
+        };
 
-            if (stat === "Approve") {
-              title = 'Purchase Request Approved by DM';
-              message = `Purchase Request: ${selectedPrNO} has been approved by ${this.sessionStorageService.getSession('username')}`;
-            }
+        let params = new FormData();
+        let status:string;
 
+        if (result.remarks == undefined || result.remarks == null || result.remarks == "") {
+          result.remarks = "";
+        }
+
+        params.append('prno', selectedPrNO);
+        params.append('remarks', result.remarks);
+        params.append('pr_status', stat);
+        params.append('pr_request_status', selectedStatus);
+        params.append('name', this.sessionStorageService.getSession('fullname'));
+
+        this.document.updatePrRequest(params)
+        .subscribe(data => {
+          let result:any = data;
+          if (result.status === "Success") {
+            this.statusColor = 'statusSuccess';
+
+            let title:string;
+            let message:string;
             if (stat === "Disapprove") {
-              title = 'Purchase Request Disapproved';
-              message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
+              title = `Purchase Request ${stat}`;
+              message = `Purchase Request: ${selectedPrNO} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+              status = `${stat}(${selectedStatus})`;
+              // if (this.data.pr_status === "Cancelled") {
+              //   status = this.data.pr_status;
+              // } else if(this.data.pr_status === "Disapprove") {
+              //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
+              // }
+            } else {
+              if (stat === "Approve") {
+                title = `Pending Purchase Request Approval`;
+                message = `Purchase Request: ${selectedPrNO} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+
+                if (selectedStatus === "For DM Approval") {
+                  status = "For Budget Checking";
+                }else if (selectedStatus === "For Budget Checking") {
+                  status = "For Cash Allocation";
+                } else if (selectedStatus === "For Cash Allocation") {
+                  status = "For Printing";
+                }
+
+              }
             }
 
-            if (selectedStatus === "For DM Approval") {
-              status = "For Budget Checking";
-            }else if (selectedStatus === "For Budget Checking") {
-              status = "For Cash";
-            } else if (selectedStatus === "For Cash") {
-              status = "For Printing";
-            }
-
-            this.notif.insertNotification(title, message, this.access, selectedDivision, status, selectedPrNO).subscribe(data => {
+            this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, selectedPrNO).subscribe(data => {
               //this.websock.status_message = devicedeveui;
               console.log(data);
             });
 
             this.websock.sendNotif(message);
             this.websock.updateNotification();
+            this.websock.updatePRTable();
+
           } else {
-            console.log(data);
+            this.statusColor = 'statusFailed';
           }
+          config.panelClass = [this.statusColor];
+          this.snackBar.open(`${stat} ${result.status}`, 'Close', config);
+          this.websock.updateApprovePR();
         });
+
+      } else {
+        return;
       }
+
+        // this.document.updateApproveStatus(selectedPrNO, selectedStatus, username, stat)
+        // .subscribe(data=>{
+        //   let status:string;
+        //   let title:string;
+        //   let message:string;
+
+        //   if (data === "PR Status Updated") {
+        //     this.websock.updateApprovePR();
+
+            // if (stat === "Approve") {
+            //   title = 'Pending Purchase Request Approval';
+            //   message = `Purchase Request: ${selectedPrNO} has been approved by ${this.sessionStorageService.getSession('username')}`;
+            // }
+
+            // if (stat === "Disapprove") {
+            //   title = 'Purchase Request Disapproved';
+            //   message = `Purchase Request: ${selectedPrNO} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
+            // }
+
+            // if (selectedStatus === "For DM Approval") {
+            //   status = "For Budget Checking";
+            //   console.log(status);
+
+            // }else if (selectedStatus === "For Budget Checking") {
+            //   status = "For Cash";
+            //   console.log(status);
+
+            // } else if (selectedStatus === "For Cash") {
+            //   status = "For Printing";
+            //   console.log(status);
+
+            // } else {
+            //   console.log("wala");
+
+            // }
+
+            // this.notif.insertNotification(title, message, this.access, selectedDivision, status, selectedPrNO).subscribe(data => {
+            //   //this.websock.status_message = devicedeveui;
+            //   console.log(data);
+            // });
+
+            // this.websock.sendNotif(message);
+            // this.websock.updateNotification();
+          // } else {
+          //   console.log(data);
+          // }
+        //});
+      //}
     });
   }
 

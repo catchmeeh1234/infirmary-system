@@ -9,6 +9,7 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { NotificationsService } from '../../services/notifications.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-items-view',
@@ -40,6 +41,9 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   public isShowApproveDisapprove: boolean = false;
   public isShowCancelled: boolean = false;
 
+  public statusColor:string;
+
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private document:PrService,
@@ -47,7 +51,8 @@ export class ItemsViewComponent implements OnInit, OnChanges {
               public dialog: MatDialog,
               private websock:WebSocketService,
               private sessionStorageService:SessionStorageService,
-              private notif: NotificationsService
+              private notif: NotificationsService,
+              private snackBar: MatSnackBar,
   ) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
@@ -75,8 +80,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
         containerWidth: '500px',
         headerText: 'Confirmation',
         message: 'Are you sure you want to cancel this pr?',
-        number: prno,
-        pr_status: 'Cancelled'
+        isRemarksVisible: false
       }
     });
 
@@ -84,8 +88,15 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       if (result === undefined) {
         return;
       } else {
+
+        if (result.confirm === 'yes') {
+
+        } else {
+          return;
+        }
+
         this.loadPRDetails(prno);
-        console.log('closed' + result);
+
       }
     });
 
@@ -120,7 +131,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   }
 
   checkCancelButton() {
-    if (this.access === 'Encoder' && this.division === this.prequestdivision && this.prequeststatus !== 'Cancelled' && this.prequeststatus !== 'Disapprove') {
+    if (this.access === 'Encoder' && this.division === this.prequestdivision && this.prequeststatus !== 'Cancelled' && this.prequeststatus !== 'For Printing' && !this.prequeststatus.includes("Disapprove")) {
       return this.isShowCancelled = true;
     } else {
       return this.isShowCancelled = false;
@@ -175,6 +186,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       if (result === undefined) {
         return;
       } else {
+
         this.loadPRDetails(result);
         console.log('closed' + result);
 
@@ -188,9 +200,20 @@ export class ItemsViewComponent implements OnInit, OnChanges {
     window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${this.prnumber}`, '_blank')
   }
 
-  onUpdateApproveStatus(stat) {
-
+  onUpdateApproveStatus(stat:string) {
     if (this.prnumber == null) {
+      return;
+    }
+
+    let is_remarks_visible:boolean;
+
+    if (stat === "Approve") {
+      is_remarks_visible = false;
+    } else if(stat === "Disapprove") {
+      is_remarks_visible = true;
+    } else if(stat === "Cancelled"){
+      is_remarks_visible = true;
+    } else {
       return;
     }
 
@@ -199,56 +222,93 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       data: {
         containerWidth: '500px',
         headerText: 'Confirmation',
-        message: 'Are you sure you want to Disapprove?',
-        number: this.prnumber,
-        pr_status: 'Disapprove'
+        message: `Are you sure you want to ${stat}?`,
+        isRemarksVisible: is_remarks_visible,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
       // Handle the result if needed
-      if (result === 'yes') {
-        this.document.updateApproveStatus(this.prnumber, this.prequeststatus, this.username, stat)
-        .subscribe(data=>{
-          let status:string;
-          let title:string;
-          let message:string;
+      if (result.confirm === 'yes') {
+        this.isBtnApproval = true;
 
-          if (data === "PR Status Updated") {
-            this.websock.updateApprovePR();
-            this.isBtnApproval = true;
 
-            if (stat === "Approve") {
-              title = 'Purchase Request Approved by DM';
-              message = `Purchase Request: ${this.prnumber} has been approved by ${this.sessionStorageService.getSession('username')}`;
-            }
+        const config: MatSnackBarConfig = {
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: ['statusSuccess']
+        };
+
+        let params = new FormData();
+        let status:string;
+
+        if (result.remarks == undefined || result.remarks == null || result.remarks == "") {
+          result.remarks = "";
+        }
+
+        params.append('prno', this.prnumber);
+        params.append('remarks', result.remarks);
+        params.append('pr_status', stat);
+        params.append('pr_request_status', this.prequeststatus);
+        params.append('name', this.sessionStorageService.getSession('fullname'));
+
+        this.document.updatePrRequest(params)
+        .subscribe(data => {
+          let result:any = data;
+
+          if (result.status === "Success") {
+            this.statusColor = 'statusSuccess';
+
+            let title:string;
+            let message:string;
 
             if (stat === "Disapprove") {
-              title = 'Purchase Request Disapproved';
-              message = `Purchase Request: ${this.prnumber} has been disapproved by ${this.sessionStorageService.getSession('username')}`;
+              title = `Purchase Request ${stat}`;
+              message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+              status = `${stat}(${this.prequeststatus})`;
+              // if (this.data.pr_status === "Cancelled") {
+              //   status = this.data.pr_status;
+              // } else if(this.data.pr_status === "Disapprove") {
+              //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
+              // }
+            } else if(stat === "Approve") {
+                title = `Pending Purchase Request Approval`;
+                message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+
+                if (this.prequeststatus === "For DM Approval") {
+                  status = "For Budget Checking";
+                }else if (this.prequeststatus === "For Budget Checking") {
+                  status = "For Cash Allocation";
+                } else if (this.prequeststatus === "For Cash Allocation") {
+                  status = "For Printing";
+                }
+            } else if(stat === "Cancelled") {
+              title = `Purchase Request ${stat}`;
+              message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+              status = stat;
             }
 
-            if (this.prequeststatus === "For DM Approval") {
-              status = "For Budget Checking";
-            }else if (this.prequeststatus === "For Budget Checking") {
-              status = "For Cash";
-            } else if (this.prequeststatus === "For Cash") {
-              status = "For Printing";
-            }
-
-            this.notif.insertNotification(title, message, this.access, this.prequestdivision, status, this.prnumber).subscribe(data => {
+            this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, this.prnumber).subscribe(data => {
+              //this.websock.status_message = devicedeveui;
               console.log(data);
             });
 
             this.websock.sendNotif(message);
             this.websock.updateNotification();
-
+            this.websock.updatePRTable();
 
           } else {
-            console.log(data);
+            this.statusColor = 'statusFailed';
           }
+          config.panelClass = [this.statusColor];
+          this.snackBar.open(`${stat} ${result.status}`, 'Close', config);
         });
 
+      } else {
+        return;
       }
     });
   }

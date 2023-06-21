@@ -16,6 +16,12 @@ export class ConfirmationComponent implements OnInit {
   public statusColor:string;
   public cancel_pr: FormGroup;
 
+  public isVisible:boolean;
+
+  private dataObject = {
+    confirm: 'yes'
+  };
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef:MatDialogRef<ConfirmationComponent>,
@@ -30,6 +36,8 @@ export class ConfirmationComponent implements OnInit {
     this.cancel_pr = new FormGroup({
       cancel_remarks: new FormControl(null, Validators.required),
     });
+
+    this.isVisible = this.data.isRemarksVisible;
   }
 
   onConfirm(pr_num:string) {
@@ -39,48 +47,20 @@ export class ConfirmationComponent implements OnInit {
       panelClass: ['statusSuccess']
     };
 
-    if (this.cancel_pr.valid === true) {
+    if (this.cancel_pr.valid === true || this.data.isRemarksVisible === false) {
       const { cancel_remarks } = this.cancel_pr.value;
+      this.dataObject['remarks'] = cancel_remarks;
 
-      let params = new FormData();
-      params.append('prno', pr_num);
-      params.append('remarks', cancel_remarks);
-      params.append('pr_status', this.data.pr_status);
-
-      this.pr.cancelPR(params)
-      .subscribe(data => {
-        let result:any = data;
-        if (result.status === "Success") {
-          this.statusColor = 'statusSuccess';
-
-          let title = `Purchase Request ${this.data.pr_status}`;
-          let message = `Purchase Request: ${pr_num} has been ${this.data.pr_status} by ${this.sessionStorageService.getSession('username')}`;
-
-
-          this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), this.data.pr_status, pr_num).subscribe(data => {
-            //this.websock.status_message = devicedeveui;
-            console.log(data);
-          });
-
-          this.websock.sendNotif(message);
-          this.websock.updateNotification();
-          this.websock.updatePRTable();
-
-        } else {
-          this.statusColor = 'statusFailed';
-        }
-        config.panelClass = [this.statusColor];
-        this.snackBar.open(result.status, 'Close', config);
-        this.dialogRef.close('yes');
-      });
+      this.dialogRef.close(this.dataObject);
     } else {
       this.statusColor = 'statusFailed';
+      config.panelClass = [this.statusColor];
+      this.snackBar.open('Something Went Wrong', 'Close', config);
     }
-    config.panelClass = [this.statusColor];
-    this.snackBar.open('Please input necessary details', 'Close', config);
   }
 
   onCancel() {
-    this.dialogRef.close();
+    this.dataObject.confirm = "no";
+    this.dialogRef.close(this.dataObject);
   }
 }

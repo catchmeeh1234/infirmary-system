@@ -157,7 +157,7 @@ export class PrEditComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // Handle the result if needed
-      if (result === 'yes') {
+      if (result.confirm === 'yes') {
         const index = this.pr_items.indexOf(row);
         if (index > -1) {
           this.pr_items.splice(index, 1);
