@@ -73,6 +73,16 @@ export class PrUpdateStatusService {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
           status = stat;
+        } else if (stat === "Approve by GM") {
+          title = `Purchase Request ${stat}`;
+          message = `Purchase Request: ${prno} has been ${stat}`;
+          status = stat;
+        } else if (stat === "Disapprove by GM") {
+          title = `Purchase Request ${stat}`;
+          message = `Purchase Request: ${prno} has been ${stat}`;
+          status = stat;
+        } else {
+          return;
         }
         this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, prno).subscribe(data => {
           //this.websock.status_message = devicedeveui;

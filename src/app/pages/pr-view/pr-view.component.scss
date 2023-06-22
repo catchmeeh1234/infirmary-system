@@ -2,133 +2,149 @@ table{
     width: 100%;
    }
 
-   .mat-column-PRNo {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 7% !important;
-    width: 7% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+   .mat-column-tagAsApprove {
+      word-wrap: break-word !important;
+      white-space: unset !important;
+      flex: 0 0 3% !important;
+      //width: 5px !important;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
 
-    word-break: break-word;
+      word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
+      hyphens: auto;
   }
 
-  .mat-column-Date {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 7% !important;
-    width: 7% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  //  .mat-column-PRNo {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 7% !important;
+  //   width: 7% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Requestor {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 17% !important;
-    width: 17% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Date {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 7% !important;
+  //   width: 7% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Designation {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 15% !important;
-    width: 15% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Requestor {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 17% !important;
+  //   width: 17% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Division {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 15% !important;
-    width: 15% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Designation {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 15% !important;
+  //   width: 15% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Purpose {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 19% !important;
-    width: 19% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Division {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 15% !important;
+  //   width: 15% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Status {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 8% !important;
-    width: 8% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Purpose {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 19% !important;
+  //   width: 19% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
-  .mat-column-Actions {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 7% !important;
-    width: 7% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+  // .mat-column-Status {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 8% !important;
+  //   width: 8% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
 
-    word-break: break-word;
+  //   word-break: break-word;
 
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
+
+  // .mat-column-Actions {
+  //   word-wrap: break-word !important;
+  //   white-space: unset !important;
+  //   flex: 0 0 7% !important;
+  //   width: 7% !important;
+  //   overflow-wrap: break-word;
+  //   word-wrap: break-word;
+
+  //   word-break: break-word;
+
+  //   -ms-hyphens: auto;
+  //   -moz-hyphens: auto;
+  //   -webkit-hyphens: auto;
+  //   hyphens: auto;
+  // }
 
 .mat-row:nth-child(even){
     background-color: #ffffff;

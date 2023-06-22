@@ -1,0 +1,26 @@
+<app-modal
+[headerText]="data.headerText"
+[containerWidth]="data.containerWidth"
+>
+  <div class="modal-container">
+    <div class="modal-message">
+      <mat-table #table [dataSource]="pr_history">
+
+        <ng-container matColumnDef="Status">
+					<mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+					<mat-cell *matCellDef="let row"> {{row.pr_status}} </mat-cell>
+				</ng-container>
+        <ng-container matColumnDef="Date">
+					<mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+					<mat-cell *matCellDef="let row"> {{row.pr_datetime | date: 'MM/dd/yyyy hh:mm a'}} </mat-cell>
+				</ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+    <!-- <div class="modal-buttons">
+      <button mat-flat-button color="primary" class="modal-confirm" (click)="onConfirm(data.number)" style="margin-right: 5px;">Yes</button>
+      <button mat-flat-button color="warn" class="modal-cancel" (click)="onCancel()">No</button>
+    </div> -->
+  </div>
+</app-modal>

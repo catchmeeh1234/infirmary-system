@@ -53,6 +53,7 @@ import { PrEditComponent } from './modals/pr-edit/pr-edit.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import { ConfirmationGenericComponent } from './modals/confirmation-generic/confirmation-generic.component';
+import { PrHistoryComponent } from './modals/pr-history/pr-history.component';
 
 @NgModule({
     imports: [
@@ -106,7 +107,8 @@ import { ConfirmationGenericComponent } from './modals/confirmation-generic/conf
         ConfirmationComponent,
         ModalComponent,
         PrEditComponent,
-        ConfirmationGenericComponent
+        ConfirmationGenericComponent,
+        PrHistoryComponent
     ],
     exports: [
     ],

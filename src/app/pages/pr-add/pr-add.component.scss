@@ -167,3 +167,9 @@ table {
     padding: 0;
     margin: 0;
   }
+
+  .designation, ::ng-deep .mat-select-value,
+  ::ng-deep .mat-select-placeholder {
+    color:#000000 !important;
+  }
+

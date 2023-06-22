@@ -35,7 +35,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Division</mat-label>
           <mat-select class="division" formControlName="division">
-            <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
+            <mat-option class="division" *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">

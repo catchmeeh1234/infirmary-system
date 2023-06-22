@@ -8,6 +8,7 @@ import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
+import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
 
 @Component({
   selector: 'app-items-view',
@@ -25,7 +26,9 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   public selectedYear:string;
   public yearButton:string;
   public remarks:string;
+  public current_status:string;
   public prnumber:string;
+  public timestamp:string;
 
   public prequeststatus:string;
   public prequestdivision:string;
@@ -40,6 +43,13 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   public isShowCancelled: boolean = false;
 
   public statusColor:string;
+
+  public disDate:string;
+  public disStatus:string;
+  public disBy:string;
+
+  public StatusResult:any;
+  public ResStatus:string;
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,36 +77,6 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       // Perform actions when myVariable changes
       console.log('myVariable changed:');
     }
-  }
-
-  cancelPR(prno) {
-    const dialogRef = this.dialog.open(ConfirmationComponent, {
-      panelClass: ['no-padding'],
-      data: {
-        containerWidth: '500px',
-        headerText: 'Confirmation',
-        message: 'Are you sure you want to cancel this pr?',
-        isRemarksVisible: false
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === undefined) {
-        return;
-      } else {
-
-        if (result.confirm === 'yes') {
-
-        } else {
-          return;
-        }
-
-        this.loadPRDetails(prno);
-
-      }
-    });
-
-
   }
 
   checkApproveDisapproveButton() {
@@ -151,13 +131,27 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       this.prequestdivision = result[0].pr_division;
       this.purpose = result[0].pr_purpose;
       this.remarks = result[0].remarks;
-
+      this.current_status = result[0].pr_status;
+      this.timestamp = result[0].timestamp;
       setTimeout(() => {
         this.checkApproveDisapproveButton();
         this.checkCancelButton();
       }, 0);
 
     });
+
+    this.document.telLDisapprove(prnum)
+    .subscribe(data => {
+      let result:any = data;
+      if (result == null) {
+        this.StatusResult = result = [];
+      } else {
+        this.StatusResult = result;
+        this.disDate = result[0].pr_datetime;
+        this.disBy = result[0].pr_updatedBy;
+      }
+    });
+
   }
 
   PRBack() {
@@ -196,22 +190,22 @@ export class ItemsViewComponent implements OnInit, OnChanges {
     window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${this.prnumber}`, '_blank')
   }
 
-  onUpdateApproveStatus(stat:string) {
+  onUpdateApproveStatus(stat:string, is_remarks_visible:boolean) {
     if (this.prnumber == null) {
       return;
     }
 
-    let is_remarks_visible:boolean;
+    //let is_remarks_visible:boolean;
 
-    if (stat === "Approve") {
-      is_remarks_visible = false;
-    } else if(stat === "Disapprove") {
-      is_remarks_visible = true;
-    } else if(stat === "Cancelled"){
-      is_remarks_visible = true;
-    } else {
-      return;
-    }
+    // if (stat === "Approve") {
+    //   is_remarks_visible = false;
+    // } else if(stat === "Disapprove") {
+    //   is_remarks_visible = true;
+    // } else if(stat === "Cancelled"){
+    //   is_remarks_visible = true;
+    // } else {
+    //   return;
+    // }
 
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
@@ -231,9 +225,22 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       if (result.confirm === 'yes') {
         this.isBtnApproval = true;
         this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks);
-
+        setTimeout(() => {
+          this.loadPRDetails(this.prnumber);
+        }, 500);
       } else {
         return;
+      }
+    });
+  }
+
+  viewHistoryPR(prno:string) {
+    const dialogRef = this.dialog.open(PrHistoryComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '500px',
+        headerText: 'Pr History',
+        prnumber: prno,
       }
     });
   }

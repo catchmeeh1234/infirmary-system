@@ -16,7 +16,7 @@ import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 })
 export class PrViewComponent implements OnInit {
   public dataSource:any;
-  public displayedColumns = ['PRNo', 'Date', 'Requestor', 'Designation', 'Division', 'Purpose', 'Status', 'Actions'];
+  public displayedColumns = ['tagAsApprove', 'PRNo', 'Date', 'Requestor', 'Designation', 'Division', 'Status', 'Actions'];
   public result:any;
   public arrayOfYears:any;
   public selectedYear:string;
@@ -72,14 +72,14 @@ export class PrViewComponent implements OnInit {
     window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${prno}`, '_blank')
   }
 
-  cancelpritems(prno, pr_status, stat="Cancelled") {
+  updatePR_Status(prno, pr_status, stat, remarks_visible:boolean) {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
         containerWidth: '500px',
         headerText: 'Confirmation',
-        message: 'Are you sure you want to cancel this pr?',
-        isRemarksVisible: true,
+        message: 'Please Confirm your selection',
+        isRemarksVisible: remarks_visible,
       }
     });
 
@@ -116,5 +116,4 @@ export class PrViewComponent implements OnInit {
     });
 
   }
-
 }

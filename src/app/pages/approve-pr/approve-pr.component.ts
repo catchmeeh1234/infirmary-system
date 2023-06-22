@@ -32,7 +32,7 @@ export class ApprovePrComponent implements OnInit {
 
   ngOnInit(): void {
     this.onDisplayApprovedPr();
-    console.log(this.div, this.access)
+    //console.log(this.div, this.access)
   }
 
   onDisplayApprovedPr() {

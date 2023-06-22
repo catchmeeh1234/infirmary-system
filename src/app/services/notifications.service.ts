@@ -18,12 +18,11 @@ export class NotificationsService {
     } else if (role === "Budget") {
       status = "For Budget Checking";
     } else if (role === "Cash") {
-      status = "For Cash";
+      status = "For Cash Allocation";
     } else if (role === "Encoder") {
       status = "Encoder";
     }
-
-    return this.http.get(`${API_URL}/viewNotifications.php?division=${division}&status=${status}`, {responseType: 'json'});
+    return this.http.get(`${API_URL}/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
   }
 
   insertNotification(title:string, message: string, role: string, division: string, status: string, prno: string) {

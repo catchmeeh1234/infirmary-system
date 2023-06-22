@@ -73,23 +73,59 @@
           <input matInput type="text" size="30"placeholder="Purpose" class="purpose" [value]="remarks" disabled/>
         </mat-form-field>
       </div>
+      <div class="inline-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Current Status</mat-label>
+          <input matInput type="text" size="30"placeholder="Current Status" class="currentstatus" [value]="current_status" disabled/>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" *ngIf="current_status.includes('Disapprove')">
+          <mat-label>Disapprove By</mat-label>
+          <input matInput type="text" size="30"placeholder="Disapprove by" class="disapprove" [value]="current_status + ' by' + username" disabled/>
+        </mat-form-field> -->
+        <mat-form-field appearance="outline">
+          <mat-label>Date Created</mat-label>
+          <input matInput type="text" size="30"placeholder="Date Created" class="datecreated" [value]="timestamp" disabled/>
+        </mat-form-field>
+      </div>
+      <!-- <div class="inline-form">
+        <div *ngIf="disBy != null">PR no. <strong>{{prnumber}}</strong> has been disapproved by <strong>{{disBy}}</strong> on <strong>{{disDate | date: 'MM/dd/yyyy HH:mm' }}</strong>.</div>
+			  <table *ngFor="let row of StatusResult">
+          <tr>
+            <td *ngIf="row.pr_status == 'For DM Approval'">Date created: {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }} </td>
+            <td *ngIf="row.pr_status == 'For Budget Checking'">Approved by Division Manager: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
+            <td *ngIf="row.pr_status == 'For Cash Allocation'">Approved by Budget: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
+            <td *ngIf="row.pr_status == 'For Printing'">Approved by Finance: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
+            <td *ngIf="row.pr_status == 'Disapprove(For Budget Checking)'">Disapproved by Budget: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
+            <td *ngIf="row.pr_status == 'Approved'">Approved by GM: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
+          </tr>
+			  </table>
+      </div> -->
       <div class="inline-form" style="justify-content: flex-end;">
+        <button mat-flat-button color="primary" (click)="viewHistoryPR(prnumber)">
+          View History
+				</button>
         <button *ngIf="prequeststatus === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
           Edit PR
 				</button>
 				<button *ngIf="prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()">
           Print PR
         </button>
-        <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Approve')" [disabled]="isBtnApproval">
+        <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Approve', false)" [disabled]="isBtnApproval">
           Approve PR
           <!-- <img src="./assets/accept.png" width="40px" height="40px" alt="image"> -->
         </button>
-        <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Disapprove')" [disabled]="isBtnApproval">
+        <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Disapprove', true)" [disabled]="isBtnApproval">
           Disapprove PR
           <!-- <img src="./assets/reject.PNG" width="40px" height="40px" alt="image"> -->
         </button>
-        <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Cancelled')" [disabled]="isBtnApproval">
+        <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Cancelled', true)" [disabled]="isBtnApproval">
           Cancel PR
+        </button>
+        <button mat-icon-button *ngIf="prequeststatus === 'For Printing' && access === 'Encoder'" (click)="onUpdateApproveStatus('Disapprove by GM', true)" matTooltip="Tag as disapproved by GM">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="prequeststatus === 'For Printing' && access === 'Encoder'" (click)="onUpdateApproveStatus('Approve by GM', false)" matTooltip="Tag as approved by GM">
+          <mat-icon>thumb_up</mat-icon>
         </button>
       </div>
 		</div>
