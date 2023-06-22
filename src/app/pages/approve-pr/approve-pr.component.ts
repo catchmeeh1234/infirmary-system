@@ -2,13 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PrService } from '../../services/pr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Router } from '@angular/router';
-import { WebSocketService } from '../../services/web-socket.service';
-import { SessionStorageService } from '../../services/session-storage.service';
-import { NotificationsService } from '../../services/notifications.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 
 @Component({
   selector: 'app-approve-pr',
@@ -30,12 +26,8 @@ export class ApprovePrComponent implements OnInit {
 
   constructor(
     public document:PrService,
-    private router:Router,
-    private websock: WebSocketService,
-    private sessionStorageService: SessionStorageService,
-    private notif: NotificationsService,
     public dialog:MatDialog,
-    private snackBar: MatSnackBar,
+    private prUpdateStatus:PrUpdateStatusService
   ) { }
 
   ngOnInit(): void {
@@ -62,8 +54,6 @@ export class ApprovePrComponent implements OnInit {
     if (selectedPrNO == null) {
       return;
     }
-    console.log("selected " + selectedStatus);
-    console.log(stat);
 
     let is_remarks_visible:boolean;
     if (stat === "Approve") {
@@ -90,74 +80,7 @@ export class ApprovePrComponent implements OnInit {
       }
 
       if (result.confirm === 'yes') {
-        const config: MatSnackBarConfig = {
-          verticalPosition: 'top',
-          duration: 5000,
-          panelClass: ['statusSuccess']
-        };
-
-        let params = new FormData();
-        let status:string;
-
-        if (result.remarks == undefined || result.remarks == null || result.remarks == "") {
-          result.remarks = "";
-        }
-
-        params.append('prno', selectedPrNO);
-        params.append('remarks', result.remarks);
-        params.append('pr_status', stat);
-        params.append('pr_request_status', selectedStatus);
-        params.append('name', this.sessionStorageService.getSession('fullname'));
-
-        this.document.updatePrRequest(params)
-        .subscribe(data => {
-          let result:any = data;
-          if (result.status === "Success") {
-            this.statusColor = 'statusSuccess';
-
-            let title:string;
-            let message:string;
-            if (stat === "Disapprove") {
-              title = `Purchase Request ${stat}`;
-              message = `Purchase Request: ${selectedPrNO} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-              status = `${stat}(${selectedStatus})`;
-              // if (this.data.pr_status === "Cancelled") {
-              //   status = this.data.pr_status;
-              // } else if(this.data.pr_status === "Disapprove") {
-              //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
-              // }
-            } else {
-              if (stat === "Approve") {
-                title = `Pending Purchase Request Approval`;
-                message = `Purchase Request: ${selectedPrNO} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-
-                if (selectedStatus === "For DM Approval") {
-                  status = "For Budget Checking";
-                }else if (selectedStatus === "For Budget Checking") {
-                  status = "For Cash Allocation";
-                } else if (selectedStatus === "For Cash Allocation") {
-                  status = "For Printing";
-                }
-
-              }
-            }
-
-            this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, selectedPrNO).subscribe(data => {
-              //this.websock.status_message = devicedeveui;
-              console.log(data);
-            });
-
-            this.websock.sendNotif(message);
-            this.websock.updateNotification();
-            this.websock.updatePRTable();
-
-          } else {
-            this.statusColor = 'statusFailed';
-          }
-          config.panelClass = [this.statusColor];
-          this.snackBar.open(`${stat} ${result.status}`, 'Close', config);
-          this.websock.updateApprovePR();
-        });
+        this.prUpdateStatus.updatePrRequest(selectedPrNO, selectedStatus, stat, result.remarks);
 
       } else {
         return;

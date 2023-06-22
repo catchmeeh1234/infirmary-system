@@ -7,9 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { NotificationsService } from '../../services/notifications.service';
-import { WebSocketService } from '../../services/web-socket.service';
+import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 
 @Component({
   selector: 'app-pr-view',
@@ -37,9 +35,7 @@ export class PrViewComponent implements OnInit {
               private router:Router,
               public dialog: MatDialog,
               private sessionStorageService:SessionStorageService,
-              private snackBar: MatSnackBar,
-              private notif:NotificationsService,
-              private websock:WebSocketService
+              private prUpdateStatus:PrUpdateStatusService,
   ) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
@@ -95,76 +91,7 @@ export class PrViewComponent implements OnInit {
       }
 
       if (result.confirm === 'yes') {
-        const config: MatSnackBarConfig = {
-          verticalPosition: 'top',
-          duration: 5000,
-          panelClass: ['statusSuccess']
-        };
-
-        let params = new FormData();
-        let status:string;
-
-        if (result.remarks == undefined || result.remarks == null || result.remarks == "") {
-          result.remarks = "";
-        }
-
-        params.append('prno', prno);
-        params.append('remarks', result.remarks);
-        params.append('pr_status', stat);
-        params.append('pr_request_status', pr_status);
-        params.append('name', this.sessionStorageService.getSession('fullname'));
-
-        this.document.updatePrRequest(params)
-        .subscribe(data => {
-          let result:any = data;
-
-          if (result.status === "Success") {
-            this.statusColor = 'statusSuccess';
-
-            let title:string;
-            let message:string;
-
-            if (stat === "Disapprove") {
-              title = `Purchase Request ${stat}`;
-              message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-              status = `${stat}(${pr_status})`;
-              // if (this.data.pr_status === "Cancelled") {
-              //   status = this.data.pr_status;
-              // } else if(this.data.pr_status === "Disapprove") {
-              //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
-              // }
-            } else if(stat === "Approve") {
-                title = `Pending Purchase Request Approval`;
-                message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-
-                if (pr_status === "For DM Approval") {
-                  status = "For Budget Checking";
-                }else if (pr_status === "For Budget Checking") {
-                  status = "For Cash Allocation";
-                } else if (pr_status === "For Cash Allocation") {
-                  status = "For Printing";
-                }
-            } else if(stat === "Cancelled") {
-              title = `Purchase Request ${stat}`;
-              message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-              status = stat;
-            }
-
-            this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, prno).subscribe(data => {
-              //this.websock.status_message = devicedeveui;
-              console.log(data);
-            });
-
-            this.websock.sendNotif(message);
-            this.websock.updateNotification();
-            this.websock.updatePRTable();
-
-          } else {
-            this.statusColor = 'statusFailed';
-          }
-          config.panelClass = [this.statusColor];
-          this.snackBar.open(`${stat} ${result.status}`, 'Close', config);
-        });
+        this.prUpdateStatus.updatePrRequest(prno, pr_status, stat, result.remarks);
       } else {
         return;
       }

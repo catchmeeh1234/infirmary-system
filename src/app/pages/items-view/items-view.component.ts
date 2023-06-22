@@ -5,11 +5,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
-import { WebSocketService } from '../../services/web-socket.service';
 import { SessionStorageService } from '../../services/session-storage.service';
-import { NotificationsService } from '../../services/notifications.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 
 @Component({
   selector: 'app-items-view',
@@ -49,10 +47,8 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   constructor(private document:PrService,
               private router:Router,
               public dialog: MatDialog,
-              private websock:WebSocketService,
               private sessionStorageService:SessionStorageService,
-              private notif: NotificationsService,
-              private snackBar: MatSnackBar,
+              private prUpdateStatus:PrUpdateStatusService,
   ) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
@@ -234,78 +230,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       // Handle the result if needed
       if (result.confirm === 'yes') {
         this.isBtnApproval = true;
-
-
-        const config: MatSnackBarConfig = {
-          verticalPosition: 'top',
-          duration: 5000,
-          panelClass: ['statusSuccess']
-        };
-
-        let params = new FormData();
-        let status:string;
-
-        if (result.remarks == undefined || result.remarks == null || result.remarks == "") {
-          result.remarks = "";
-        }
-
-        params.append('prno', this.prnumber);
-        params.append('remarks', result.remarks);
-        params.append('pr_status', stat);
-        params.append('pr_request_status', this.prequeststatus);
-        params.append('name', this.sessionStorageService.getSession('fullname'));
-
-        this.document.updatePrRequest(params)
-        .subscribe(data => {
-          let result:any = data;
-
-          if (result.status === "Success") {
-            this.statusColor = 'statusSuccess';
-
-            let title:string;
-            let message:string;
-
-            if (stat === "Disapprove") {
-              title = `Purchase Request ${stat}`;
-              message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-              status = `${stat}(${this.prequeststatus})`;
-              // if (this.data.pr_status === "Cancelled") {
-              //   status = this.data.pr_status;
-              // } else if(this.data.pr_status === "Disapprove") {
-              //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
-              // }
-            } else if(stat === "Approve") {
-                title = `Pending Purchase Request Approval`;
-                message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-
-                if (this.prequeststatus === "For DM Approval") {
-                  status = "For Budget Checking";
-                }else if (this.prequeststatus === "For Budget Checking") {
-                  status = "For Cash Allocation";
-                } else if (this.prequeststatus === "For Cash Allocation") {
-                  status = "For Printing";
-                }
-            } else if(stat === "Cancelled") {
-              title = `Purchase Request ${stat}`;
-              message = `Purchase Request: ${this.prnumber} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
-              status = stat;
-            }
-
-            this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, this.prnumber).subscribe(data => {
-              //this.websock.status_message = devicedeveui;
-              console.log(data);
-            });
-
-            this.websock.sendNotif(message);
-            this.websock.updateNotification();
-            this.websock.updatePRTable();
-
-          } else {
-            this.statusColor = 'statusFailed';
-          }
-          config.panelClass = [this.statusColor];
-          this.snackBar.open(`${stat} ${result.status}`, 'Close', config);
-        });
+        this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks);
 
       } else {
         return;

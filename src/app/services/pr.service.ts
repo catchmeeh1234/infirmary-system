@@ -13,8 +13,12 @@ export class PrService {
   public dataSourcePRTable:any;
 
   public prnumber:string;
+  public message:string;
+  private statusColor:string;
 
-  constructor(private http:HttpClient, private sessionStorageService:SessionStorageService) { }
+  constructor(private http:HttpClient,
+              private sessionStorageService:SessionStorageService,
+  ) { }
 
   loadPR() {
     let div = this.sessionStorageService.getSession('division');
@@ -97,7 +101,7 @@ export class PrService {
     return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
   }
 
-  updatePrRequest(prDetails:any) {
+  updatePrRequestAPI(prDetails:any) {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }
   loadPrAndItems(prno:string) {
