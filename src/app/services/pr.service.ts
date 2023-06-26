@@ -109,6 +109,10 @@ export class PrService {
     return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
   }
 
+  getPrLabelStatus() {
+    return this.http.get(API_URL + `/viewPrLabelStatus.php`, {responseType: 'json'});
+  }
+
   updatePrRequestAPI(prDetails:any) {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }

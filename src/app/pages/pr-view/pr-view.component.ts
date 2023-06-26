@@ -29,6 +29,12 @@ export class PrViewComponent implements OnInit {
   public isShowCancelled:boolean;
   public statusColor:string;
 
+  public division_name:any;
+
+  selectedFilter: string = 'All';
+
+
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public document:PrService,
@@ -43,7 +49,6 @@ export class PrViewComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    var prdivision = localStorage.getItem("division");
     this.division = this.sessionStorageService.getSession("division").toUpperCase();
     this.role = this.sessionStorageService.getSession("access");
     console.log(this.role);
@@ -60,12 +65,6 @@ export class PrViewComponent implements OnInit {
       return;
     }
     this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
-  }
-
-   //table controls
-   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.document.dataSourcePRTable.filter = filterValue.trim();
   }
 
   onPrintPr(prno) {
@@ -116,4 +115,5 @@ export class PrViewComponent implements OnInit {
     });
 
   }
+
 }

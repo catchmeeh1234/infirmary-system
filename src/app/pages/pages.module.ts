@@ -54,6 +54,7 @@ import { PrEditComponent } from './modals/pr-edit/pr-edit.component';
 import {MatSelectModule} from '@angular/material/select';
 import { ConfirmationGenericComponent } from './modals/confirmation-generic/confirmation-generic.component';
 import { PrHistoryComponent } from './modals/pr-history/pr-history.component';
+import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.component';
 
 @NgModule({
     imports: [
@@ -108,7 +109,8 @@ import { PrHistoryComponent } from './modals/pr-history/pr-history.component';
         ModalComponent,
         PrEditComponent,
         ConfirmationGenericComponent,
-        PrHistoryComponent
+        PrHistoryComponent,
+        PrFilterButtonComponent
     ],
     exports: [
     ],

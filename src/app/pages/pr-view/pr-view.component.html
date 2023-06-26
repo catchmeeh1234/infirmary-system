@@ -4,15 +4,10 @@
 		<mat-toolbar class="table-header">
 			<h1 class="mat-headline center-align" >Purchase Requests Details</h1>
 		</mat-toolbar>
-    <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 20px;padding-bottom: 10px;">
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Customer Name" #input>
-      </mat-form-field>
-    </div>
+    <app-pr-filter-button></app-pr-filter-button>
 		<div class="table-container">
 
-            <mat-table #table [dataSource]="document.dataSourcePRTable">
+      <mat-table #table [dataSource]="document.dataSourcePRTable">
 
 				<!--- Note that these columns can be defined in any order.
 				The actual rendered columns are set as a property on the row definition" -->
@@ -29,7 +24,7 @@
 				<!-- Progress Column -->
 				<ng-container matColumnDef="PRNo">
 					<mat-header-cell *matHeaderCellDef> PR No. </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_no}} </mat-cell>
+					<mat-cell *matCellDef="let row" (click)="viewpritems(row.pr_no)"> {{row.pr_no}} </mat-cell>
 				</ng-container>
 
 				<!-- Name Column -->
@@ -95,8 +90,10 @@
 
 				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
 			</mat-table>
+      <div *ngIf="!document.dataSourcePRTable || document.dataSourcePRTable.data.length === 0" fxLayout="row" fxLayoutAlign="center center">
+        <p>No Purchase Request found.</p>
+      </div>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons
         aria-label=""
