@@ -21,21 +21,20 @@ export class PrFilterButtonComponent implements OnInit {
   public pr_label_statuses:any;
   public pr_requestors:any;
 
-  @HostListener('document:click', ['$event', '$event.target'])
-  onClick(event: MouseEvent, targetElement: HTMLElement) {
-    if (!targetElement) {
-       return;
-    }
+  // @HostListener('document:click', ['$event', '$event.target'])
+  // onClick(event: MouseEvent, targetElement: HTMLElement) {
+  //   if (!targetElement) {
+  //      return;
+  //   }
 
 
-    //const clickedInside = this.elementRef.nativeElement.contains(targetElement);
-    //console.log(clickedInside);
+  //   //const clickedInside = this.elementRef.nativeElement.contains(targetElement);
+  //   //console.log(clickedInside);
 
-    // if (!clickedInside) {
-    //     this.isOpen = false;
-    // }
-  }
-
+  //   // if (!clickedInside) {
+  //   //     this.isOpen = false;
+  //   // }
+  // }
   constructor(private elementRef: ElementRef, private pr:PrService, private emp:EmployeeService, private dateFormat:DateFormatService) {
 
   }
@@ -55,8 +54,6 @@ export class PrFilterButtonComponent implements OnInit {
         );
       };
     }, 500);
-
-
   }
 
   onLoadFilterOptions() {

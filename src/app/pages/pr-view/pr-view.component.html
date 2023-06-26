@@ -5,7 +5,7 @@
 			<h1 class="mat-headline center-align" >Purchase Requests Details</h1>
 		</mat-toolbar>
     <app-pr-filter-button></app-pr-filter-button>
-		<div class="table-container">
+		<div class="table-container" (click)="closeFilterOptions()">
 
       <mat-table #table [dataSource]="document.dataSourcePRTable">
 

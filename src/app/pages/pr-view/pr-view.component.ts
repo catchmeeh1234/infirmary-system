@@ -8,6 +8,7 @@ import { ConfirmationComponent } from '../modals/confirmation/confirmation.compo
 import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
+import { PrFilterButtonComponent } from '../pr-filter-button/pr-filter-button.component';
 
 @Component({
   selector: 'app-pr-view',
@@ -33,9 +34,8 @@ export class PrViewComponent implements OnInit {
 
   selectedFilter: string = 'All';
 
-
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PrFilterButtonComponent) prFilterBox!: PrFilterButtonComponent;
 
   constructor(public document:PrService,
               private router:Router,
@@ -114,6 +114,10 @@ export class PrViewComponent implements OnInit {
       }
     });
 
+  }
+
+  closeFilterOptions() {
+    this.prFilterBox.isOpen = false;
   }
 
 }
