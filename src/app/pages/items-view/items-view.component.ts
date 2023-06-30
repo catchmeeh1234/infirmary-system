@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { PrService } from '../../services/pr.service';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
@@ -16,7 +16,7 @@ import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
   styleUrls: ['./items-view.component.scss']
 })
 
-export class ItemsViewComponent implements OnInit, OnChanges {
+export class ItemsViewComponent implements OnInit {
   public dataSource:any;
   public dataSource1:any;
   //public displayedColumns = ['PRNo', 'PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost', 'Actions'];
@@ -29,6 +29,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   public current_status:string;
   public prnumber:string;
   public timestamp:string;
+  public requestor:string;
 
   public prequeststatus:string;
   public prequestdivision:string;
@@ -54,11 +55,13 @@ export class ItemsViewComponent implements OnInit, OnChanges {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private document:PrService,
+  constructor(
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private document:PrService,
               private router:Router,
               public dialog: MatDialog,
               private sessionStorageService:SessionStorageService,
-              private prUpdateStatus:PrUpdateStatusService,
+              private prUpdateStatus:PrUpdateStatusService
   ) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
@@ -66,18 +69,18 @@ export class ItemsViewComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    const url = new URL(window.location.href);
-    const prnum = url.searchParams.get("prnum");
-
+    //const url = new URL(window.location.href);
+    //const prnum = url.searchParams.get("prnum");
+    const prnum = this.data.prNumber;
     this.loadPRDetails(prnum);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.prnumber) {
-      // Perform actions when myVariable changes
-      console.log('myVariable changed:');
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes.prnumber) {
+  //     // Perform actions when myVariable changes
+  //     console.log('myVariable changed:');
+  //   }
+  // }
 
   checkApproveDisapproveButton() {
     if (this.access === 'Encoder') {
@@ -133,6 +136,8 @@ export class ItemsViewComponent implements OnInit, OnChanges {
       this.remarks = result[0].remarks;
       this.current_status = result[0].pr_status;
       this.timestamp = result[0].timestamp;
+      this.requestor = result[0].pr_requestor;
+
       setTimeout(() => {
         this.checkApproveDisapproveButton();
         this.checkCancelButton();
@@ -238,7 +243,7 @@ export class ItemsViewComponent implements OnInit, OnChanges {
     const dialogRef = this.dialog.open(PrHistoryComponent, {
       panelClass: ['no-padding'],
       data: {
-        containerWidth: '500px',
+        containerWidth: '700px',
         headerText: 'Pr History',
         prnumber: prno,
       }

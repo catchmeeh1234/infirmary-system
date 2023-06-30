@@ -3,6 +3,8 @@ import { NotificationsService } from '../../services/notifications.service';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { PrService } from '../../services/pr.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemsViewComponent } from '../../pages/items-view/items-view.component';
 
 @Component({
   selector: 'cdk-toolbar-notification',
@@ -29,11 +31,12 @@ export class ToolbarNotificationComponent implements OnInit {
     }
 
   	constructor(
+      public dialog: MatDialog,
       private elementRef: ElementRef,
       public notif: NotificationsService,
       private sessionStorageService: SessionStorageService,
       private router:Router,
-      private pr: PrService
+      private pr: PrService,
     ) { }
 
   	ngOnInit() {
@@ -45,17 +48,25 @@ export class ToolbarNotificationComponent implements OnInit {
   	}
 
   	select(selectedPrNO:string) {
-      const queryParams = { prnum: selectedPrNO };
-      const navigationExtras: NavigationExtras = {
-        queryParams,
-        queryParamsHandling: 'merge' // 'merge' will merge the new parameters with the existing ones
-      };
-
-      this.router.navigateByUrl('/auth/pages/viewPR', { skipLocationChange: true }).then(() => {
-        this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
-      });
-
       this.isOpen = false;
+
+      // const queryParams = { prnum: selectedPrNO };
+      // const navigationExtras: NavigationExtras = {
+      //   queryParams,
+      //   queryParamsHandling: 'merge' // 'merge' will merge the new parameters with the existing ones
+      // };
+
+      this.router.navigateByUrl('/auth/pages/viewPR', { skipLocationChange: true });
+      //   this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
+      // });
+      const dialogRef = this.dialog.open(ItemsViewComponent, {
+        panelClass: ['no-padding'],
+        data: {
+          containerWidth: '1000px',
+          headerText: `Pr Number: ${selectedPrNO}`,
+          prNumber: selectedPrNO,
+        }
+      });
 
   	}
 

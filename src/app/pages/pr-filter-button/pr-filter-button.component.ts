@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { PrService } from '../../services/pr.service';
 import { EmployeeService } from '../../services/employee.service';
 import { DateFormatService } from '../../services/date-format.service';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-pr-filter-button',
@@ -35,7 +36,7 @@ export class PrFilterButtonComponent implements OnInit {
   //   //     this.isOpen = false;
   //   // }
   // }
-  constructor(private elementRef: ElementRef, private pr:PrService, private emp:EmployeeService, private dateFormat:DateFormatService) {
+  constructor(private elementRef: ElementRef, private pr:PrService, private emp:EmployeeService, private dateFormat:DateFormatService, private sessionStorageService:SessionStorageService) {
 
   }
 
@@ -67,7 +68,7 @@ export class PrFilterButtonComponent implements OnInit {
       this.pr_label_statuses = data;
     });
 
-    this.emp.getEmp()
+    this.emp.getEmp(this.sessionStorageService.getSession("division"))
     .subscribe(data =>{
       this.pr_requestors = data;
     });

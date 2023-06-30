@@ -14,6 +14,10 @@
 					<mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
 					<mat-cell *matCellDef="let row"> {{row.pr_datetime | date: 'MM/dd/yyyy hh:mm a'}} </mat-cell>
 				</ng-container>
+        <!-- <ng-container matColumnDef="By">
+					<mat-header-cell *matHeaderCellDef>Update By</mat-header-cell>
+					<mat-cell *matCellDef="let row"> {{ row.pr_updatedBy }} </mat-cell>
+				</ng-container> -->
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>

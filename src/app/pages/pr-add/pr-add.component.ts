@@ -11,7 +11,8 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { NotificationsService } from '../../services/notifications.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { EmployeeService } from '../../services/employee.service';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemsViewComponent } from '../items-view/items-view.component';
 //import { StatusMessageComponent } from '../status-message/status-message.component';
 
 @Component({
@@ -49,7 +50,7 @@ export class PrAddComponent implements OnInit {
     public websock: WebSocketService,
     private employee: EmployeeService,
     private snackBar: MatSnackBar,
-    private router:Router
+    private dialog:MatDialog
   ) {
     this.productForm = this.fb.group({
       quantities: this.fb.array([]) ,
@@ -84,7 +85,7 @@ export class PrAddComponent implements OnInit {
 
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
-    this.getAllData();
+    this.getAllData(this.sessionStorageService.getSession('division'));
   }
 
 
@@ -197,7 +198,7 @@ export class PrAddComponent implements OnInit {
       return;
     }
 
-    var username = localStorage.getItem('fullname')
+    var username = localStorage.getItem('fullname');
     // if (prno.value == "" || purpose.value == "" || requestor.value == "" || designation.value == "") {
     //   return;
     // }
@@ -222,7 +223,19 @@ export class PrAddComponent implements OnInit {
         this.websock.sendNotif(message);
         this.websock.updateNotification();
         this.clearAddPRForm();
-        this.viewpritems(prno.value);
+
+        if (prno.value == null) {
+          return;
+        }
+
+        const dialogRef = this.dialog.open(ItemsViewComponent, {
+          panelClass: ['no-padding'],
+          data: {
+            containerWidth: '1000px',
+            headerText: `Pr Number: ${prno.value}`,
+            prNumber: prno.value,
+          }
+        });
       }
     });
 
@@ -235,16 +248,9 @@ export class PrAddComponent implements OnInit {
       prstatus.value = "For Approve";*/
   }
 
-  viewpritems(selectedPrNO) {
-    if (selectedPrNO == null) {
-      return;
-    }
-    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
-  }
-
-  async getAllData() {
+  async getAllData(division:string) {
       try {
-        await this.employee.getEmp().toPromise().then((res:any) => {
+        await this.employee.getEmp(division).toPromise().then((res:any) => {
           this.options = res;
 
           this.filteredOptions = this.addForm.get("requestor").valueChanges.pipe(

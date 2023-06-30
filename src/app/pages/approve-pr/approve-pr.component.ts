@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
+import { WebSocketService } from '../../services/web-socket.service';
 
 @Component({
   selector: 'app-approve-pr',
@@ -27,7 +28,8 @@ export class ApprovePrComponent implements OnInit {
   constructor(
     public document:PrService,
     public dialog:MatDialog,
-    private prUpdateStatus:PrUpdateStatusService
+    private prUpdateStatus:PrUpdateStatusService,
+    private websock:WebSocketService
   ) { }
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class ApprovePrComponent implements OnInit {
 
       if (result.confirm === 'yes') {
         this.prUpdateStatus.updatePrRequest(selectedPrNO, selectedStatus, stat, result.remarks);
-
+        this.websock.updateApprovePR();
       } else {
         return;
       }

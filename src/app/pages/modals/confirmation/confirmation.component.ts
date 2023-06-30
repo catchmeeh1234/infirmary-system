@@ -5,7 +5,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SessionStorageService } from '../../../services/session-storage.service';
 import { NotificationsService } from '../../../services/notifications.service';
 import { WebSocketService } from '../../../services/web-socket.service';
-import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-confirmation',

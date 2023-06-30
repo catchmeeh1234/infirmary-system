@@ -22,8 +22,24 @@ export class PrHistoryComponent implements OnInit {
     this.pr.prHistory(this.data.prnumber)
     .subscribe(data => {
       let result:any = data;
-      this.pr_history = result;
+      //this.pr_history = result;
+      console.log(result);
+
+      for (const prhistory of result) {
+        console.log(prhistory.pr_status);
+        if (prhistory.pr_status === "For DM Approval") {
+          prhistory.pr_status = "PR Created";
+        } else if (prhistory.pr_status === "For Budget Checking") {
+          prhistory.pr_status = "Approved by DM";
+        } else if (prhistory.pr_status === "For Cash Allocation") {
+          prhistory.pr_status = "Approved in Budge Checking";
+        } else if (prhistory.pr_status === "For Printing") {
+          prhistory.pr_status = "Approved in Cash Allocation";
+        }
+      }
+
       this.pr_history = new MatTableDataSource(result);
+
     });
   }
 

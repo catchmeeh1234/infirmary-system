@@ -16,7 +16,7 @@
 				<ng-container matColumnDef="tagAsApprove">
 					<mat-header-cell *matHeaderCellDef></mat-header-cell>
 					<mat-cell *matCellDef="let row">
-              <mat-icon *ngIf="row.pr_status ==='Approve by GM'">check</mat-icon>
+              <mat-icon *ngIf="row.pr_status ==='Approved'">check</mat-icon>
               <mat-icon *ngIf="row.pr_status.includes('Disapprove')">close</mat-icon>
           </mat-cell>
 				</ng-container>
@@ -70,19 +70,19 @@
                 <button matTooltip="View PR Items" mat-icon-button (click)="viewpritems(row.pr_no)">
                     <mat-icon>remove_red_eye</mat-icon>
                 </button>
-                <button *ngIf="row.pr_status === 'For DM Approval' && role === 'Encoder'" matTooltip="Edit PR" mat-icon-button (click)="editPr(row.pr_no)">
+                <button *ngIf="row.pr_status === 'For DM Approval' && (role === 'Encoder' || role === 'Final Approver')" matTooltip="Edit PR" mat-icon-button (click)="editPr(row.pr_no)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button *ngIf="(row.pr_status !== 'Cancelled' && !row.pr_status.includes('Disapprove') && row.pr_status !== 'For Printing') && role === 'Encoder' && division === row.pr_division" matTooltip="Cancel PR" mat-icon-button (click)="updatePR_Status(row.pr_no, row.pr_status, 'Cancelled', true)">
+                <button *ngIf="(row.pr_status !== 'Cancelled' && !row.pr_status.includes('Disapprove') && row.pr_status !== 'For Printing' && row.pr_status !== 'Approved' && row.pr_status !== 'Dispprove by GM') && (role === 'Encoder' || role === 'Final Approver') && division === row.pr_division" matTooltip="Cancel PR" mat-icon-button (click)="updatePR_Status(row.pr_no, row.pr_status, 'Cancelled', true)">
                   <mat-icon>cancel</mat-icon>
                 </button>
-                <button *ngIf="row.pr_status === 'For Printing'" mat-icon-button (click)="onPrintPr(row.pr_no)" matTooltip="Print">
+                <button *ngIf="row.pr_status === 'For Printing' || row.pr_status === 'Approved'" mat-icon-button (click)="onPrintPr(row.pr_no)" matTooltip="Print">
                   <mat-icon>print</mat-icon>
                 </button>
-                <button mat-icon-button *ngIf="row.pr_status === 'For Printing' && role === 'Encoder'" (click)="updatePR_Status(row.pr_no, row.pr_status, 'Disapprove by GM', true)" matTooltip="Tag as disapproved by GM">
+                <button mat-icon-button *ngIf="row.pr_status === 'For Printing' && role === 'Final Approver'" (click)="updatePR_Status(row.pr_no, row.pr_status, 'Disapprove by GM', true)" matTooltip="Tag as disapproved by GM">
                   <mat-icon>thumb_down</mat-icon>
                 </button>
-                <button mat-icon-button *ngIf="row.pr_status === 'For Printing' && role === 'Encoder'" (click)="updatePR_Status(row.pr_no, row.pr_status, 'Approve by GM', false)" matTooltip="Tag as approved by GM">
+                <button mat-icon-button *ngIf="row.pr_status === 'For Printing' && role === 'Final Approver'" (click)="updatePR_Status(row.pr_no, row.pr_status, 'Approved', false)" matTooltip="Tag as approved by GM">
                   <mat-icon>thumb_up</mat-icon>
                 </button>
           </mat-cell>

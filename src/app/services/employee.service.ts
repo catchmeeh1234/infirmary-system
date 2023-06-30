@@ -9,8 +9,8 @@ export class EmployeeService {
 
   constructor(private http:HttpClient) { }
 
-  getEmp() {
-    return this.http.get(API_URL + `/api/getEmp.php`, {responseType: 'json'});
+  getEmp(division:string) {
+    return this.http.get(API_URL + `/api/getEmp.php?division=${division}`, {responseType: 'json'});
   }
 
   selectEmployee(fullname) {

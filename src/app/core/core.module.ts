@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 // import {
-//     PerfectScrollbarModule, 
+//     PerfectScrollbarModule,
 //     PERFECT_SCROLLBAR_CONFIG,
 //     PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -26,7 +26,9 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatSelectModule} from '@angular/material/select';
 
 // const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 //     suppressScrollX: true
@@ -62,6 +64,9 @@ import { MatSliderModule } from '@angular/material/slider';
         MatTabsModule,
         MatSliderModule,
         MatProgressBarModule,
+        MatDialogModule,
+        MatTooltipModule,
+        MatSelectModule
     ],
 
 

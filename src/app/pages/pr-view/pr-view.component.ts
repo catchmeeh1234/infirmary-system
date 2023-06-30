@@ -9,6 +9,7 @@ import { PrEditComponent } from '../modals/pr-edit/pr-edit.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrFilterButtonComponent } from '../pr-filter-button/pr-filter-button.component';
+import { ItemsViewComponent } from '../items-view/items-view.component';
 
 @Component({
   selector: 'app-pr-view',
@@ -64,11 +65,21 @@ export class PrViewComponent implements OnInit {
     if (selectedPrNO == null) {
       return;
     }
-    this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
+
+    const dialogRef = this.dialog.open(ItemsViewComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '1000px',
+        headerText: `Pr Number: ${selectedPrNO}`,
+        prNumber: selectedPrNO,
+      }
+    });
+
+    //this.router.navigate(['/auth/pages/viewItems'], { queryParams: { prnum: selectedPrNO } });
   }
 
   onPrintPr(prno) {
-    window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${prno}`, '_blank')
+    window.open(`http://192.168.10.32:81/pr/index.php?prno=${prno}`, '_blank');
   }
 
   updatePR_Status(prno, pr_status, stat, remarks_visible:boolean) {

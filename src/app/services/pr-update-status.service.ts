@@ -73,7 +73,7 @@ export class PrUpdateStatusService {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
           status = stat;
-        } else if (stat === "Approve by GM") {
+        } else if (stat === "Approved") {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat}`;
           status = stat;

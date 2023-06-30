@@ -6,7 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EmployeeService } from '../../../services/employee.service';
 import {map, startWith} from 'rxjs/operators';
-import { ConfirmationGenericComponent } from '../confirmation-generic/confirmation-generic.component';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { SessionStorageService } from '../../../services/session-storage.service';
 
 @Component({
   selector: 'app-pr-edit',
@@ -33,7 +34,8 @@ export class PrEditComponent implements OnInit {
     private formBuilder:FormBuilder,
     private dialogRef:MatDialogRef<PrEditComponent>,
     private employee:EmployeeService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private sessionStorageService:SessionStorageService
   ) {
   }
 
@@ -146,16 +148,20 @@ export class PrEditComponent implements OnInit {
 
   removeQuantity(row) {
 
-    const dialogRef = this.dialog.open(ConfirmationGenericComponent, {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
         containerWidth: '500px',
         headerText: 'Confirmation',
         message: 'Are you sure you want to remove this item?',
+        isRemarksVisible: false
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
       // Handle the result if needed
       if (result.confirm === 'yes') {
         const index = this.pr_items.indexOf(row);
@@ -221,7 +227,7 @@ export class PrEditComponent implements OnInit {
 
   async getAllData() {
     try {
-      await this.employee.getEmp().toPromise().then((res:any) => {
+      await this.employee.getEmp(this.sessionStorageService.getSession("division")).toPromise().then((res:any) => {
         this.options = res;
 
         this.filteredOptions = this.editForm.get("requestor").valueChanges.pipe(
