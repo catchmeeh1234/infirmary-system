@@ -1,10 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PrService } from '../../../services/pr.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { SessionStorageService } from '../../../services/session-storage.service';
-import { NotificationsService } from '../../../services/notifications.service';
-import { WebSocketService } from '../../../services/web-socket.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -25,11 +21,7 @@ export class ConfirmationComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef:MatDialogRef<ConfirmationComponent>,
-    private pr: PrService,
     private snackBar: MatSnackBar,
-    private sessionStorageService: SessionStorageService,
-    private notif: NotificationsService,
-    private websock: WebSocketService
   ) { }
 
   ngOnInit(): void {

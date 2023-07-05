@@ -8,6 +8,7 @@ import { EmployeeService } from '../../../services/employee.service';
 import {map, startWith} from 'rxjs/operators';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { SessionStorageService } from '../../../services/session-storage.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-pr-edit',
@@ -35,7 +36,8 @@ export class PrEditComponent implements OnInit {
     private dialogRef:MatDialogRef<PrEditComponent>,
     private employee:EmployeeService,
     public dialog: MatDialog,
-    private sessionStorageService:SessionStorageService
+    private sessionStorageService:SessionStorageService,
+    private snackBar: MatSnackBar,
   ) {
   }
 
@@ -50,6 +52,7 @@ export class PrEditComponent implements OnInit {
       cancel_remarks: new FormControl('', [Validators.required]),
     });
 
+    this.editForm.get('pr_number')?.disable();
     this.editForm.get('designation')?.disable();
     this.editForm.get('division')?.disable();
 
@@ -195,6 +198,7 @@ export class PrEditComponent implements OnInit {
   onSavePR() {
     // console.log(this.editForm.value);
     // console.log(this.pr_items.length);
+    this.editForm.get('pr_number')?.enable();
     this.editForm.get('designation')?.enable();
     this.editForm.get('division')?.enable();
     this.pr.editPR(this.editForm.value, this.pr_items.length)
@@ -207,14 +211,20 @@ export class PrEditComponent implements OnInit {
           this.pr.dataSourcePRTable.data = res;
         }
 
+        this.editForm.get('pr_number')?.disable();
         this.editForm.get('designation')?.disable();
         this.editForm.get('division')?.disable();
 
         setTimeout(() => {
           this.dialogRef.close(this.editForm.get('pr_number')?.value);
+          const config: MatSnackBarConfig = {
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: ['style-snackbar-success']
+          };
+          this.snackBar.open('PR Updated Successfully', 'Dismiss', config);
         }, 1000);
       });
-
 
     });
   }

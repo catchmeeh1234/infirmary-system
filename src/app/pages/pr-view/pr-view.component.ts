@@ -17,7 +17,7 @@ import { ItemsViewComponent } from '../items-view/items-view.component';
   styleUrls: ['./pr-view.component.scss']
 })
 export class PrViewComponent implements OnInit {
-  public dataSource:any;
+  //public dataSource:any;
   public displayedColumns = ['tagAsApprove', 'PRNo', 'Date', 'Requestor', 'Designation', 'Division', 'Status', 'Actions'];
   public result:any;
   public arrayOfYears:any;

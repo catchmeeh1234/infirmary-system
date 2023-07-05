@@ -4,6 +4,7 @@ import { API_URL } from '../constants';
 import { observable } from 'rxjs';
 import { StringDecoder } from 'string_decoder';
 import { SessionStorageService } from './session-storage.service';
+import { Pr_details } from '../Types';
 
 @Injectable({
   providedIn: 'root'
