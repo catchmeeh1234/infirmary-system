@@ -24,6 +24,7 @@ export class DocumentService {
   }
 
   loadDocuments1(year:string) {
+    //return this.http.get(`http://192.168.10.57:92/api/documents.php?year=${year}`, {responseType: 'json'});
     return this.http.get(`http://192.168.10.57:92/api/documents.php?year=${year}`, {responseType: 'json'});
   }
 

@@ -9,6 +9,7 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
+import { API_URL } from '../../constants';
 
 @Component({
   selector: 'app-items-view',
@@ -192,7 +193,7 @@ export class ItemsViewComponent implements OnInit {
   }
 
   onPrintPr() {
-    window.open(`http://192.168.10.32:81/pr/index.php?prno=${this.prnumber}`, '_blank')
+    window.open(`${API_URL}/printing/index.php?prno=${this.prnumber}`, '_blank');
   }
 
   onUpdateApproveStatus(stat:string, is_remarks_visible:boolean) {

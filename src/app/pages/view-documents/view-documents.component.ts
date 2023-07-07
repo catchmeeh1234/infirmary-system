@@ -27,6 +27,7 @@ export class ViewDocumentsComponent implements OnInit {
   ngOnInit(): void {
     this.document.loadDocuments1(this.selectedYear)
     .subscribe(data => {
+      console.log(data);
       this.result = data;
       this.dataSource = new MatTableDataSource(this.result);
 

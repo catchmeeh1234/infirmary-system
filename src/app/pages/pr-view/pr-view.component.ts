@@ -10,6 +10,7 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrFilterButtonComponent } from '../pr-filter-button/pr-filter-button.component';
 import { ItemsViewComponent } from '../items-view/items-view.component';
+import { API_URL } from '../../constants';
 
 @Component({
   selector: 'app-pr-view',
@@ -78,7 +79,7 @@ export class PrViewComponent implements OnInit {
   }
 
   onPrintPr(prno) {
-    window.open(`http://192.168.10.32:81/pr/index.php?prno=${prno}`, '_blank');
+    window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
   }
 
   updatePR_Status(prno, pr_status, stat, remarks_visible:boolean) {
