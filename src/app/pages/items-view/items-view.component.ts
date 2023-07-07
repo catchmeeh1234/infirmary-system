@@ -192,7 +192,7 @@ export class ItemsViewComponent implements OnInit {
   }
 
   onPrintPr() {
-    window.open(`http://192.168.10.32:81/eprms/print2.php?prno=${this.prnumber}`, '_blank')
+    window.open(`http://192.168.10.32:81/pr/index.php?prno=${this.prnumber}`, '_blank')
   }
 
   onUpdateApproveStatus(stat:string, is_remarks_visible:boolean) {
@@ -232,6 +232,16 @@ export class ItemsViewComponent implements OnInit {
         this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks);
         setTimeout(() => {
           this.loadPRDetails(this.prnumber);
+
+          this.document.approvePr(this.division, this.access)
+          .subscribe(data => {
+            this.result = data;
+
+            this.document.dataSource = new MatTableDataSource(this.result);
+
+            this.document.dataSource.paginator = this.paginator;
+
+          });
         }, 500);
       } else {
         return;

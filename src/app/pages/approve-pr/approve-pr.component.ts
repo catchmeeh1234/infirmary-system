@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { WebSocketService } from '../../services/web-socket.service';
+import { ItemsViewComponent } from '../items-view/items-view.component';
 
 @Component({
   selector: 'app-approve-pr',
@@ -49,6 +50,21 @@ export class ApprovePrComponent implements OnInit {
     });
 
 
+  }
+
+  viewpritems(prno:string) {
+    if (prno == null) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ItemsViewComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '1000px',
+        headerText: `Pr Number: ${prno}`,
+        prNumber: prno,
+      }
+    });
   }
 
   onUpdateApproveStatus(selectedPrNO:string, selectedStatus:string, selectedDivision:string, stat:string) {

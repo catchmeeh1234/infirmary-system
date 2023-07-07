@@ -69,7 +69,6 @@ export class DashboardCrmComponent implements OnInit {
           const iteration = 100 / (result.length * 2);
           const divisionName:string = div.division_name;
           const division_color_code:string = div.division_color_code;
-          console.log(colorShadeIncrement);
           const lightenedColor = this.lightenColor(division_color_code, colorShadeIncrement); // Specify the desired lightening amount
           colorShadeIncrement += iteration;
           this.document.loadDocumentCounter(divisionName)

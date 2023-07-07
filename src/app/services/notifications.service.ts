@@ -21,6 +21,8 @@ export class NotificationsService {
       status = "For Cash Allocation";
     } else if (role === "Encoder") {
       status = "Encoder";
+    } else if (role === "Final Approver") {
+      status = "Final Approver";
     }
     return this.http.get(`${API_URL}/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
   }

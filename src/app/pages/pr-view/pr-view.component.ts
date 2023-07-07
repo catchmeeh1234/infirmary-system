@@ -52,7 +52,6 @@ export class PrViewComponent implements OnInit {
   ngOnInit(): void {
     this.division = this.sessionStorageService.getSession("division").toUpperCase();
     this.role = this.sessionStorageService.getSession("access");
-    console.log(this.role);
     this.document.loadPR()
     .subscribe(data => {
       this.result = data;

@@ -13,7 +13,7 @@
         <mat-table #table *ngIf="document.dataSource" [dataSource]="document.dataSource" class="table-approve">
 				<ng-container matColumnDef="PRNo">
 					<mat-header-cell *matHeaderCellDef> PR No. </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_no}} </mat-cell>
+					<mat-cell *matCellDef="let row" (click)="viewpritems(row.pr_no)"> {{row.pr_no}} </mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="PRDate">

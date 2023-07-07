@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LineGraphComponent implements OnInit {
 
   public Total:any;
-  
+
   constructor(private document:PrService) { }
 
   ngOnInit() {
@@ -23,12 +23,12 @@ export class LineGraphComponent implements OnInit {
     .subscribe(data => {
       let result:any = data;
       this.Total = result;
-      console.log(this.Total)
+      //console.log(this.Total)
     });
   }
-  
+
   createLineChart() {
-    
+
     let totaldata = [];
     for (const div of this.Total) {
         const prmonth:string = div.month;

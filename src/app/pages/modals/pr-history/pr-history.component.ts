@@ -23,10 +23,9 @@ export class PrHistoryComponent implements OnInit {
     .subscribe(data => {
       let result:any = data;
       //this.pr_history = result;
-      console.log(result);
+      //console.log(result);
 
       for (const prhistory of result) {
-        console.log(prhistory.pr_status);
         if (prhistory.pr_status === "For DM Approval") {
           prhistory.pr_status = "PR Created";
         } else if (prhistory.pr_status === "For Budget Checking") {
