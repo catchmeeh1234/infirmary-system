@@ -8,7 +8,7 @@
 @import '../app/dashboard-widget/round-progressbar/round-progressbar.component.scss';
 @import '../app/dashboard-widget/sales-list/sales-list.component.scss';
 
-//mat.$light-theme-background-palette:(
+// mat.$light-theme-background-palette:(
 //  status-bar:map_get(mat.$grey-palette, 300),
 //  app-bar:map_get(mat.$grey-palette, 100),
 //  background: map_get(mat.$indigo-palette, 50),
@@ -23,7 +23,7 @@
 //  disabled-button-toggle: map_get(mat.$grey-palette, 200),
 //  unselected-chip: map_get(mat.$grey-palette, 300),
 //  disabled-list-option: map_get(mat.$grey-palette, 200),
-//);
+// );
 
 @include mat.core();
 
@@ -36,13 +36,32 @@ $warn    : mat.$red-palette;
 $primary-app-primary: mat.define-palette($primary , 400);
 $primary-app-accent:  mat.define-palette($accent , 900);
 $primary-app-warn:    mat.define-palette($warn );
-$cdk-theme:   mat.define-light-theme($primary-app-primary, $primary-app-accent,$primary-app-warn);
+
+$dark-primary: mat.define-palette(mat.$blue-palette, 400);
+$dark-accent: mat.define-palette(mat.$amber-palette, 900);
+$dark-warn: mat.define-palette(mat.$deep-orange-palette);
+
+$cdk-theme:   mat.define-light-theme(
+  $primary-app-primary,
+  $primary-app-accent,
+  $primary-app-warn
+);
+
+$dark-theme: mat.define-dark-theme(
+  $dark-primary,
+  $dark-accent,
+  $dark-warn
+);
 
 cdk-sidemenu{
     $sidemenu-app-primary: mat.define-palette($primary , 400);
     $sidemenu-app-accent:  mat.define-palette($accent , 900);
     $sidemenu-app-warn:    mat.define-palette($warn );
-    $cdk-sidemenu-theme:   mat.define-dark-theme($sidemenu-app-primary, $sidemenu-app-accent,$sidemenu-app-warn);
+    $cdk-sidemenu-theme:   mat.define-dark-theme(
+      $sidemenu-app-primary,
+      $sidemenu-app-accent,
+      $sidemenu-app-warn
+    );
     @include mat.list-theme($cdk-sidemenu-theme);
 }
 
@@ -56,7 +75,11 @@ cdk-dashcard {
     $dashcard-primary: mat.define-palette($primary);
     $dashcard-accent:  mat.define-palette($accent);
     $dashcard-warn:    mat.define-palette($warn);
-    $dashcard-theme:   mat.define-dark-theme($dashcard-primary, $dashcard-accent,$dashcard-warn);
+    $dashcard-theme:   mat.define-dark-theme(
+      $dashcard-primary,
+      $dashcard-accent
+      ,$dashcard-warn
+    );
     @include dashcard($dashcard-theme);
 }
 
@@ -64,7 +87,11 @@ cdk-profile-card{
   $dashboard-profile-primary: mat.define-palette($primary , 400);
     $dashboard-profile-accent:  mat.define-palette($accent , 900);
     $dashboard-profile-warn:    mat.define-palette($warn );
-    $cdk-dashboard-profile-theme:   mat.define-dark-theme($dashboard-profile-primary, $dashboard-profile-accent,$dashboard-profile-warn);
+    $cdk-dashboard-profile-theme:   mat.define-dark-theme(
+      $dashboard-profile-primary,
+      $dashboard-profile-accent,
+      $dashboard-profile-warn
+    );
     @include dashboard-profile($cdk-dashboard-profile-theme);
     @include mat.tabs-theme($cdk-dashboard-profile-theme);
 }
@@ -72,6 +99,7 @@ cdk-profile-card{
 @include auth($cdk-theme);
 @include round-progressbar($cdk-theme);
 @include sales-list($cdk-theme);
+
 
 html {
   height:100%;
@@ -180,89 +208,3 @@ body{
     transform: scale(1.0);
   }
 }
-
-.table-container {
-  position: relative;
-  margin-top:0px;
-  }
-  .table-container .mat-table {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-  }
-  .table-container .mat-table .mat-header-row {
-  // position: absolute;
-  // top: -50px;
-  // left: 0px;
-  // right: 18px;
-  background: #fff;
-  }
-  .table-header {
-    background-color: #327ebd;
-    color: white;
-    padding: 0 5px;
-  }
-  .table-container {
-    padding: 5px 15px 15px 15px;
-  }
-  .table-component-holder {
-    border: 1px solid #327ebd;
-    background-color: white;
-  }
-
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-    padding: 10px 0px 10px 0px;
-  }
-
-  .zoneDropDown {
-    width: 150px;
-    margin-right: 10px;
-  }
-
-  snack-bar-container > div > div > simple-snack-bar > div > button > span.mat-button-wrapper {
-    color: #fff; /* Replace with your desired font color */
-  }
-  .style-snackbar-error {
-    background-color: red !important;
-    color: #fff;
-  }
-  .style-snackbar-success {
-    background-color: green !important;
-    color: #fff;
-  }
-
-  .no-style-btn {
-    all: unset;
-    cursor: pointer;
-  }
-  .no-style-btn:hover {
-    color: #ccc;
-  }
-
-  .no-padding .mat-dialog-container {
-    padding: 0;
-    //width: 1000px;
-    height: auto;
-    box-shadow: none !important;
-    margin-top: 4em;
-  }
-
-  .statusFailed {
-    color: white;
-    font-size: 12px;
-    margin-bottom: 10px;
-    background-color: red;
-    padding: 14px 20px;
-  }
-
-  .statusSuccess {
-    color: white;
-    font-size: 12px;
-    margin-bottom: 10px;
-    background-color: green;
-    padding: 14px 20px;
-  }
-  snack-bar-container > div > div > simple-snack-bar > div > button > span.mat-button-wrapper {
-    color: #fff; /* Replace with your desired font color */
-  }

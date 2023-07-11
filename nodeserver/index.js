@@ -1,5 +1,5 @@
 //const ip = '192.168.10.37'; // replace with your desired IP address
-const port = 4302; // replace with your desired port number
+const port = 3002; // replace with your desired port number
 
 
 //const http = require('http').createServer();
