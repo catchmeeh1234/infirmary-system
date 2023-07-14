@@ -71,10 +71,10 @@ export class WebSocketService {
     });
 
     this.socket.on('updateApprovePR', (data: any) => {
-      //let access = this.sessionStorageService.getSession('access');
-      //let div = this.sessionStorageService.getSession('division');
+      let access = this.sessionStorageService.getSession('access');
+      let div = this.sessionStorageService.getSession('division');
 
-      this.pr.approvePr(this.division, this.access)
+      this.pr.approvePr(div, access)
       .subscribe(res => {
         let result:any = res;
         if (this.pr.dataSource !== undefined && this.pr.dataSource !== null) {
