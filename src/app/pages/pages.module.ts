@@ -42,6 +42,7 @@ import { ApprovePrComponent } from './approve-pr/approve-pr.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SampleCompComponent } from './sample-comp/sample-comp.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 // Import the required ngx-bootstrap modules and components here
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -55,6 +56,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ConfirmationGenericComponent } from './modals/confirmation-generic/confirmation-generic.component';
 import { PrHistoryComponent } from './modals/pr-history/pr-history.component';
 import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.component';
+import { AccountViewComponent } from './accounts/account-view/account-view.component';
+import { UserAccountViewComponent } from './modals/user-account-view/user-account-view.component';
 
 @NgModule({
     imports: [
@@ -92,7 +95,8 @@ import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.com
         AlertModule.forRoot(),
         BsDropdownModule.forRoot(),
         MatDialogModule,
-        MatSelectModule
+        MatSelectModule,
+        MatSlideToggleModule
       ],
     declarations: [
         ContactComponent,
@@ -110,7 +114,9 @@ import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.com
         PrEditComponent,
         ConfirmationGenericComponent,
         PrHistoryComponent,
-        PrFilterButtonComponent
+        PrFilterButtonComponent,
+        AccountViewComponent,
+        UserAccountViewComponent
     ],
     exports: [
     ],

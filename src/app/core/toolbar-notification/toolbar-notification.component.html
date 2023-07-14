@@ -1,4 +1,4 @@
-<div class="toolbar-notification-container">
+<div class="toolbar-notification-container" [class.alternative]="isDarkTheme">
 	<button mat-icon-button (click)="isOpen = !isOpen;toggleTheme('indigo-pink')" [ngClass]="[cssPrefix+'-btn']" [class.open]="isOpen">
     	<mat-icon>notifications_none</mat-icon>
     	<span class="badge" *ngIf="notif.notificationContent && notif.notificationContent.length !== 0">{{ notif.notificationContent.length }}</span>

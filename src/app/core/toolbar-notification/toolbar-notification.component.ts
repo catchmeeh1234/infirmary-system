@@ -18,7 +18,7 @@ export class ToolbarNotificationComponent implements OnInit {
   isOpen: boolean = false;
   @Input() notifications = [];
 
-  isDarkTheme = false;
+  public isDarkTheme = false;
 
   private division = this.sessionStorageService.getSession('division');
   private role = this.sessionStorageService.getSession('access');
@@ -54,7 +54,8 @@ export class ToolbarNotificationComponent implements OnInit {
   	}
 
     toggleTheme(ThemeName) {
-      // this.isDarkTheme = !this.isDarkTheme;
+
+      this.isDarkTheme = !this.isDarkTheme;
       // const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
 
       // if (this.isDarkTheme) {

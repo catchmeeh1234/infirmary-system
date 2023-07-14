@@ -29,7 +29,7 @@ export class ItemsViewComponent implements OnInit {
   public remarks:string;
   public current_status:string;
   public prnumber:string;
-  public timestamp:string;
+  public dateCreated:string;
   public requestor:string;
 
   public prequeststatus:string;
@@ -136,7 +136,7 @@ export class ItemsViewComponent implements OnInit {
       this.purpose = result[0].pr_purpose;
       this.remarks = result[0].remarks;
       this.current_status = result[0].pr_status;
-      this.timestamp = result[0].timestamp;
+      this.dateCreated = result[0].pr_dateCreated;
       this.requestor = result[0].pr_requestor;
 
       setTimeout(() => {
@@ -230,7 +230,7 @@ export class ItemsViewComponent implements OnInit {
       // Handle the result if needed
       if (result.confirm === 'yes') {
         this.isBtnApproval = true;
-        this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks);
+        this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks, this.prequestdivision);
         setTimeout(() => {
           this.loadPRDetails(this.prnumber);
 

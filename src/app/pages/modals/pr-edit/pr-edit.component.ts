@@ -249,6 +249,6 @@ export class PrEditComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
-}
+  }
 
 }

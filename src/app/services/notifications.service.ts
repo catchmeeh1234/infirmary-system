@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL, domain } from '../constants';
+import { SessionStorageService } from './session-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class NotificationsService {
   public notificationCounter: number = 0;
   public notificationContent:any = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private sessionStorageService:SessionStorageService) { }
 
   viewNotifications(division, role) {
     let status:string;
@@ -40,15 +41,26 @@ export class NotificationsService {
   }
 
   createDesktopNotification(message, icon) {
+
     const options = {
       body: message,
       icon: icon
     };
-
     const notification = new Notification('New Message', options );
+
     notification.onclick = function() {
       window.open(domain);
       //notification.close();
     };
+
+  }
+
+  createEmailNotification(prno, division, status) {
+    let params = new FormData();
+    params.append('prno', prno);
+    params.append('division', division);
+    params.append('status', status);
+
+    //return this.http.post(`${API_URL}/email/mail.php`, params, {responseType: 'json'});
   }
 }

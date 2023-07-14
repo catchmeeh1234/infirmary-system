@@ -98,7 +98,7 @@ export class ApprovePrComponent implements OnInit {
       }
 
       if (result.confirm === 'yes') {
-        this.prUpdateStatus.updatePrRequest(selectedPrNO, selectedStatus, stat, result.remarks);
+        this.prUpdateStatus.updatePrRequest(selectedPrNO, selectedStatus, stat, result.remarks, selectedDivision);
         this.websock.updateApprovePR();
       } else {
         return;

@@ -18,7 +18,6 @@ import { API_URL } from '../../constants';
   styleUrls: ['./pr-view.component.scss']
 })
 export class PrViewComponent implements OnInit {
-  //public dataSource:any;
   public displayedColumns = ['tagAsApprove', 'PRNo', 'Date', 'Requestor', 'Designation', 'Division', 'Status', 'Actions'];
   public result:any;
   public arrayOfYears:any;
@@ -82,7 +81,7 @@ export class PrViewComponent implements OnInit {
     window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
   }
 
-  updatePR_Status(prno, pr_status, stat, remarks_visible:boolean) {
+  updatePR_Status(prno, pr_status, stat, remarks_visible:boolean, pr_division:string) {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
@@ -101,7 +100,7 @@ export class PrViewComponent implements OnInit {
       }
 
       if (result.confirm === 'yes') {
-        this.prUpdateStatus.updatePrRequest(prno, pr_status, stat, result.remarks);
+        this.prUpdateStatus.updatePrRequest(prno, pr_status, stat, result.remarks, pr_division);
       } else {
         return;
       }

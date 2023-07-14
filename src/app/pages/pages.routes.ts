@@ -8,7 +8,7 @@ import { PrViewComponent } from './pr-view/pr-view.component';
 import { PrAddComponent } from './pr-add/pr-add.component';
 import { ItemsViewComponent } from './items-view/items-view.component';
 import { ApprovePrComponent } from './approve-pr/approve-pr.component';
-import { SampleCompComponent } from './sample-comp/sample-comp.component';
+import { AccountViewComponent } from './accounts/account-view/account-view.component';
 
 const pagesRoutes: Routes = [
   	{ path: 'contact', component: ContactComponent ,data: { animation: 'contact' } },
@@ -19,7 +19,7 @@ const pagesRoutes: Routes = [
     { path: 'addPR', component: PrAddComponent ,data: { animation: 'addPR' }},
     { path: 'viewItems', component: ItemsViewComponent ,data: { animation: 'viewItems' }},
     { path: 'approvePr', component: ApprovePrComponent ,data: { animation: 'approvePr' }},
-    { path: 'samplecomp', component: SampleCompComponent ,data: { animation: 'samplecomp' }},
+    { path: 'viewAccounts', component: AccountViewComponent ,data: { animation: 'viewAccounts' }},
 
 ]
 @NgModule({

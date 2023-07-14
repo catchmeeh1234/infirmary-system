@@ -1,5 +1,7 @@
 @use 'sass:map';
 @use '~@angular/material' as mat;
+@import './palettes/green-palette.scss';
+
 @import '../app/auth/auth.component.scss';
 @import '../app/core/sidemenu/sidemenu.component.scss';
 @import '../app/core/sidemenu-item/sidemenu-item.component.scss';
@@ -28,8 +30,13 @@
 @include mat.core();
 
 $primary : mat.$indigo-palette;
+//$primary : mat.$green-palette;
 $accent  : mat.$orange-palette;
 $warn    : mat.$red-palette;
+
+  // $primary : mat.$green-palette;
+  // $accent  : mat.$blue-palette;
+  // $warn    : mat.$yellow-palette;
 
 
 
@@ -37,20 +44,10 @@ $primary-app-primary: mat.define-palette($primary , 400);
 $primary-app-accent:  mat.define-palette($accent , 900);
 $primary-app-warn:    mat.define-palette($warn );
 
-$dark-primary: mat.define-palette(mat.$blue-palette, 400);
-$dark-accent: mat.define-palette(mat.$amber-palette, 900);
-$dark-warn: mat.define-palette(mat.$deep-orange-palette);
-
 $cdk-theme:   mat.define-light-theme(
   $primary-app-primary,
   $primary-app-accent,
   $primary-app-warn
-);
-
-$dark-theme: mat.define-dark-theme(
-  $dark-primary,
-  $dark-accent,
-  $dark-warn
 );
 
 cdk-sidemenu{

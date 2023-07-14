@@ -17,6 +17,8 @@ export class WebSocketService {
   };
 
   public response:any;
+  public division = this.sessionStorageService.getSession('division');
+  public access = this.sessionStorageService.getSession('access');
 
   constructor(
     private sessionStorageService:SessionStorageService,
@@ -69,10 +71,10 @@ export class WebSocketService {
     });
 
     this.socket.on('updateApprovePR', (data: any) => {
-      let access = this.sessionStorageService.getSession('access');
-      let div = this.sessionStorageService.getSession('division');
+      //let access = this.sessionStorageService.getSession('access');
+      //let div = this.sessionStorageService.getSession('division');
 
-      this.pr.approvePr(div, access)
+      this.pr.approvePr(this.division, this.access)
       .subscribe(res => {
         let result:any = res;
         if (this.pr.dataSource !== undefined && this.pr.dataSource !== null) {
@@ -81,16 +83,25 @@ export class WebSocketService {
       });
     });
 
+
+    this.socket.on('email_send', (data: any) => {
+      this.notif.createEmailNotification(data.prno, data.division, data.status);
+    });
+
     this.socket.on('message', (data: any) => {
-      const pathToIcon = './assets/bell.png';
-      if (Notification.permission === 'granted') {
-        this.notif.createDesktopNotification(data, pathToIcon);
-      } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            this.notif.createDesktopNotification(data, pathToIcon);
-          }
-        });
+
+      if (data.notif_division === this.division) {
+        const pathToIcon = './assets/bell.png';
+
+        if (Notification.permission === 'granted') {
+          this.notif.createDesktopNotification(data.message, pathToIcon);
+        } else if (Notification.permission !== 'denied') {
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              this.notif.createDesktopNotification(data.message, pathToIcon);
+            }
+          });
+        }
       }
 
       this.pr.loadPRNo()
@@ -101,11 +112,9 @@ export class WebSocketService {
     });
 
     this.socket.on('notifications', (data: any) => {
-      // console.log(data);
-      // console.log(this.sessionStorageService.getSession('division'));
-      // console.log(this.sessionStorageService.getSession('access'));
-
-      this.notif.viewNotifications(this.sessionStorageService.getSession('division'), this.sessionStorageService.getSession('access'))
+      console.log(this.access);
+      console.log(this.division);
+      this.notif.viewNotifications(this.division, this.access)
       .subscribe(res => {
 
         let result:any = res;
@@ -155,6 +164,10 @@ export class WebSocketService {
 
   sendNotif(message) {
     return this.socket.emit('message', message);
+  }
+
+  sendEmailNotif(email_details) {
+    return this.socket.emit('email_send', email_details);
   }
 
   updatePRTable() {

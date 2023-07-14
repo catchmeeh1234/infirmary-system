@@ -77,6 +77,7 @@ export class PrService {
   }
 
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
+
   addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string) {
     let json = JSON.stringify(items);
     let params = new FormData();

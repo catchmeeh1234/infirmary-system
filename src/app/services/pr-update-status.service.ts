@@ -10,6 +10,7 @@ import { WebSocketService } from './web-socket.service';
 })
 export class PrUpdateStatusService {
   private statusColor:string;
+  private div = this.sessionStorageService.getSession("division");
 
   constructor(
     private sessionStorageService:SessionStorageService,
@@ -19,7 +20,7 @@ export class PrUpdateStatusService {
     private websock:WebSocketService,
   ) { }
 
-  updatePrRequest(prno, pr_status, stat, remarks) {
+  updatePrRequest(prno, pr_status, stat, remarks, selectedDivision) {
     const config: MatSnackBarConfig = {
       verticalPosition: 'top',
       duration: 5000,
@@ -52,6 +53,7 @@ export class PrUpdateStatusService {
         if (stat === "Disapprove") {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+
           status = `${stat}(${pr_status})`;
           // if (this.data.pr_status === "Cancelled") {
           //   status = this.data.pr_status;
@@ -89,9 +91,21 @@ export class PrUpdateStatusService {
           console.log(data);
         });
 
-        this.websock.sendNotif(message);
+        const json_notif = {
+          message: message,
+          notif_division: this.div
+        };
+        const json_email_notif = {
+          prno: prno,
+          division: selectedDivision,
+          status: pr_status
+        };
+
+        this.websock.sendNotif(json_notif);
         this.websock.updateNotification();
         this.websock.updatePRTable();
+
+        this.websock.sendEmailNotif(json_email_notif);
 
       } else {
         this.statusColor = 'statusFailed';

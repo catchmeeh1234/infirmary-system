@@ -35,6 +35,8 @@ export class PrAddComponent implements OnInit {
   public addForm: FormGroup;
   public isAddFormValid: boolean = false;
 
+  private div = this.sessionStorageService.getSession("division");
+
   posts: any;
 
   productForm: FormGroup;
@@ -203,7 +205,6 @@ export class PrAddComponent implements OnInit {
     //   return;
     // }
 
-    //let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value);
     let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, this.addForm.get('division').value, purpose.value, prstatus.value, this.productForm.value, username);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
@@ -214,19 +215,29 @@ export class PrAddComponent implements OnInit {
         let title = 'Purchase Request Created';
         let message = `Purchase Request: ${prno.value} has been created by ${this.sessionStorageService.getSession('username')}`;
 
+        const json_notif = {
+          message: message,
+          notif_division: this.div
+        };
+        const json_email_notif = {
+          prno: prno.value,
+          division: this.addForm.get('division').value,
+          status: prstatus.value
+        };
 
         this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('division').value, prstatus.value, prno.value).subscribe(data => {
           //this.websock.status_message = devicedeveui;
           console.log(data);
         });
-
-        this.websock.sendNotif(message);
+        this.websock.sendNotif(json_notif);
         this.websock.updateNotification();
         this.clearAddPRForm();
 
         if (prno.value == null) {
           return;
         }
+
+        this.websock.sendEmailNotif(json_email_notif);
 
         const dialogRef = this.dialog.open(ItemsViewComponent, {
           panelClass: ['no-padding'],
