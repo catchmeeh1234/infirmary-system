@@ -31,7 +31,7 @@ export class PrHistoryComponent implements OnInit {
         } else if (prhistory.pr_status === "For Budget Checking") {
           prhistory.pr_status = "Approved by DM";
         } else if (prhistory.pr_status === "For Cash Allocation") {
-          prhistory.pr_status = "Approved in Budge Checking";
+          prhistory.pr_status = "Approved in Budget Checking";
         } else if (prhistory.pr_status === "For Printing") {
           prhistory.pr_status = "Approved in Cash Allocation";
         }

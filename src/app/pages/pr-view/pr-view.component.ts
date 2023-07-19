@@ -69,7 +69,7 @@ export class PrViewComponent implements OnInit {
       panelClass: ['no-padding'],
       data: {
         containerWidth: '1000px',
-        headerText: `Pr Number: ${selectedPrNO}`,
+        headerText: `PR Number: ${selectedPrNO}`,
         prNumber: selectedPrNO,
       }
     });
@@ -79,6 +79,10 @@ export class PrViewComponent implements OnInit {
 
   onPrintPr(prno) {
     window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
+  }
+
+  onPrintPreview(prno) {
+    window.open(`${API_URL}/printing/previewprint.php?prno=${prno}`, '_blank');
   }
 
   updatePR_Status(prno, pr_status, stat, remarks_visible:boolean, pr_division:string) {

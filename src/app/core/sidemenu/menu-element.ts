@@ -36,12 +36,12 @@ export const menus = [
       ]
       // 'chip': { 'value': 1, 'color': 'accent' },
    },
-   {
-      'name': 'Accounts',
-      'icon': 'home',
-      'link': 'pages/viewAccounts',
-      'open': false,
-   },
+  //  {
+  //     'name': 'Accounts',
+  //     'icon': 'home',
+  //     'link': 'pages/viewAccounts',
+  //     'open': false,
+  //  },
     // {
     //     'name': 'Documents',
     //     'icon': 'folder',

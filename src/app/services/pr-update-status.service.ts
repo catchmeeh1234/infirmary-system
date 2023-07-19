@@ -40,6 +40,9 @@ export class PrUpdateStatusService {
     params.append('pr_request_status', pr_status);
     params.append('name', this.sessionStorageService.getSession('fullname'));
 
+    console.log(stat);
+    console.log(pr_status);
+
     this.pr.updatePrRequestAPI(params)
     .subscribe(data => {
       let result:any = data;
@@ -52,7 +55,7 @@ export class PrUpdateStatusService {
 
         if (stat === "Disapprove") {
           title = `Purchase Request ${stat}`;
-          message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+          message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
 
           status = `${stat}(${pr_status})`;
           // if (this.data.pr_status === "Cancelled") {
@@ -62,7 +65,7 @@ export class PrUpdateStatusService {
           // }
         } else if(stat === "Approve") {
             title = `Pending Purchase Request Approval`;
-            message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+            message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
 
             if (pr_status === "For DM Approval") {
               status = "For Budget Checking";
@@ -73,7 +76,7 @@ export class PrUpdateStatusService {
             }
         } else if(stat === "Cancelled") {
           title = `Purchase Request ${stat}`;
-          message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('username')}`;
+          message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
           status = stat;
         } else if (stat === "Approved") {
           title = `Purchase Request ${stat}`;
@@ -83,9 +86,14 @@ export class PrUpdateStatusService {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat}`;
           status = stat;
+        } else if (stat === "Re-route") {
+          title = `Purchase Request ${stat}d`;
+          message = `Purchase Request: ${prno} has been ${stat}d by ${this.sessionStorageService.getSession('fullname')}`;
+          status = "For DM Approval";
         } else {
           return;
         }
+
         this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, prno).subscribe(data => {
           //this.websock.status_message = devicedeveui;
           console.log(data);

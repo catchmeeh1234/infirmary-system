@@ -43,6 +43,7 @@ export class ItemsViewComponent implements OnInit {
   public division = this.sessionStorageService.getSession('division').toUpperCase();
   public isShowApproveDisapprove: boolean = false;
   public isShowCancelled: boolean = false;
+  public isShowReroute: boolean = false;
 
   public statusColor:string;
 
@@ -118,6 +119,24 @@ export class ItemsViewComponent implements OnInit {
     }
   }
 
+  checkReroute() {
+    if (this.access != 'Encoder' && this.prequeststatus !== 'For DM Approval' && this.prequeststatus !== 'Cancelled' && !this.prequeststatus.includes("Disapprove")) {
+      if (this.access === 'Budget' && this.prequeststatus === 'For Budget Checking') {
+        return this.isShowReroute = true;
+      }
+      if(this.access === 'Cash' && this.prequeststatus === 'For Cash Allocation') {
+        return this.isShowReroute = true;
+      }
+      //for GM
+      if(this.prequeststatus === 'For Printing') {
+        return this.isShowReroute = true;
+      }
+      return this.isShowReroute = false;
+    } else {
+      return this.isShowReroute = false;
+    }
+  }
+
   loadPRDetails(prnum) {
     this.prnumber = prnum;
     this.document.loadItems(prnum)
@@ -142,6 +161,8 @@ export class ItemsViewComponent implements OnInit {
       setTimeout(() => {
         this.checkApproveDisapproveButton();
         this.checkCancelButton();
+        this.checkReroute();
+
       }, 0);
 
     });
@@ -188,8 +209,6 @@ export class ItemsViewComponent implements OnInit {
 
       }
     });
-
-
   }
 
   onPrintPr() {
@@ -229,7 +248,13 @@ export class ItemsViewComponent implements OnInit {
       }
       // Handle the result if needed
       if (result.confirm === 'yes') {
-        this.isBtnApproval = true;
+
+        if (stat === "Re-route") {
+          this.isBtnApproval = false;
+        } else {
+          this.isBtnApproval = true;
+        }
+
         this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks, this.prequestdivision);
         setTimeout(() => {
           this.loadPRDetails(this.prnumber);
@@ -255,7 +280,7 @@ export class ItemsViewComponent implements OnInit {
       panelClass: ['no-padding'],
       data: {
         containerWidth: '700px',
-        headerText: 'Pr History',
+        headerText: 'PR History',
         prnumber: prno,
       }
     });

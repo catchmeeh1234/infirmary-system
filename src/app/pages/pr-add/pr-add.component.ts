@@ -67,6 +67,7 @@ export class PrAddComponent implements OnInit {
       division: new FormControl({value: '', disabled: true}, [Validators.required]),
       designation: new FormControl({value: '', disabled: true}, [Validators.required]),
       purpose: new FormControl('', [Validators.required]),
+      pr_title: new FormControl(''),
     });
 
      //listen to any value change on add form
@@ -190,6 +191,8 @@ export class PrAddComponent implements OnInit {
     let purpose = <HTMLInputElement>document.querySelector('.purpose');
     let prstatus = <HTMLInputElement>document.querySelector('.prstatus');
 
+    let prtitle = <HTMLInputElement>document.querySelector('.pr_title');
+
     // let items = <HTMLInputElement>document.querySelector('.items');
     // let quantity = <HTMLInputElement>document.querySelector('.quantity');
     // let unit = <HTMLInputElement>document.querySelector('.unit');
@@ -205,7 +208,7 @@ export class PrAddComponent implements OnInit {
     //   return;
     // }
 
-    let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, this.addForm.get('division').value, purpose.value, prstatus.value, this.productForm.value, username);
+    let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, this.addForm.get('division').value, purpose.value, prstatus.value, this.productForm.value, username, prtitle.value);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
 

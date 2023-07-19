@@ -105,6 +105,9 @@
         <button mat-flat-button color="primary" (click)="viewHistoryPR(prnumber)">
           View History
 				</button>
+        <button *ngIf="isShowReroute === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Re-route', true)">
+          Re-route
+				</button>
         <button *ngIf="prequeststatus === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
           Edit PR
 				</button>

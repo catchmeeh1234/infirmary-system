@@ -112,9 +112,9 @@ export class WebSocketService {
     });
 
     this.socket.on('notifications', (data: any) => {
-      console.log(this.access);
-      console.log(this.division);
-      this.notif.viewNotifications(this.division, this.access)
+      // console.log(this.access);
+      // console.log(this.division);
+      this.notif.viewNotifications(this.sessionStorageService.getSession('division'), this.sessionStorageService.getSession('access'))
       .subscribe(res => {
 
         let result:any = res;

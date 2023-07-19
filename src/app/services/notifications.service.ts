@@ -28,6 +28,14 @@ export class NotificationsService {
     return this.http.get(`${API_URL}/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
   }
 
+  updateNotificationIsRead(notif_id, role) {
+    let params = new FormData();
+    params.append('notif_id', notif_id);
+    params.append('role', role);
+
+    return this.http.post(`${API_URL}/updateNotificationIsRead.php`, params, {responseType: 'json'});
+  }
+
   insertNotification(title:string, message: string, role: string, division: string, status: string, prno: string) {
     let params = new FormData();
     params.append('title', title);
@@ -61,6 +69,6 @@ export class NotificationsService {
     params.append('division', division);
     params.append('status', status);
 
-    //return this.http.post(`${API_URL}/email/mail.php`, params, {responseType: 'json'});
+    //return this.http.post(`${API_URL}/email/email.php`, params, {responseType: 'json'});
   }
 }

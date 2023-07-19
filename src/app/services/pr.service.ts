@@ -78,7 +78,7 @@ export class PrService {
 
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
 
-  addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string) {
+  addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string, prtitle:string) {
     let json = JSON.stringify(items);
     let params = new FormData();
     params.append('prno', prno);
@@ -90,6 +90,7 @@ export class PrService {
     params.append('prstatus', prstatus);
     params.append('items', json);
     params.append('username', username);
+    params.append('prtitle', prtitle);
 
     return this.http.post(API_URL +'/addPR.php', params, { responseType: 'text'});
   }
@@ -121,6 +122,10 @@ export class PrService {
   loadPrAndItems(prno:string) {
     console.log(prno);
     return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
+  }
+
+  loadDisapprovePR(division) {
+    return this.http.get(API_URL + `/viewDisapprovePR.php?division=${division}`, {responseType: 'json'});
   }
 
   //* monthly total pr */

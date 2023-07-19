@@ -5,8 +5,6 @@ import { Router, NavigationExtras } from '@angular/router';
 import { PrService } from '../../services/pr.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemsViewComponent } from '../../pages/items-view/items-view.component';
-import { ThemeService } from '../../services/theme.service';
-import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'cdk-toolbar-notification',
@@ -41,8 +39,6 @@ export class ToolbarNotificationComponent implements OnInit {
       private sessionStorageService: SessionStorageService,
       private router:Router,
       // private pr: PrService,
-      private themeService:ThemeService,
-      private overlayContainer: OverlayContainer
     ) { }
 
   	ngOnInit() {
@@ -67,14 +63,19 @@ export class ToolbarNotificationComponent implements OnInit {
       // }
     }
 
-  	select(selectedPrNO:string) {
+  	select(selectedPrNO:string, notif_id) {
       this.isOpen = false;
-
+      console.log(notif_id);
       // const queryParams = { prnum: selectedPrNO };
       // const navigationExtras: NavigationExtras = {
       //   queryParams,
       //   queryParamsHandling: 'merge' // 'merge' will merge the new parameters with the existing ones
       // };
+
+      this.notif.updateNotificationIsRead(notif_id, this.role)
+      .subscribe(data => {
+        console.log(data);
+      });
 
       this.router.navigateByUrl('/auth/pages/viewPR', { skipLocationChange: true });
       //   this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
