@@ -21,26 +21,47 @@
 
           <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
           <ng-container matColumnDef="expandedDetail">
-
             <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
               <div class="example-element-detail"
                   [@detailExpand]="element != expandedElement ? 'expanded' : 'collapsed'">
-                  <div *ngFor="let subitem of element.pr_subitem" class="subitems">
-                    <span><b>Subitem:</b>{{subitem.dpr_items}}</span>
+                <table style="text-align: left;padding: 1em;" *ngIf="element.pr_subitems.length!=0">
+                  <tr>
+                    <th style="width: 3%;"></th>
+                    <th style="padding-left: 15px;width: 40%;">Sub item</th>
+                    <th style="width: 21%;">Qty</th>
+                    <th style="width: 12%;">Unit</th>
+                    <th>Cost</th>
+                  </tr>
+                  <tr *ngFor="let subitem of element.pr_subitems;let i = index" class="subitems">
+                    <td>{{i + 1}}</td>
+                    <td style="padding-left: 15px;">{{ subitem.dpr_items }}</td>
+                    <td *ngIf="subitem.dpr_quantity != '0'; else blank">{{subitem.dpr_quantity}}</td>
+                    <td *ngIf="subitem.dpr_unit!= '-'; else blank">{{subitem.dpr_unit}}</td>
+                    <td *ngIf="subitem.dpr_cost != '.00'; else blank">{{subitem.dpr_cost}}</td>
+                    <ng-template #blank>
+                      <span></span>
+                    </ng-template>
+                  </tr>
+                </table>
+              </div>
+              <!-- <div class="example-element-detail"
+                  [@detailExpand]="element != expandedElement ? 'expanded' : 'collapsed'">
+                  <tr *ngFor="let subitem of element.pr_subitems" class="subitems">
+                    <td><b>Subitem:</b>{{subitem.dpr_items}}</td>
                     <ng-container *ngIf="subitem.dpr_quantity != '0'; else blank">
-                      <span><b>Qty:</b>{{subitem.dpr_quantity}}</span>
+                      <td><b>Qty:</b>{{subitem.dpr_quantity}}</td>
                     </ng-container>
                     <ng-container *ngIf="subitem.dpr_cost != '.00'; else blank">
-                      <span><b>Cost:</b>{{subitem.dpr_cost}}</span>
+                      <td><b>Cost:</b>{{subitem.dpr_cost}}</td>
                     </ng-container>
                     <ng-container *ngIf="subitem.dpr_unit!= '-'; else blank">
-                      <span><b>Unit:</b>{{subitem.dpr_unit}}</span>
+                      <td><b>Unit:</b>{{subitem.dpr_unit}}</td>
                     </ng-container>
                     <ng-template #blank>
                       <span></span>
                     </ng-template>
-                  </div>
-              </div>
+                  </tr>
+              </div> -->
             </td>
           </ng-container>
 

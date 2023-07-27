@@ -55,10 +55,10 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-detail {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;       /* Adds a 10px gap between flex items */
-  width: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 5px;       /* Adds a 10px gap between flex items */
+  width: auto;
 }
 
 .example-element-diagram {

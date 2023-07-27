@@ -29,7 +29,7 @@ export class ItemsViewComponent implements OnInit {
   expandedElement: any | null;
 
   public dataSource:any;
-  public dataSource1:any;
+
   public displayedColumns = ['pr_items', 'pr_quantity', 'pr_unit', 'pr_cost'];
   //public displayedColumns = ['PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost'];
   public result:any;
@@ -149,24 +149,27 @@ export class ItemsViewComponent implements OnInit {
 
   loadPRDetails(prnum) {
     this.prnumber = prnum;
-    this.document.loadItems(prnum)
-    .subscribe(data => {
+    this.document.loadPrAndItems(prnum)
+    .subscribe((data:any) => {
       this.result = data;
-      this.dataSource = new MatTableDataSource(this.result);
 
-      this.dataSource.paginator = this.paginator;
-    });
+      if (this.result.length === 1) {
+        //populate the form input with data from the database
+        for (const prDetails of this.result) {
+          this.prequeststatus = prDetails.pr_status;
+          this.prequestdivision = prDetails.pr_division;
+          this.purpose = prDetails.pr_purpose;
+          this.remarks = prDetails.remarks;
+          this.current_status = prDetails.pr_status;
+          this.dateCreated = prDetails.pr_dateCreated;
+          this.requestor = prDetails.pr_requestor;
 
-    this.document.getPurpose(prnum)
-    .subscribe(data => {
-      let result:any = data;
-      this.prequeststatus = result[0].pr_status;
-      this.prequestdivision = result[0].pr_division;
-      this.purpose = result[0].pr_purpose;
-      this.remarks = result[0].remarks;
-      this.current_status = result[0].pr_status;
-      this.dateCreated = result[0].pr_dateCreated;
-      this.requestor = result[0].pr_requestor;
+          this.dataSource = new MatTableDataSource(prDetails.items);
+
+          this.dataSource.paginator = this.paginator;
+        }
+      }
+
 
       setTimeout(() => {
         this.checkApproveDisapproveButton();
@@ -174,7 +177,6 @@ export class ItemsViewComponent implements OnInit {
         this.checkReroute();
 
       }, 0);
-
     });
 
     this.document.telLDisapprove(prnum)

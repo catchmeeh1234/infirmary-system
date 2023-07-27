@@ -262,8 +262,8 @@ export class PrAddComponent implements OnInit {
     let prno = <HTMLInputElement>document.querySelector('.prno');
 
     //format date created
-    console.log(this.addForm.value);
-    console.log(this.addForm.get("pr_date").value);
+    // console.log(this.addForm.value);
+    // console.log(this.addForm.get("pr_date").value);
 
     let prDate = this.dateFormat.formatDate(this.addForm.get("pr_date").value);
     console.log(prDate);
