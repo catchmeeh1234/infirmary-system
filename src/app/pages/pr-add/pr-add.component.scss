@@ -131,6 +131,12 @@ table {
     font-size: 26px;
     color: red;
   }
+
+  .removeSubItem {
+    margin-bottom: 0.5em;
+    font-size: 26px;
+  }
+
   .save-item {
     all: unset;
     background-color: #7ebd32;
@@ -148,7 +154,7 @@ table {
   }
   .pr-items {
     overflow: auto;
-    height: 220px;
+    height: 300px;
   }
 
   .sticky-header {
@@ -171,5 +177,9 @@ table {
   .designation, ::ng-deep .mat-select-value,
   ::ng-deep .mat-select-placeholder {
     color:#000000 !important;
+  }
+
+  .table-container {
+    padding: 5px 15px 15px 15px;
   }
 

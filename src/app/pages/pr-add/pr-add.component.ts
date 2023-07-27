@@ -13,6 +13,8 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { EmployeeService } from '../../services/employee.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemsViewComponent } from '../items-view/items-view.component';
+import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
+import { DateFormatService } from '../../services/date-format.service';
 //import { StatusMessageComponent } from '../status-message/status-message.component';
 
 @Component({
@@ -32,14 +34,14 @@ export class PrAddComponent implements OnInit {
   public selectedDivision:string;
   public selectedDesignation:string;
 
+  public pr_types:any;
+
   public addForm: FormGroup;
   public isAddFormValid: boolean = false;
 
   private div = this.sessionStorageService.getSession("division");
 
-  posts: any;
-
-  productForm: FormGroup;
+  //format 2023-07-27
 
   options: any;
   filteredOptions: any;
@@ -52,30 +54,37 @@ export class PrAddComponent implements OnInit {
     public websock: WebSocketService,
     private employee: EmployeeService,
     private snackBar: MatSnackBar,
-    private dialog:MatDialog
+    private dialog:MatDialog,
+    private dateFormat:DateFormatService
   ) {
-    this.productForm = this.fb.group({
-      quantities: this.fb.array([]) ,
-    });
+    // this.productForm = this.fb.group({
+    //   quantities: this.fb.array([]) ,
+    // });
   }
 
   ngOnInit(): void {
-    this.addForm = new FormGroup({
-      requestor: new FormControl('',[Validators.required]),
-      date1: new FormControl(new Date(), [Validators.required]),
-      //name: new FormControl(''),
-      division: new FormControl({value: '', disabled: true}, [Validators.required]),
-      designation: new FormControl({value: '', disabled: true}, [Validators.required]),
-      purpose: new FormControl('', [Validators.required]),
-      pr_title: new FormControl(''),
+
+    this.addForm = this.fb.group({
+      pr_requestor: ['', Validators.required],
+      pr_date: [new Date(), Validators.required],
+      pr_division: ['' , Validators.required],
+      pr_designation: ['', Validators.required],
+      pr_purpose: ['', Validators.required],
+      pr_status: ['For DM Approval', Validators.required],
+      pr_title: [''],
+      pr_items: this.fb.array([]),
     });
+    //disable some inputs
+    this.addForm.get('pr_status')?.disable();
+    this.addForm.get('pr_designation')?.disable();
+    this.addForm.get('pr_division')?.disable();
 
      //listen to any value change on add form
      this.addForm.valueChanges.subscribe(val => {
-      if (this.addForm.valid === true) {
-        this.isAddFormValid = true;
-      } else {
+      if (!this.addForm.get('pr_requestor').valid || !this.addForm.get('pr_date').valid || !this.addForm.get('pr_purpose').valid) {
         this.isAddFormValid = false;
+      } else {
+        this.isAddFormValid = true;
       }
     });
 
@@ -88,6 +97,7 @@ export class PrAddComponent implements OnInit {
 
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
+    this.onDisplayPRTypes();
     this.getAllData(this.sessionStorageService.getSession('division'));
   }
 
@@ -104,8 +114,8 @@ export class PrAddComponent implements OnInit {
     this.employee.selectEmployee(selectedValue)
     .subscribe(data => {
       let result:any = data;
-      this.addForm.get('division').setValue(result[0].division);
-      this.addForm.get('designation').setValue(result[0].designation);
+      this.addForm.get('pr_division').setValue(result[0].division);
+      this.addForm.get('pr_designation').setValue(result[0].designation);
       //this.designation.setValue(result[0].designation);
     });
     // Update the other field with the selected value
@@ -126,31 +136,90 @@ export class PrAddComponent implements OnInit {
     });
   }
 
-  quantities() : FormArray {
-    return this.productForm.get("quantities") as FormArray
+  onDisplayPRTypes() {
+    this.document.loadPRTypes()
+    .subscribe(data => {
+      this.pr_types = data;
+    });
   }
 
-  newQuantity(): FormGroup {
+  //function for adding PR items
+  // Helper method to get the item FormArray
+  get itemFormArray(): FormArray {
+    return this.addForm.get('pr_items') as FormArray;
+  }
+
+  addItem() {
+    this.itemFormArray.push(this.createItemGroup());
+  }
+
+  removeItem(i:number) {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '500px',
+        headerText: 'Confirmation',
+        message: 'Are you sure you want to remove this item?',
+        isRemarksVisible: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
+      // Handle the result if needed
+      if (result.confirm === 'yes') {
+        this.itemFormArray.removeAt(i);
+      }
+    });
+  }
+
+  createItemGroup(): FormGroup {
     return this.fb.group({
       item: ['', Validators.required],
       qty: ['', [Validators.required,  Validators.pattern('^[0-9]*$')]],
       unit: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$')]],
-
-    })
+      cost: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$')]],
+      pr_subitems: this.fb.array([]),
+    });
   }
 
-  addQuantity() {
-    this.quantities().push(this.newQuantity());
-
-    const div = document.querySelector(".pr-items");
-    setTimeout(() => {
-      div.scrollTop = div.scrollHeight;
-    }, 0);
+  //functions for subitem
+  addSubItem(i:number) {
+    this.subItemFormArray(i).push(this.createSubItemFormGroup());
   }
 
-  removeQuantity(i:number) {
-    this.quantities().removeAt(i);
+  removeSubItem(i:number, z:number) {
+    this.subItemFormArray(i).removeAt(z);
+  }
+
+ // Helper method to get the item FormArray
+  subItemFormArray(index: number): FormArray {
+    return this.itemFormArray.at(index).get('pr_subitems') as FormArray;
+  }
+
+  // Helper method to create sub-item form controls
+  createSubItemFormGroup(): FormGroup {
+    return this.fb.group({
+      dpr_items: ['', Validators.required],
+      dpr_quantity: ['', [Validators.required,  Validators.pattern('^[0-9]*$')]],
+      dpr_cost: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$')]],
+      dpr_unit: ['', Validators.required],
+    });
+  }
+
+
+  onSelectChangePRType(event:any, i:number) {
+    const element = document.getElementById(`sub_item_${i}`);
+
+    const spanElement = document.querySelector(`#sub_item_${i} span`);
+    if (event.value === "Details") {
+      element.style.paddingLeft = '3em';
+    } else {
+      element.style.paddingLeft = '0em';
+    }
+
   }
 
   openStatusMessage(message) {
@@ -165,40 +234,53 @@ export class PrAddComponent implements OnInit {
   }
 
   clearAddPRForm() {
-    //let requestor = <HTMLInputElement>document.querySelector('.requestor');
-    let designation = <HTMLInputElement>document.querySelector('.designation');
-    let purpose = <HTMLInputElement>document.querySelector('.purpose');
     let prno = <HTMLInputElement>document.querySelector('.prno');
-
-    this.productForm.reset();
-    //this.requestor.setValue('');
-    this.addForm.get('requestor').setValue('');
-
-    designation.value = '';
-    purpose.value = '';
-
     prno.value = this.websock.response;
+
+    this.addForm.patchValue({
+      pr_requestor: '',
+      pr_date: new Date(),
+      pr_division: '',
+      pr_designation: '',
+      pr_purpose: '',
+      pr_status: 'For DM Approval',
+      pr_title: '',
+    });
+
+    //disable designation, division, and pr status form input
+    this.addForm.get('pr_status')?.disable();
+    this.addForm.get('pr_designation')?.disable();
+    this.addForm.get('pr_division')?.disable();
+
+    //clear items array
+    this.itemFormArray.clear();
   }
 
 
 
   addPurchaseRequest() {
     let prno = <HTMLInputElement>document.querySelector('.prno');
-    let datecreated = <HTMLInputElement>document.querySelector('.datecreated');
-    let requestor = <HTMLInputElement>document.querySelector('.requestor');
-    let designation = <HTMLInputElement>document.querySelector('.designation');
-    let division = <HTMLInputElement>document.querySelector('.division');
-    let purpose = <HTMLInputElement>document.querySelector('.purpose');
-    let prstatus = <HTMLInputElement>document.querySelector('.prstatus');
 
-    let prtitle = <HTMLInputElement>document.querySelector('.pr_title');
+    //format date created
+    console.log(this.addForm.value);
+    console.log(this.addForm.get("pr_date").value);
 
-    // let items = <HTMLInputElement>document.querySelector('.items');
-    // let quantity = <HTMLInputElement>document.querySelector('.quantity');
-    // let unit = <HTMLInputElement>document.querySelector('.unit');
-    // let cost = <HTMLInputElement>document.querySelector('.cost');
+    let prDate = this.dateFormat.formatDate(this.addForm.get("pr_date").value);
+    console.log(prDate);
+    this.addForm.patchValue({
+      pr_date: prDate,
+    });
+    // let datecreated = <HTMLInputElement>document.querySelector('.datecreated');
+    // let requestor = <HTMLInputElement>document.querySelector('.requestor');
+    // let designation = <HTMLInputElement>document.querySelector('.designation');
+    // let division = <HTMLInputElement>document.querySelector('.division');
+    // let purpose = <HTMLInputElement>document.querySelector('.purpose');
+    // let prstatus = <HTMLInputElement>document.querySelector('.prstatus');
 
-    if (!this.productForm.valid || prno.value == "" || purpose.value == "" || requestor.value == "" || designation.value == "") {
+    // let prtitle = <HTMLInputElement>document.querySelector('.pr_title');
+
+
+    if (!this.addForm.valid || this.itemFormArray.length === 0) {
       this.openStatusMessage('Please Fill up necessary details');
       return;
     }
@@ -208,13 +290,21 @@ export class PrAddComponent implements OnInit {
     //   return;
     // }
 
-    let x = this.document.addPR(prno.value, datecreated.value, requestor.value, designation.value, this.addForm.get('division').value, purpose.value, prstatus.value, this.productForm.value, username, prtitle.value);
+    //enable designation, division, and pr status form input
+    this.addForm.get('pr_status')?.enable();
+    this.addForm.get('pr_designation')?.enable();
+    this.addForm.get('pr_division')?.enable();
+
+    let x = this.document.addPR(prno.value, this.addForm.value, username);
+
+
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value);
     //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
-
     x.subscribe(data => {
+      console.log(data);
+
       let response:any = data;
-      if (response === "Inserted Successfully") {
+      if (response.trim() === "Inserted Successfully") {
         let title = 'Purchase Request Created';
         let message = `Purchase Request: ${prno.value} has been created by ${this.sessionStorageService.getSession('username')}`;
 
@@ -224,17 +314,16 @@ export class PrAddComponent implements OnInit {
         };
         const json_email_notif = {
           prno: prno.value,
-          division: this.addForm.get('division').value,
-          status: prstatus.value
+          division: this.addForm.get('pr_division').value,
+          status: this.addForm.get('pr_status').value,
         };
 
-        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('division').value, prstatus.value, prno.value).subscribe(data => {
+        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('pr_division').value, this.addForm.get('pr_status').value, prno.value).subscribe(data => {
           //this.websock.status_message = devicedeveui;
           console.log(data);
         });
         this.websock.sendNotif(json_notif);
         this.websock.updateNotification();
-        this.clearAddPRForm();
 
         if (prno.value == null) {
           return;
@@ -250,7 +339,13 @@ export class PrAddComponent implements OnInit {
             prNumber: prno.value,
           }
         });
+
+        setTimeout(() => {
+          this.clearAddPRForm();
+        }, 500);
+
       }
+
     });
 
      /* prno.value = "";
@@ -267,7 +362,7 @@ export class PrAddComponent implements OnInit {
         await this.employee.getEmp(division).toPromise().then((res:any) => {
           this.options = res;
 
-          this.filteredOptions = this.addForm.get("requestor").valueChanges.pipe(
+          this.filteredOptions = this.addForm.get("pr_requestor").valueChanges.pipe(
             startWith(''),
             map(value => this._filter(value || '')),
           );

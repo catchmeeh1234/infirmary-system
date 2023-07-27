@@ -42,12 +42,16 @@ export class ToolbarNotificationComponent implements OnInit {
     ) { }
 
   	ngOnInit() {
-      this.notif.viewNotifications(this.division, this.role)
+      this.loadNotifications(this.division, this.role);
+  	}
+
+    loadNotifications(division, role) {
+      this.notif.viewNotifications(division, role)
       .subscribe(data => {
         let result:any = data;
         this.notif.notificationContent = result;
       });
-  	}
+    }
 
     toggleTheme(ThemeName) {
 
@@ -65,17 +69,12 @@ export class ToolbarNotificationComponent implements OnInit {
 
   	select(selectedPrNO:string, notif_id) {
       this.isOpen = false;
-      console.log(notif_id);
+      //console.log(notif_id);
       // const queryParams = { prnum: selectedPrNO };
       // const navigationExtras: NavigationExtras = {
       //   queryParams,
       //   queryParamsHandling: 'merge' // 'merge' will merge the new parameters with the existing ones
       // };
-
-      this.notif.updateNotificationIsRead(notif_id, this.role)
-      .subscribe(data => {
-        console.log(data);
-      });
 
       this.router.navigateByUrl('/auth/pages/viewPR', { skipLocationChange: true });
       //   this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
@@ -91,8 +90,21 @@ export class ToolbarNotificationComponent implements OnInit {
 
   	}
 
-  	delete(notification) {
-      console.log(notification);
+  	delete(notif_id) {
+      this.notif.updateOneNotification(notif_id, this.role)
+      .subscribe(data => {
+        console.log(data);
+        this.loadNotifications(this.division, this.role);
+      });
   	}
 
+    markAllAsRead() {
+      console.log(this.notif.notificationContent);
+
+      this.notif.markAllAsRead(this.notif.notificationContent, this.role)
+      .subscribe(data => {
+        console.log(data);
+        this.loadNotifications(this.division, this.role);
+      });
+    }
 }

@@ -28,12 +28,31 @@ export class NotificationsService {
     return this.http.get(`${API_URL}/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
   }
 
-  updateNotificationIsRead(notif_id, role) {
+  updateNotificationIsRead(notif_prno, notif_status, role) {
+    let params = new FormData();
+    params.append('notif_prno', notif_prno);
+    params.append('notif_status', notif_status);
+    params.append('role', role);
+
+    return this.http.post(`${API_URL}/updateNotificationIsRead.php`, params, {responseType: 'json'});
+  }
+
+  markAllAsRead(notif_details:any, role:string) {
+
+    let params = new FormData();
+    params.append('notif_details', JSON.stringify(notif_details));
+    params.append('role', role);
+
+    return this.http.post(`${API_URL}/markAllNotifAsRead.php`, params, {responseType: 'text'});
+  }
+
+  updateOneNotification(notif_id, role:string) {
     let params = new FormData();
     params.append('notif_id', notif_id);
     params.append('role', role);
 
-    return this.http.post(`${API_URL}/updateNotificationIsRead.php`, params, {responseType: 'json'});
+    return this.http.post(`${API_URL}/updateOneNotification.php`, params, {responseType: 'json'});
+
   }
 
   insertNotification(title:string, message: string, role: string, division: string, status: string, prno: string) {

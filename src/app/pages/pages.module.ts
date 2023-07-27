@@ -59,6 +59,7 @@ import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.com
 import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { UserAccountViewComponent } from './modals/user-account-view/user-account-view.component';
 
+
 @NgModule({
     imports: [
         MatCardModule,
@@ -96,7 +97,7 @@ import { UserAccountViewComponent } from './modals/user-account-view/user-accoun
         BsDropdownModule.forRoot(),
         MatDialogModule,
         MatSelectModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
       ],
     declarations: [
         ContactComponent,

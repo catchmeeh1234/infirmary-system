@@ -1,119 +1,166 @@
-<div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px">
-
-	<div fxFlex class="table-component-holder mat-elevation-z4">
-	  <mat-toolbar class="table-header">
-		<h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
-	  </mat-toolbar>
-	  <div class="table-container">
-		<form [formGroup]="addForm">
-      <div class="inline-form">
-        <mat-form-field appearance="outline">
-          <mat-label>PR Number</mat-label>
-          <input matInput type="text"  size="6" placeholder="PR No." class="prno" [value]="websock.response" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Select a date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="date1" placeholder="Date" class="datecreated" />
-          <mat-datepicker-toggle matSuffix [for]="picker" class="custom-datepicker-toggle"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Requestor</mat-label>
-          <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="requestor"/>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
-              {{option.full_name}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+<!-- <div fxLayout="column" class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="10px"> -->
+<div fxLayout="column" fxLayoutAlign="center none" style="padding:20px;"  fxLayoutGap="10px">
+  <form [formGroup]="addForm">
+    <div class="table-component-holder mat-elevation-z4" style="margin-bottom: 2em;">
+      <mat-toolbar class="table-header">
+        <h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
+      </mat-toolbar>
+      <div class="table-container">
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>PR Number</mat-label>
+            <input matInput type="text"  size="6" placeholder="PR No." class="prno" [value]="websock.response" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Select a date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="pr_date" placeholder="Date" class="datecreated" />
+            <mat-datepicker-toggle matSuffix [for]="picker" class="custom-datepicker-toggle"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Requestor</mat-label>
+            <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="pr_requestor"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
+                {{option.full_name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Designation</mat-label>
+            <input matInput type="text" placeholder="Designation" class="designation" formControlName="pr_designation">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Division</mat-label>
+            <mat-select class="division" formControlName="pr_division">
+              <mat-option class="division" *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Purpose</mat-label>
+            <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="pr_purpose" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <input matInput type="text" size="7" placeholder="PR Status" class="prstatus" formControlName="pr_status"/>
+          </mat-form-field>
+        </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>PR Title(optional)</mat-label>
+            <input matInput type="text" placeholder="PR title" class="pr_title" formControlName="pr_title">
+          </mat-form-field>
+        </div>
       </div>
-      <div class="inline-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Designation</mat-label>
-          <input matInput type="text" placeholder="Designation" class="designation" formControlName="designation">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Division</mat-label>
-          <mat-select class="division" formControlName="division">
-            <mat-option class="division" *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Purpose</mat-label>
-          <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="purpose" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
-          <input matInput type="text" size="7" placeholder="PR Status" class="prstatus" value="For DM Approval" disabled />
-        </mat-form-field>
-      </div>
-      <div class="inline-form">
-        <mat-form-field appearance="outline">
-          <mat-label>PR Title(optional)</mat-label>
-          <input matInput type="text" placeholder="PR title" class="pr_title" formControlName="pr_title">
-        </mat-form-field>
-      </div>
-		</form>
-	</div>
-</div>
-
-<!-- sample -->
-<div fxLayout="column"  class="components-container-gt-xs"  [ngClass.xs]="'components-container-xs'"  fxLayoutGap="20px" *ngIf="isAddFormValid === true">
-
-	<div fxFlex class="table-component-holder mat-elevation-z4">
-	  <mat-toolbar class="table-header">
-		<h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
-    <button type="button" (click)="addPurchaseRequest()" class="save-item">
-      <i class="fa-solid fa-cart-arrow-down"></i>
-      Create Purchase Request
-    </button>
-	  </mat-toolbar>
-		<div class="table-container pr-items">
-
-			<form [formGroup]="productForm">
-				<table formArrayName="quantities">
+    </div>
+    <div class="table-component-holder mat-elevation-z4" *ngIf="isAddFormValid === true">
+      <mat-toolbar class="table-header">
+        <h1 class="mat-headline center-align" >Add Purchase Requests Details</h1>
+        <button type="button" (click)="addPurchaseRequest()" class="save-item">
+          <i class="fa-solid fa-cart-arrow-down"></i>
+          Create Purchase Request
+        </button>
+      </mat-toolbar>
+      <div class="table-container pr-items">
+				<table>
 				<thead>
 				  <tr class="sticky-header">
             <th width="20%">Item</th>
             <th width="20%">Quantity</th>
             <th width="20%">Unit</th>
             <th width="20%">Cost</th>
-            <th width="20%"><button type="button" (click)="addQuantity()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
+            <th width="20%"><button type="button" (click)="addItem()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
 				  </tr>
 				</thead>
-				  <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
-					<td align="center">
-            <mat-form-field appearance="outline">
-              <mat-label>Item</mat-label>
-              <input matInput type="text" formControlName="item" class="form-control" placeholder="Enter Item">
-            </mat-form-field>
-					</td>
-					<td align="center">
-            <mat-form-field appearance="outline">
-              <mat-label>Quantity</mat-label>
-              <input matInput type="text" formControlName="qty" class="form-control" placeholder="Enter Quantity">
-            </mat-form-field>
-					</td>
-					<td align="center">
-            <mat-form-field appearance="outline">
-              <mat-label>Unit</mat-label>
-              <mat-select id="role" formControlName="unit" class="form-control">
-                <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
-              </mat-select>
-            </mat-form-field>
-					</td>
-					<td align="center">
-            <mat-form-field appearance="outline">
-              <mat-label>Cost</mat-label>
-              <input matInput type="text" formControlName="price" class="form-control" placeholder="Enter Cost">
-            </mat-form-field>
-					</td>
-					<td align="center">
-					  <button (click)="removeQuantity(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
-					</td>
-				  </tr>
+        <ng-container formArrayName="pr_items">
+          <ng-container *ngFor="let item of itemFormArray.controls; let i=index" [formGroupName]="i">
+            <h4>Item {{i + 1}}</h4>
+            <tr>
+              <td align="center" [id]="'sub_item_' + i">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Item</mat-label>
+                    <input matInput type="text" formControlName="item" class="form-control" placeholder="Enter Item">
+                  </mat-form-field>
+              </td>
+              <td align="center">
+                <mat-form-field appearance="outline">
+                  <mat-label>Quantity</mat-label>
+                  <input matInput type="text" formControlName="qty" class="form-control" placeholder="Enter Quantity">
+                </mat-form-field>
+              </td>
+              <td align="center">
+                <mat-form-field appearance="outline">
+                  <mat-label>Unit</mat-label>
+                  <mat-select id="role" formControlName="unit" class="form-control">
+                    <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td align="center">
+                <mat-form-field appearance="outline">
+                  <mat-label>Cost</mat-label>
+                  <input matInput type="text" formControlName="cost" class="form-control" placeholder="Enter Cost">
+                </mat-form-field>
+              </td>
+              <!-- <td align="center">
+                <mat-form-field appearance="outline">
+                  <mat-label>item type</mat-label>
+                  <mat-select class="form-control" formControlName="pr_type" (selectionChange)="onSelectChangePRType($event, i)">
+                    <mat-option *ngFor="let type of pr_types" [value]="type.pr_type_name"> {{ type.pr_type_name }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td> -->
+              <td align="center">
+                <button (click)="removeItem(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
+              </td>
+            </tr>
+            <ng-container [formArrayName]="'pr_subitems'">
+              <div fxLayout="row" fxLayoutGap="10px">
+                <!-- *ngIf="subItemFormArray(i).length != 0" -->
+                <h6 style="text-align: left !important;">Sub Items</h6>
+                <button (click)="addSubItem(i)" class="no-style-btn"><i class="fa-solid fa-square-plus"></i></button>
+              </div>
+              <ng-container *ngFor="let subitems of subItemFormArray(i).controls;let z = index" [formGroupName]="z">
+                <tr>
+                    <td style="padding-left:20px;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Sub Item</mat-label>
+                        <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_items'">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_quantity'">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Unit</mat-label>
+                        <mat-select [formControlName]="'dpr_unit'" class="form-control">
+                          <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Cost</mat-label>
+                        <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_cost'">
+                      </mat-form-field>
+                    </td>
+                    <td style="text-align: center;">
+                      <button (click)="removeSubItem(i, z)" class="no-style-btn removeSubItem"><i class="fa-solid fa-square-minus"></i></button>
+                    </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+            <hr style="display: block;width: 500% !important;">
+          </ng-container>
+        </ng-container>
 				</table>
-			  </form>
-	  </div>
-	</div>
+	    </div>
+    </div>
+  </form>
 </div>

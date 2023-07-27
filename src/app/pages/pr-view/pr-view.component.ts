@@ -17,7 +17,9 @@ import { API_URL } from '../../constants';
   templateUrl: './pr-view.component.html',
   styleUrls: ['./pr-view.component.scss']
 })
+
 export class PrViewComponent implements OnInit {
+
   public displayedColumns = ['tagAsApprove', 'PRNo', 'Date', 'Requestor', 'Designation', 'Division', 'Status', 'Actions'];
   public result:any;
   public arrayOfYears:any;
@@ -59,6 +61,8 @@ export class PrViewComponent implements OnInit {
       this.document.dataSourcePRTable.paginator = this.paginator;
     });
   }
+
+
 
   viewpritems(selectedPrNO) {
     if (selectedPrNO == null) {

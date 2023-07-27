@@ -78,28 +78,20 @@ export class PrService {
 
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
 
-  addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string, items:any, username:string, prtitle:string) {
-    let json = JSON.stringify(items);
+  addPR(prno:string, pr_details:any, username:string) {
+    let json = JSON.stringify(pr_details);
     let params = new FormData();
     params.append('prno', prno);
-    params.append('datecreated', datecreated);
-    params.append('requestor', requestor);
-    params.append('designation', designation);
-    params.append('division', division);
-    params.append('purpose', purpose);
-    params.append('prstatus', prstatus);
-    params.append('items', json);
+    params.append('pr_details', json);
     params.append('username', username);
-    params.append('prtitle', prtitle);
 
     return this.http.post(API_URL +'/addPR.php', params, { responseType: 'text'});
   }
 
-  editPR(prDetails:any, numberofitems) {
+  editPR(prDetails:any) {
     let params = new FormData();
     let json = JSON.stringify(prDetails);
-    params.append('details', json);
-    params.append('number_of_items', numberofitems);
+    params.append('pr_details', json);
 
     return this.http.post(API_URL +'/editPR.php', params, { responseType: 'text'});
   }
@@ -120,7 +112,7 @@ export class PrService {
     return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
   }
   loadPrAndItems(prno:string) {
-    console.log(prno);
+    //console.log(prno);
     return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
 
@@ -131,5 +123,10 @@ export class PrService {
   //* monthly total pr */
   PRTotalJan() {
     return this.http.get(API_URL + '/api/JanTotalPR.php', {responseType: 'json'});
+  }
+
+  //load pr type
+  loadPRTypes() {
+    return this.http.get(API_URL + `/loadPRTypes.php`, {responseType: 'json'});
   }
 }

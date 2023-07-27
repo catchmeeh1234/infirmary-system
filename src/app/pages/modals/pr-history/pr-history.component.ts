@@ -22,6 +22,10 @@ export class PrHistoryComponent implements OnInit {
     this.pr.prHistory(this.data.prnumber)
     .subscribe(data => {
       let result:any = data;
+      if (result.length = 0) {
+        this.pr_history = new MatTableDataSource(result);
+        return;
+      }
       //this.pr_history = result;
       //console.log(result);
 

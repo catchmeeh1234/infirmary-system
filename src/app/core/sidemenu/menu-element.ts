@@ -33,6 +33,13 @@ export const menus = [
           'chip': false,
           'open': false,
         },
+        {
+          'name': 'Sample',
+          'link': 'pages/sampleComponent',
+          'icon': 'thumbs_up_down',
+          'chip': false,
+          'open': false,
+        },
       ]
       // 'chip': { 'value': 1, 'color': 'accent' },
    },

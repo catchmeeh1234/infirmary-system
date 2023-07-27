@@ -24,11 +24,6 @@ export class PrEditComponent implements OnInit {
   public units:any;
   public pr_items:any;
 
-  public control_name_item;
-  public control_name_qty;
-  public control_name_unit;
-  public control_name_cost;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pr: PrService,
@@ -42,115 +37,47 @@ export class PrEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editForm = new FormGroup({
-      pr_no_hidden: new FormControl('', [Validators.required]),
-      pr_number: new FormControl('',[Validators.required]),
-      requestor: new FormControl('', [Validators.required]),
-      designation: new FormControl('', [Validators.required]),
-      division: new FormControl('', [Validators.required]),
-      purpose: new FormControl('', [Validators.required]),
-      cancel_remarks: new FormControl('', [Validators.required]),
+    this.editForm = this.formBuilder.group({
+      prDetails_id: ['', Validators.required],
+      pr_no: ['', Validators.required],
+      pr_no_hidden: ['', Validators.required],
+      pr_requestor: ['', Validators.required],
+      pr_designation: ['', Validators.required],
+      pr_division: ['', Validators.required],
+      pr_purpose: ['', Validators.required],
+      remarks: [''],
+      items: this.formBuilder.array([]),
+      pr_title: [''],
     });
 
-    this.editForm.get('pr_number')?.disable();
-    this.editForm.get('designation')?.disable();
-    this.editForm.get('division')?.disable();
+    this.editForm.get('pr_no')?.disable();
+    this.editForm.get('pr_designation')?.disable();
+    this.editForm.get('pr_division')?.disable();
 
     this.displayDivisions();
     this.displayUnits();
-    this.displayPrAndItems();
     this.getAllData();
-  }
 
-  displayPrAndItems() {
-
+    // Initialize the form with the JSON data
     this.pr.loadPrAndItems(this.data.number)
-    .subscribe(res => {
-      let result:any = res;
-
-      this.editForm.setValue({
-        pr_no_hidden: result[0].pr_no,
-        pr_number: result[0].pr_no,
-        requestor: result[0].pr_requestor,
-        designation: result[0].pr_designation,
-        division: result[0].pr_division,
-        purpose: result[0].pr_purpose,
-        cancel_remarks: result[0].remarks,
-      });
-      this.pr_items = result;
-
-      this.displayPRItems(this.pr_items);
+    .subscribe((res:any) => {
+        this.setFormValues(res);
     });
   }
+  //functions for items
 
-  displayPRItems(pritems_param) {
-    const controlNames: string[] = Object.keys(this.editForm.controls);
-    // Remove each control from the form group
-    controlNames.forEach((controlName: string) => {
-      if(controlName === "pr_number" || controlName === "requestor" || controlName === "designation"|| controlName === "division" || controlName === "purpose" || controlName === "cancel_remarks" || controlName === "pr_no_hidden") {
-      } else {
-        this.editForm.removeControl(controlName);
-      }
-    });
-    for (const [index, pr_item] of pritems_param.entries()) {
-
-      //add item
-      this.control_name_item = `item_${index}`;
-      const item = new FormControl(null, [Validators.required]);
-      item.setValue(pr_item.pr_items);
-      this.editForm.addControl(this.control_name_item, item);
-
-      //add qty
-      this.control_name_qty = `qty_${index}`;
-      const qty = new FormControl(null, [Validators.required]);
-      qty.setValue(pr_item.pr_quantity);
-      this.editForm.addControl(this.control_name_qty, qty);
-
-      //add unit
-      this.control_name_unit = `unit_${index}`;
-      const unit = new FormControl(null, [Validators.required]);
-      unit.setValue(pr_item.pr_unit);
-      this.editForm.addControl(this.control_name_unit, unit);
-
-      //add cost
-      this.control_name_cost = `cost_${index}`;
-      const cost = new FormControl(null, [Validators.required]);
-      cost.setValue(pr_item.pr_cost);
-      this.editForm.addControl(this.control_name_cost, cost);
-
-    }
-    console.log(this.editForm.value);
-  }
-
-
-  displayDivisions() {
-    this.pr.getDivisions()
-    .subscribe(res => {
-      let result:any = res;
-      console.log(result);
-
-      this.divisions = result;
-    });
-  }
-
-  displayUnits() {
-    this.pr.getUnitMeasurements()
-    .subscribe( res => {
-      let result:any = res;
-      this.units = result;
-    });
-  }
-
-  addQuantity() {
+  //add items dynamically
+  addItem() {
     //this.quantities().push(this.newQuantity());
-    const newRow = { pr_items: "", pr_quantity: "", pr_cost: "", pr_unit: "" };
-    this.pr_items.push(newRow);
+    this.itemFormArray.push(this.createItemGroup(null));
+    // const newRow = { pr_items: "", pr_quantity: "", pr_cost: "", pr_unit: "" };
+    // this.pr_items.push(newRow);
 
-    this.displayPRItems(this.pr_items);
+    // this.displayPRItems(this.pr_items);
   }
 
-  removeQuantity(row) {
-
+  //remove items dynamically
+  removeItem(i:number) {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       panelClass: ['no-padding'],
       data: {
@@ -167,18 +94,94 @@ export class PrEditComponent implements OnInit {
       }
       // Handle the result if needed
       if (result.confirm === 'yes') {
-        const index = this.pr_items.indexOf(row);
-        if (index > -1) {
-          this.pr_items.splice(index, 1);
-
-          setTimeout(() => {
-            this.displayPRItems(this.pr_items);
-          }, 0);
-        }
+        this.itemFormArray.removeAt(i);
       }
     });
   }
 
+  createItemGroup(item:any): FormGroup {
+    return this.formBuilder.group({
+      prItems_id: [item ? item.prItems_id:null],
+      item: [item ? item.pr_items: null, Validators.required],
+      qty: [item ? item.pr_quantity: null, [Validators.required,  Validators.pattern('^[0-9]*$')]],
+      cost: [item ? item.pr_cost: null, [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$')]],
+      unit: [item ? item.pr_unit: null, Validators.required],
+      pr_subitems: this.formBuilder.array([]),
+    });
+  }
+
+  // Set up the FormArray with sub-items
+  setItems(items: any[]): void {
+    for (const [index, item] of items.entries()) {
+      this.itemFormArray.push(this.createItemGroup(item));
+      //this.setSubItems(data.pr_subitems); // Set the sub-items in the FormArray
+      for (const subitem of item.pr_subitems) {
+        //console.log(subitem);
+        this.subItemFormArray(index).push(this.createSubItemFormGroup(subitem));
+      }
+    }
+
+  }
+
+  // Helper method to get the item FormArray
+  get itemFormArray(): FormArray {
+    return this.editForm.get('items') as FormArray;
+  }
+
+  //functions for subitem
+  addSubItem(i:number) {
+    this.subItemFormArray(i).push(this.createSubItemFormGroup(null));
+  }
+
+  removeSubItem(i:number, z:number) {
+    this.subItemFormArray(i).removeAt(z);
+  }
+
+ // Helper method to get the item FormArray
+  subItemFormArray(index: number): FormArray {
+    return this.itemFormArray.at(index).get('pr_subitems') as FormArray;
+  }
+
+  // Helper method to create sub-item form controls
+  createSubItemFormGroup(subitem: any): FormGroup {
+    return this.formBuilder.group({
+      //dprItems_id: [subitem.dprItems_id],
+      //prItems_id: [subitem.prItems_id],
+      dpr_items: [subitem ? subitem.dpr_items: null, Validators.required],
+      dpr_quantity: [subitem ? subitem.dpr_quantity : null, [Validators.required,  Validators.pattern('^[0-9]*$')]],
+      dpr_cost: [subitem ? subitem.dpr_cost: null, [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$')]],
+      dpr_unit: [subitem ? subitem.dpr_unit: null, Validators.required],
+    });
+  }
+
+
+  // Set up the entire form with main details and sub-items
+  setFormValues(data: any): void {
+    for (const res of data) {
+      this.editForm.patchValue(res); // Patch the main details to the form
+      this.editForm.patchValue({ pr_no_hidden: res.pr_no });
+      this.setItems(res.items);
+    }
+    console.log(this.editForm.value);
+  }
+
+
+  displayDivisions() {
+    this.pr.getDivisions()
+    .subscribe(res => {
+      let result:any = res;
+
+      this.divisions = result;
+    });
+  }
+
+  displayUnits() {
+    this.pr.getUnitMeasurements()
+    .subscribe( res => {
+      let result:any = res;
+      this.units = result;
+    });
+  }
 
   onOptionSelected(event: any) {
 
@@ -187,8 +190,8 @@ export class PrEditComponent implements OnInit {
     this.employee.selectEmployee(selectedValue)
     .subscribe(data => {
       let result:any = data;
-      this.editForm.get('division').setValue(result[0].division);
-      this.editForm.get('designation').setValue(result[0].designation);
+      this.editForm.get('pr_division').setValue(result[0].division);
+      this.editForm.get('pr_designation').setValue(result[0].designation);
       //this.designation.setValue(result[0].designation);
     });
     // Update the other field with the selected value
@@ -196,14 +199,13 @@ export class PrEditComponent implements OnInit {
   }
 
   onSavePR() {
-    // console.log(this.editForm.value);
-    // console.log(this.pr_items.length);
-    this.editForm.get('pr_number')?.enable();
-    this.editForm.get('designation')?.enable();
-    this.editForm.get('division')?.enable();
-    this.pr.editPR(this.editForm.value, this.pr_items.length)
+    console.log(this.editForm.value);
+    this.editForm.get('pr_no')?.enable();
+    this.editForm.get('pr_designation')?.enable();
+    this.editForm.get('pr_division')?.enable();
+    this.pr.editPR(this.editForm.value)
     .subscribe(data => {
-      //console.log(data);
+      console.log(data);
       this.pr.loadPR()
       .subscribe(data => {
         let res:any = data;
@@ -211,12 +213,12 @@ export class PrEditComponent implements OnInit {
           this.pr.dataSourcePRTable.data = res;
         }
 
-        this.editForm.get('pr_number')?.disable();
-        this.editForm.get('designation')?.disable();
-        this.editForm.get('division')?.disable();
+        this.editForm.get('pr_no')?.disable();
+        this.editForm.get('pr_designation')?.disable();
+        this.editForm.get('pr_division')?.disable();
 
         setTimeout(() => {
-          this.dialogRef.close(this.editForm.get('pr_number')?.value);
+          this.dialogRef.close(this.editForm.get('pr_no')?.value);
           const config: MatSnackBarConfig = {
             verticalPosition: 'top',
             duration: 5000,
@@ -225,7 +227,6 @@ export class PrEditComponent implements OnInit {
           this.snackBar.open('PR Updated Successfully', 'Dismiss', config);
         }, 1000);
       });
-
     });
   }
 
@@ -240,7 +241,7 @@ export class PrEditComponent implements OnInit {
       await this.employee.getEmp(this.sessionStorageService.getSession("division")).toPromise().then((res:any) => {
         this.options = res;
 
-        this.filteredOptions = this.editForm.get("requestor").valueChanges.pipe(
+        this.filteredOptions = this.editForm.get("pr_requestor").valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || '')),
         );

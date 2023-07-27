@@ -10,18 +10,28 @@ import { ConfirmationComponent } from '../modals/confirmation/confirmation.compo
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
 import { API_URL } from '../../constants';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-items-view',
   templateUrl: './items-view.component.html',
-  styleUrls: ['./items-view.component.scss']
+  styleUrls: ['./items-view.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class ItemsViewComponent implements OnInit {
+  expandedElement: any | null;
+
   public dataSource:any;
   public dataSource1:any;
-  //public displayedColumns = ['PRNo', 'PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost', 'Actions'];
-  public displayedColumns = ['PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost'];
+  public displayedColumns = ['pr_items', 'pr_quantity', 'pr_unit', 'pr_cost'];
+  //public displayedColumns = ['PRItems', 'PRQuantity', 'PRUnit', 'PRCost', 'TotalCost'];
   public result:any;
   public arrayOfYears:any;
   public selectedYear:string;

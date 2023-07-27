@@ -55,7 +55,7 @@ export class PrUpdateStatusService {
 
         if (stat === "Disapprove") {
           title = `Purchase Request ${stat}`;
-          message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
+          message = `Purchase Request: ${prno} has been ${stat}d by ${this.sessionStorageService.getSession('fullname')}`;
 
           status = `${stat}(${pr_status})`;
           // if (this.data.pr_status === "Cancelled") {
@@ -63,9 +63,10 @@ export class PrUpdateStatusService {
           // } else if(this.data.pr_status === "Disapprove") {
           //   status = `${this.data.pr_status}(${this.data.pr_request_status})`;
           // }
+
         } else if(stat === "Approve") {
             title = `Pending Purchase Request Approval`;
-            message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
+            message = `Purchase Request: ${prno} has been ${stat}d by ${this.sessionStorageService.getSession('fullname')}`;
 
             if (pr_status === "For DM Approval") {
               status = "For Budget Checking";
@@ -74,6 +75,7 @@ export class PrUpdateStatusService {
             } else if (pr_status === "For Cash Allocation") {
               status = "For Printing";
             }
+
         } else if(stat === "Cancelled") {
           title = `Purchase Request ${stat}`;
           message = `Purchase Request: ${prno} has been ${stat} by ${this.sessionStorageService.getSession('fullname')}`;
@@ -93,6 +95,11 @@ export class PrUpdateStatusService {
         } else {
           return;
         }
+
+        this.notif.updateNotificationIsRead(prno, pr_status, this.sessionStorageService.getSession('access'))
+        .subscribe(data => {
+          console.log(data);
+        });
 
         this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.sessionStorageService.getSession('division'), status, prno).subscribe(data => {
           //this.websock.status_message = devicedeveui;

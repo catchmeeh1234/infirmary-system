@@ -20,7 +20,7 @@ You have {{ notif.notificationContent.length }} new notifications</div>
       	</div>
       	<div *ngIf="notifications.length !== 0; then thenBlock else elseBlock;"></div>
       	<div class="footer" fxLayout="row" fxLayoutAlign="center center">
-        	<div class="action">Mark all as read</div>
+        	<div class="action" (click)="markAllAsRead()">Mark all as read</div>
     	</div>
     </div>
 
@@ -38,7 +38,7 @@ You have {{ notif.notificationContent.length }} new notifications</div>
           <div class="time">{{ notification.notif_message }}</div>
         </div>
         <span fxFlex></span>
-        <button type="button" mat-icon-button (click)="delete(notification.AccountNo)">
+        <button type="button" mat-icon-button (click)="delete(notification.notif_id)">
           <mat-icon class="close">close</mat-icon>
         </button>
       </div>

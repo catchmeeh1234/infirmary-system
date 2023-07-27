@@ -11,11 +11,11 @@
         <div class="inline-form">
           <mat-form-field appearance="outline">
             <mat-label>PR Number</mat-label>
-            <input matInput type="text" size="6" placeholder="PR No." class="prno" formControlName="pr_number" />
+            <input matInput type="text" size="6" placeholder="PR No." class="prno" formControlName="pr_no" />
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Requestor</mat-label>
-            <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="requestor"/>
+            <input matInput type="text" size="25" placeholder="Requestor" class="requestor form-field" [matAutocomplete]="auto" formControlName="pr_requestor"/>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
               <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
                 {{option.full_name}}
@@ -26,12 +26,12 @@
         <div class="inline-form">
           <mat-form-field appearance="outline">
             <mat-label>Designation</mat-label>
-            <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" />
+            <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="pr_designation" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Division</mat-label>
-            <mat-select class="division" formControlName="division">
+            <mat-select class="division" formControlName="pr_division">
               <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
             </mat-select>
           </mat-form-field>
@@ -39,55 +39,99 @@
         <div class="inline-form">
           <mat-form-field appearance="outline">
             <mat-label>Purpose</mat-label>
-            <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="purpose" />
+            <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="pr_purpose" />
           </mat-form-field>
         </div>
           <h3 class="md-title" style="text-align: left !important;">PR Items</h3>
               <table>
               <thead>
                 <tr>
-                <th width="20%">Item</th>
-                <th width="20%">Quantity</th>
-                <th width="20%">Unit</th>
-                <th width="20%">Cost</th>
-                <th width="20%"><button type="button" (click)="addQuantity()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
+                  <th width="20%">Item</th>
+                  <th width="20%">Quantity</th>
+                  <th width="20%">Unit</th>
+                  <th width="20%">Cost</th>
+                  <th width="20%"><button type="button" (click)="addItem()" class="no-style-btn add-item"><i class="fa-solid fa-square-plus"></i></button></th>
                 </tr>
               </thead>
-                <tr *ngFor="let pritem of pr_items;let i = index ">
-                  <td align="center">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Item</mat-label>
-                      <input matInput type="text" class="form-control" size="40" placeholder="Enter Item" [formControlName]="'item_' + i">
-                    </mat-form-field>
-                  </td>
-                  <td align="center">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Item</mat-label>
-                      <input matInput type="text" class="form-control" size="10" placeholder="Enter Quantity" [formControlName]="'qty_' + i">
-                    </mat-form-field>
-                  </td>
-                  <td align="center">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Unit</mat-label>
-                      <mat-select id="role" [formControlName]="'unit_' + i" class="form-control">
-                        <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </td>
-                  <td align="center">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Item</mat-label>
-                      <input matInput type="text" class="form-control" size="15" placeholder="Enter Cost" [formControlName]="'cost_' + i">
-                    </mat-form-field>
-                  </td>
-                  <td align="center">
-                    <button (click)="removeQuantity(pritem)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
-                  </td>
-                </tr>
+              <ng-container formArrayName="items">
+                <ng-container *ngFor="let item of itemFormArray.controls; let i = index" [formGroupName]="i">
+                  <tr >
+                    <td align="center">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Item</mat-label>
+                        <input matInput type="text" class="form-control" size="40" placeholder="Enter Item" [formControlName]="'item'">
+                      </mat-form-field>
+                    </td>
+                    <td align="center">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput type="text" class="form-control" size="10" placeholder="Enter Quantity" [formControlName]="'qty'">
+                      </mat-form-field>
+                    </td>
+                    <td align="center">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Unit</mat-label>
+                        <mat-select id="role" [formControlName]="'unit'" class="form-control">
+                          <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td align="center">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Cost</mat-label>
+                        <input matInput type="text" class="form-control" size="15" placeholder="Enter Cost" [formControlName]="'cost'">
+                      </mat-form-field>
+                    </td>
+                    <td align="center">
+                      <button (click)="removeItem(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                  <ng-container [formArrayName]="'pr_subitems'">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <!-- *ngIf="subItemFormArray(i).length != 0" -->
+                      <h5 style="text-align: left !important;">Sub Items</h5>
+                      <button (click)="addSubItem(i)" class="no-style-btn"><i class="fa-solid fa-square-plus"></i></button>
+                    </div>
+                    <ng-container *ngFor="let subitems of subItemFormArray(i).controls;let z = index" [formGroupName]="z">
+                      <tr>
+                          <td style="padding-left:20px;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Sub Item</mat-label>
+                              <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_items'">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field appearance="outline">
+                              <mat-label>Quantity</mat-label>
+                              <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_quantity'">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field appearance="outline">
+                              <mat-label>Unit</mat-label>
+                              <mat-select [formControlName]="'dpr_unit'" class="form-control">
+                                <mat-option *ngFor="let unit of units" [value]="unit.unit_name"> {{ unit.unit_name }} </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field appearance="outline">
+                              <mat-label>Cost</mat-label>
+                              <input matInput type="text" class="form-control" size="40" placeholder="Enter Sub Item" [formControlName]="'dpr_cost'">
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <button (click)="removeSubItem(i, z)" class="no-style-btn removeSubItem"><i class="fa-solid fa-square-minus"></i></button>
+                          </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
               </table>
               <div>
                 <h3 class="md-title" style="text-align: left !important;">Remarks</h3>
-                <textarea placeholder="Please enter your remarks here .." formControlName="cancel_remarks" class="remarks"></textarea>
+                <textarea placeholder="Please enter your remarks here .." formControlName="remarks" class="remarks"></textarea>
               </div>
               <button mat-flat-button color="primary" id="btnSavePrRequest" (click)="onSavePR()">Save Purchase Request</button>
       <!-- Remarks
