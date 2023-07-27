@@ -1,0 +1,66 @@
+<app-modal
+[headerText]="data.headerText"
+[containerWidth]="data.containerWidth"
+>
+  <div class="modal-container">
+    <div class="modal-message">
+      <div class="table-container">
+        <form [formGroup]="editForm">
+          <input type="hidden" size="6" placeholder="Emp ID" class="pr_no_hidden" formControlName="empid"/>
+
+          <div class="inline-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput type="text" size="6" placeholder="Username" class="prno" formControlName="username" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fullname</mat-label>
+              <input matInput type="text" size="25" placeholder="Fullname" class="requestor form-field" [matAutocomplete]="auto" formControlName="fullname"/>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
+                  {{option.full_name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="text" size="25" placeholder="Email" class="email form-field" formControlName="email"/>
+            </mat-form-field>
+            <!-- <mat-slide-toggle
+                class="example-margin"
+                [checked]="isAutoFill"
+                *ngIf="isVisible"
+                [(ngModel)]="isAutoFill">
+               Auto fill
+            </mat-slide-toggle> -->
+          </div>
+          <div class="inline-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Division</mat-label>
+              <mat-select class="division" formControlName="division">
+                <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Designation</mat-label>
+              <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" />
+            </mat-form-field>
+          </div>
+          <div class="inline-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Access</mat-label>
+              <mat-select class="access" formControlName="access">
+                <mat-option *ngFor="let access of accesses" [value]="access.access_name"> {{ access.access_name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <button *ngIf="isVisible" mat-flat-button color="primary" (click)="onSaveUserAccount()">Save User Account</button>
+      </form>
+      </div>
+    </div>
+    <!-- <div class="modal-buttons">
+      <button mat-flat-button color="primary" class="modal-confirm" (click)="onConfirm(data.number)" style="margin-right: 5px;">Yes</button>
+      <button mat-flat-button color="warn" class="modal-cancel" (click)="onCancel()">No</button>
+    </div> -->
+  </div>
+</app-modal>

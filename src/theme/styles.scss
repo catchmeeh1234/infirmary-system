@@ -1,0 +1,95 @@
+@use '~@angular/material' as mat;
+@import './palettes/green-palette.scss';
+
+// $header : mat.$green-palette;
+
+// $header-app: mat.define-palette($header , 400);
+
+.table-container {
+  position: relative;
+  margin-top:0px;
+  }
+  .table-container .mat-table {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  }
+  .table-container .mat-table .mat-header-row {
+  // position: absolute;
+  // top: -50px;
+  // left: 0px;
+  // right: 18px;
+  background: #fff;
+  }
+  .table-header {
+    background-color: #327ebd;
+    //background-color: $green-color;
+    color: white;
+    padding: 0 5px;
+  }
+  .table-container {
+    padding: 5px 15px 15px 15px;
+  }
+  .table-component-holder {
+    border: 1px solid #327ebd;
+    //border: 1px solid $primary;
+    background-color: white;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+    padding: 10px 0px 10px 0px;
+  }
+
+  .zoneDropDown {
+    width: 150px;
+    margin-right: 10px;
+  }
+
+  snack-bar-container > div > div > simple-snack-bar > div > button > span.mat-button-wrapper {
+    color: #fff; /* Replace with your desired font color */
+  }
+  .style-snackbar-error {
+    background-color: red !important;
+    color: #fff;
+  }
+  .style-snackbar-success {
+    background-color: green !important;
+    color: #fff;
+  }
+
+  .no-style-btn {
+    all: unset;
+    cursor: pointer;
+  }
+  .no-style-btn:hover {
+    color: #ccc;
+  }
+
+  .no-padding .mat-dialog-container {
+    padding: 0;
+    //width: 1000px;
+    height: auto;
+    box-shadow: none !important;
+    margin-top: 4em;
+  }
+
+  .statusFailed {
+    color: white;
+    font-size: 12px;
+    margin-bottom: 10px;
+    background-color: red;
+    padding: 14px 20px;
+  }
+
+  .statusSuccess {
+    color: white;
+    font-size: 12px;
+    margin-bottom: 10px;
+    background-color: green;
+    padding: 14px 20px;
+  }
+
+  snack-bar-container > div > div > simple-snack-bar > div > button > span.mat-button-wrapper {
+    color: #fff; /* Replace with your desired font color */
+  }
