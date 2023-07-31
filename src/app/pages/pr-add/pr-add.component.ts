@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ItemsViewComponent } from '../items-view/items-view.component';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { DateFormatService } from '../../services/date-format.service';
+import { MatCheckbox } from '@angular/material/checkbox';
 //import { StatusMessageComponent } from '../status-message/status-message.component';
 
 @Component({
@@ -25,6 +26,7 @@ import { DateFormatService } from '../../services/date-format.service';
 
 
 export class PrAddComponent implements OnInit {
+
   public dataSource:any;
   //public displayedColumns = ['PRNo','DateCreated','Requestor','Designation','Division','Purpose','PRStatus'];
   public prload;
@@ -177,6 +179,7 @@ export class PrAddComponent implements OnInit {
 
   createItemGroup(): FormGroup {
     return this.fb.group({
+      boldText: false,
       item: ['', Validators.required],
       qty: ['', [Validators.required,  Validators.pattern('^[0-9]*$')]],
       unit: ['', Validators.required],
@@ -257,7 +260,6 @@ export class PrAddComponent implements OnInit {
   }
 
 
-
   addPurchaseRequest() {
     let prno = <HTMLInputElement>document.querySelector('.prno');
 
@@ -270,14 +272,6 @@ export class PrAddComponent implements OnInit {
     this.addForm.patchValue({
       pr_date: prDate,
     });
-    // let datecreated = <HTMLInputElement>document.querySelector('.datecreated');
-    // let requestor = <HTMLInputElement>document.querySelector('.requestor');
-    // let designation = <HTMLInputElement>document.querySelector('.designation');
-    // let division = <HTMLInputElement>document.querySelector('.division');
-    // let purpose = <HTMLInputElement>document.querySelector('.purpose');
-    // let prstatus = <HTMLInputElement>document.querySelector('.prstatus');
-
-    // let prtitle = <HTMLInputElement>document.querySelector('.pr_title');
 
 
     if (!this.addForm.valid || this.itemFormArray.length === 0) {
@@ -297,9 +291,6 @@ export class PrAddComponent implements OnInit {
 
     let x = this.document.addPR(prno.value, this.addForm.value, username);
 
-
-    //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value, this.productForm.value);
-    //console.log(prno.value, datecreated.value, requestor.value, designation.value, division.value, purpose.value, prstatus.value)
     x.subscribe(data => {
       console.log(data);
 
@@ -348,13 +339,6 @@ export class PrAddComponent implements OnInit {
 
     });
 
-     /* prno.value = "";
-      datecreated.value = "";
-      requestor.value = "";
-      designation.value = "";
-      division.value = "Administrative Services";
-      purpose.value = "";
-      prstatus.value = "For Approve";*/
   }
 
   async getAllData(division:string) {

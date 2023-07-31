@@ -51,18 +51,18 @@ export class SampleCompComponent implements OnInit {
       //this.dataSource.paginator = this.paginator;
     });
 
-    this.pr.getPurpose(prnum)
-    .subscribe(data => {
-      let result:any = data;
-      this.prequeststatus = result[0].pr_status;
-      this.prequestdivision = result[0].pr_division;
-      this.purpose = result[0].pr_purpose;
-      this.remarks = result[0].remarks;
-      this.current_status = result[0].pr_status;
-      this.dateCreated = result[0].pr_dateCreated;
-      this.requestor = result[0].pr_requestor;
+    // this.pr.getPurpose(prnum)
+    // .subscribe(data => {
+    //   let result:any = data;
+    //   this.prequeststatus = result[0].pr_status;
+    //   this.prequestdivision = result[0].pr_division;
+    //   this.purpose = result[0].pr_purpose;
+    //   this.remarks = result[0].remarks;
+    //   this.current_status = result[0].pr_status;
+    //   this.dateCreated = result[0].pr_dateCreated;
+    //   this.requestor = result[0].pr_requestor;
 
-    });
+    // });
 
   }
 

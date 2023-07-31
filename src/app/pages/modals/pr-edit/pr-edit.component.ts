@@ -100,7 +100,9 @@ export class PrEditComponent implements OnInit {
   }
 
   createItemGroup(item:any): FormGroup {
+
     return this.formBuilder.group({
+      boldText: [item ? item.bold_text : null],
       prItems_id: [item ? item.prItems_id:null],
       item: [item ? item.pr_items: null, Validators.required],
       qty: [item ? item.pr_quantity: null, [Validators.required,  Validators.pattern('^[0-9]*$')]],
@@ -112,7 +114,14 @@ export class PrEditComponent implements OnInit {
 
   // Set up the FormArray with sub-items
   setItems(items: any[]): void {
-    for (const [index, item] of items.entries()) {
+    for (let [index, item] of items.entries()) {
+      //bold text
+      if (item.bold_text === "true") {
+        item.bold_text = true;
+      } else {
+        item.bold_text = false;
+      }
+
       this.itemFormArray.push(this.createItemGroup(item));
       //this.setSubItems(data.pr_subitems); // Set the sub-items in the FormArray
       for (const subitem of item.pr_subitems) {

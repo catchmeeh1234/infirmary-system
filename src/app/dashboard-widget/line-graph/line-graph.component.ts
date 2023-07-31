@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LineGraphComponent implements OnInit {
 
-  public Total:any;
+  public Total:any = [];
 
   constructor(private document:PrService) { }
 

@@ -42,6 +42,12 @@
             <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="pr_purpose" />
           </mat-form-field>
         </div>
+        <div class="inline-form">
+          <mat-form-field appearance="outline">
+            <mat-label>PR Title</mat-label>
+            <input matInput type="text" size="30"placeholder="PR Title(optional)" formControlName="pr_title" />
+          </mat-form-field>
+        </div>
           <h3 class="md-title" style="text-align: left !important;">PR Items</h3>
               <table>
               <thead>
@@ -55,7 +61,11 @@
               </thead>
               <ng-container formArrayName="items">
                 <ng-container *ngFor="let item of itemFormArray.controls; let i = index" [formGroupName]="i">
-                  <tr >
+                  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em">
+                    <h4>Item {{i + 1}}</h4>
+                    <mat-checkbox formControlName="boldText">Bold Text</mat-checkbox>
+                  </div>
+                  <tr [ngClass]="{'boldText': item.value.boldText === true}">
                     <td align="center">
                       <mat-form-field appearance="outline">
                         <mat-label>Item</mat-label>

@@ -163,8 +163,8 @@
         <button *ngIf="prequeststatus === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
           Edit PR
 				</button>
-				<button *ngIf="prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()">
-          Print PR
+				<button *ngIf="prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()" [matTooltip]="'Printed '+ print_counter + ' times'">
+          Print PR<span *ngIf="print_counter != 0">({{print_counter}})</span>
         </button>
         <button *ngIf="isShowApproveDisapprove === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Approve', false)" [disabled]="isBtnApproval">
           Approve PR
@@ -177,11 +177,11 @@
         <button *ngIf="isShowCancelled === true" mat-flat-button color="warn" (click)="onUpdateApproveStatus('Cancelled', true)" [disabled]="isBtnApproval">
           Cancel PR
         </button>
-        <button class="btnApproveDisapproveGM" mat-icon-button *ngIf="prequeststatus === 'For Printing' && access === 'Encoder'" (click)="onUpdateApproveStatus('Disapprove', true)" matTooltip="Tag as disapproved">
-          <mat-icon>thumb_down</mat-icon>
+        <button mat-flat-button color="warn" *ngIf="prequeststatus === 'For Printing' && access === 'Final Approver'" (click)="onUpdateApproveStatus('Disapprove', true)" matTooltip="Tag as disapproved">
+          Tag as Disapproved by GM
         </button>
-        <button class="btnApproveDisapproveGM" mat-icon-button *ngIf="prequeststatus === 'For Printing' && access === 'Encoder'" (click)="onUpdateApproveStatus('Approved', false)" matTooltip="Tag as approved">
-          <mat-icon>thumb_up</mat-icon>
+        <button  mat-flat-button color="primary" *ngIf="prequeststatus === 'For Printing' && access === 'Final Approver'" (click)="onUpdateApproveStatus('Approved', false)" matTooltip="Tag as approved">
+          Tag as Approved by GM
         </button>
       </div>
 		</div>

@@ -58,6 +58,7 @@ import { PrHistoryComponent } from './modals/pr-history/pr-history.component';
 import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.component';
 import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { UserAccountViewComponent } from './modals/user-account-view/user-account-view.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -117,7 +118,8 @@ import { UserAccountViewComponent } from './modals/user-account-view/user-accoun
         PrHistoryComponent,
         PrFilterButtonComponent,
         AccountViewComponent,
-        UserAccountViewComponent
+        UserAccountViewComponent,
+        ProfileComponent
     ],
     exports: [
     ],

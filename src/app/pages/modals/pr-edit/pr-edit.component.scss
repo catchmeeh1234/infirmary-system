@@ -44,3 +44,11 @@
   overflow: auto;
   height: 500px;
 }
+
+mat-form-field {
+  padding: 0 !important;
+}
+
+.boldText mat-form-field {
+  font-weight: bold;
+}

@@ -6,16 +6,16 @@
     <div class="modal-message">
       <div class="table-container">
         <form [formGroup]="editForm">
-          <input type="hidden" size="6" placeholder="Emp ID" class="pr_no_hidden" formControlName="empid"/>
-
+          <input type="hidden" size="6" placeholder="ID" class="pr_no_hidden" formControlName="id"/>
+          <input type="hidden" placeholder="Password" formControlName="Password">
           <div class="inline-form">
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
-              <input matInput type="text" size="6" placeholder="Username" class="prno" formControlName="username" />
+              <input matInput type="text" size="6" placeholder="Username" class="prno" formControlName="Username" />
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Fullname</mat-label>
-              <input matInput type="text" size="25" placeholder="Fullname" class="requestor form-field" [matAutocomplete]="auto" formControlName="fullname"/>
+              <input matInput type="text" size="25" placeholder="Fullname" class="requestor form-field" [matAutocomplete]="auto" formControlName="FullName"/>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option.full_name">
                   {{option.full_name}}
@@ -37,23 +37,23 @@
           <div class="inline-form">
             <mat-form-field appearance="outline">
               <mat-label>Division</mat-label>
-              <mat-select class="division" formControlName="division">
+              <mat-select class="division" formControlName="Division">
                 <mat-option *ngFor="let division of divisions" [value]="division.division_name"> {{ division.division_name }} </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Designation</mat-label>
-              <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="designation" />
+              <input matInput type="text" size="30" placeholder="Designation" class="designation" formControlName="Designation" />
             </mat-form-field>
           </div>
-          <div class="inline-form">
+          <!-- <div class="inline-form">
             <mat-form-field appearance="outline">
               <mat-label>Access</mat-label>
               <mat-select class="access" formControlName="access">
                 <mat-option *ngFor="let access of accesses" [value]="access.access_name"> {{ access.access_name }} </mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
+          </div> -->
           <button *ngIf="isVisible" mat-flat-button color="primary" (click)="onSaveUserAccount()">Save User Account</button>
       </form>
       </div>

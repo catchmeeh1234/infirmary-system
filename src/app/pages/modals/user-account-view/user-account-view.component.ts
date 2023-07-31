@@ -28,7 +28,7 @@ export class UserAccountViewComponent implements OnInit {
 
   public displayedColumns = ['Empid', 'Username', 'Fullname', 'Email', 'Division', 'Designation', 'Access'];
 
-  private empID:any;
+  //private empID:any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -43,13 +43,13 @@ export class UserAccountViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.editForm = new FormGroup({
-      empid: new FormControl('', [Validators.required]),
-      username: new FormControl('',[Validators.required]),
-      fullname: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      division: new FormControl('', [Validators.required]),
-      designation: new FormControl('', [Validators.required]),
-      access: new FormControl('', [Validators.required]),
+      id: new FormControl('', [Validators.required]),
+      Username: new FormControl('',[Validators.required]),
+      Password: new FormControl('', [Validators.required]),
+      FullName: new FormControl('', [Validators.required]),
+      Division: new FormControl('', [Validators.required]),
+      Designation: new FormControl('', [Validators.required]),
+      email: new FormControl(''),
     });
 
     if (this.data.isFormDisabled) {
@@ -74,8 +74,8 @@ export class UserAccountViewComponent implements OnInit {
     this.employee.selectEmployee(selectedValue)
     .subscribe(data => {
       let result:any = data;
-      this.editForm.get('division').setValue(result[0].division);
-      this.editForm.get('designation').setValue(result[0].designation);
+      this.editForm.get('Division').setValue(result[0].division);
+      this.editForm.get('Designation').setValue(result[0].designation);
       //this.designation.setValue(result[0].designation);
     });
     // Update the other field with the selected value
@@ -83,19 +83,20 @@ export class UserAccountViewComponent implements OnInit {
   }
 
   loadUserAccounts(userid) {
-    this.empID = userid;
+    //this.empID = userid;
     this.user.fetchOneUserAccount(userid)
     .subscribe(data => {
       let result:any = data;
-      this.editForm.setValue({
-        empid: result[0].Emp_ID,
-        username: result[0].Username,
-        fullname: result[0].FullName,
-        email: result[0].email,
-        division: result[0].Division.toUpperCase(),
-        designation: result[0].Designation,
-        access: result[0].Access,
-      });
+      this.editForm.patchValue(result[0]);
+      // this.editForm.setValue({
+      //   empid: result[0].Emp_ID,
+      //   username: result[0].Username,
+      //   fullname: result[0].FullName,
+      //   email: result[0].email,
+      //   division: result[0].Division.toUpperCase(),
+      //   designation: result[0].Designation,
+      //   access: result[0].Access,
+      // });
       //this.pr_items = result;
 
     });
@@ -155,7 +156,7 @@ export class UserAccountViewComponent implements OnInit {
     try {
       await this.employee.getEmp("All").toPromise().then((res:any) => {
         this.options = res;
-        this.filteredOptions = this.editForm.get("fullname").valueChanges.pipe(
+        this.filteredOptions = this.editForm.get("FullName").valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || '')),
         );

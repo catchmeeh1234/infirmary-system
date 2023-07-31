@@ -1,0 +1,10 @@
+.inline-form {
+  display: flex;
+  gap: 5px;       /* Adds a 10px gap between flex items */
+  width: 100%;     /* Sets the width to 100% of the container */
+}
+
+#btnEdit {
+  width: 100%;
+  padding: 0.5em 0;
+}

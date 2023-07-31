@@ -54,6 +54,11 @@ export class PrViewComponent implements OnInit {
   ngOnInit(): void {
     this.division = this.sessionStorageService.getSession("division").toUpperCase();
     this.role = this.sessionStorageService.getSession("access");
+
+    this.loadPR_Details();
+  }
+
+  loadPR_Details() {
     this.document.loadPR()
     .subscribe(data => {
       this.result = data;
@@ -61,8 +66,6 @@ export class PrViewComponent implements OnInit {
       this.document.dataSourcePRTable.paginator = this.paginator;
     });
   }
-
-
 
   viewpritems(selectedPrNO) {
     if (selectedPrNO == null) {
@@ -82,7 +85,16 @@ export class PrViewComponent implements OnInit {
   }
 
   onPrintPr(prno) {
-    window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
+    this.document.updatePRPrintCounter(prno)
+    .subscribe((data:any) => {
+      console.log(data);
+      if (data.status === "1") {
+          window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
+          this.loadPR_Details();
+      }
+    });
+
+
   }
 
   onPrintPreview(prno) {

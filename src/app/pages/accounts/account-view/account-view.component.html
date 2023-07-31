@@ -62,6 +62,9 @@
               <button matTooltip="Edit" mat-icon-button (click)="viewUserAccount(row.id, false, 'Update Account')">
                   <mat-icon>edit</mat-icon>
               </button>
+              <button matTooltip="Reset User Account" mat-icon-button (click)="resetUserAccount(row.id)">
+                <mat-icon>refresh</mat-icon>
+            </button>
           </mat-cell>
 				</ng-container>
 

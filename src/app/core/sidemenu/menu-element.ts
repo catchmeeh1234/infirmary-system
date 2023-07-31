@@ -33,22 +33,22 @@ export const menus = [
           'chip': false,
           'open': false,
         },
-        {
-          'name': 'Sample',
-          'link': 'pages/sampleComponent',
-          'icon': 'thumbs_up_down',
-          'chip': false,
-          'open': false,
-        },
+        // {
+        //   'name': 'Sample',
+        //   'link': 'pages/sampleComponent',
+        //   'icon': 'thumbs_up_down',
+        //   'chip': false,
+        //   'open': false,
+        // },
       ]
       // 'chip': { 'value': 1, 'color': 'accent' },
    },
-  //  {
-  //     'name': 'Accounts',
-  //     'icon': 'home',
-  //     'link': 'pages/viewAccounts',
-  //     'open': false,
-  //  },
+   {
+      'name': 'Accounts',
+      'icon': 'manage_accounts',
+      'link': 'pages/viewAccounts',
+      'open': false,
+   },
     // {
     //     'name': 'Documents',
     //     'icon': 'folder',

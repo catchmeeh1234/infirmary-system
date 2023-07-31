@@ -129,4 +129,12 @@ export class PrService {
   loadPRTypes() {
     return this.http.get(API_URL + `/loadPRTypes.php`, {responseType: 'json'});
   }
+
+  // update pr counter
+  updatePRPrintCounter(prno:string) {
+    let params = new FormData();
+    params.append('prno', prno);
+
+    return this.http.post(API_URL + `/updatePRPrintCounter.php`, params, {responseType: 'json'});
+  }
 }

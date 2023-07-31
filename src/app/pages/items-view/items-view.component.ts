@@ -41,6 +41,7 @@ export class ItemsViewComponent implements OnInit {
   public prnumber:string;
   public dateCreated:string;
   public requestor:string;
+  public print_counter:string;
 
   public prequeststatus:string;
   public prequestdivision:string;
@@ -163,7 +164,7 @@ export class ItemsViewComponent implements OnInit {
           this.current_status = prDetails.pr_status;
           this.dateCreated = prDetails.pr_dateCreated;
           this.requestor = prDetails.pr_requestor;
-
+          this.print_counter = prDetails.print_counter;
           this.dataSource = new MatTableDataSource(prDetails.items);
 
           this.dataSource.paginator = this.paginator;
@@ -217,14 +218,25 @@ export class ItemsViewComponent implements OnInit {
       } else {
 
         this.loadPRDetails(result);
-        console.log('closed' + result);
+        //console.log('closed' + result);
 
       }
     });
   }
 
   onPrintPr() {
-    window.open(`${API_URL}/printing/index.php?prno=${this.prnumber}`, '_blank');
+    //update print counter
+    this.document.updatePRPrintCounter(this.prnumber)
+    .subscribe((data:any) => {
+      console.log(data);
+      if (data.status === "1") {
+          window.open(`${API_URL}/printing/index.php?prno=${this.prnumber}`, '_blank');
+          this.loadPRDetails(this.prnumber);
+
+      }
+    });
+
+
   }
 
   onUpdateApproveStatus(stat:string, is_remarks_visible:boolean) {

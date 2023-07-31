@@ -34,4 +34,10 @@ export class UserService {
 
     return this.http.post(`${API_URL}/Accounts/editUserAccount.php`, params, {responseType: 'json'});
   }
+
+  resetUserAccount(userid) {
+    let params = new FormData();
+    params.append('userid', userid);
+    return this.http.post(`${API_URL}/Accounts/resetUserAccount.php`, params, {responseType: 'json'});
+  }
 }

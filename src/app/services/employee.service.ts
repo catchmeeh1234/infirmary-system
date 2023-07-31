@@ -16,4 +16,5 @@ export class EmployeeService {
   selectEmployee(fullname) {
     return this.http.get(API_URL + `/selectEmployee.php?fullname=${fullname}`, {responseType: 'json'});
   }
+
 }

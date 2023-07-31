@@ -138,6 +138,7 @@ export class LoginComponent implements OnInit {
           this.sessionStorageService.setSession('fullname', this.statusMessage.fullname);
           this.sessionStorageService.setSession('division', this.statusMessage.division);
           this.sessionStorageService.setSession('access', this.statusMessage.access);
+
           //this.router.navigate(['/auth/dashboard'], { queryParams: { id: this.sessionStorageService.getSession('userid') } });
           this.router.navigate(['/auth/dashboard'], { queryParams: { role: this.sessionStorageService.getSession('division') } });
         }

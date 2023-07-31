@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'cdk-sidemenu-item',
@@ -11,10 +12,13 @@ export class SidemenuItemComponent implements OnInit {
   @Input() iconOnly: boolean;
   @Input() secondaryMenu = false;
 
-  constructor() {
+  public role:string;
+
+  constructor(private sessionStorageService:SessionStorageService) {
   }
 
   ngOnInit() {
+    this.role = this.sessionStorageService.getSession("access");
   }
 
   openLink() {
