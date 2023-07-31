@@ -29,4 +29,17 @@ export class SidemenuItemComponent implements OnInit {
     return (this.menu && this.menu.sub) ? true : false;
   }
 
+  checkIfSystemAdmin(name) {
+    if (name === "Accounts") {
+      if (this.role === "System Administrator") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+
+  }
+
 }
