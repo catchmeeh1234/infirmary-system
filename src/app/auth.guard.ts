@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
 
       const username = this.sessionStorageService.getSession('username');
       const password = this.sessionStorageService.getSession('password');
+
       if (username && password) {
         // Credentials are stored in cookies, so redirect to dashboard
         this.router.navigate(['/auth/dashboard']);

@@ -42,14 +42,6 @@ export class SampleCompComponent implements OnInit {
   }
 
   loadPRDetails(prnum) {
-    this.prnumber = prnum;
-    this.pr.loadItems(prnum)
-    .subscribe(data => {
-      let result:any = data;
-      console.log(result);
-      this.dataSource = new MatTableDataSource(result);
-      //this.dataSource.paginator = this.paginator;
-    });
 
     // this.pr.getPurpose(prnum)
     // .subscribe(data => {

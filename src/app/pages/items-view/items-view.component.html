@@ -140,19 +140,6 @@
           <input matInput type="text" size="30"placeholder="Requestor" class="requestor" [value]="requestor" disabled/>
         </mat-form-field>
       </div>
-      <!-- <div class="inline-form">
-        <div *ngIf="disBy != null">PR no. <strong>{{prnumber}}</strong> has been disapproved by <strong>{{disBy}}</strong> on <strong>{{disDate | date: 'MM/dd/yyyy HH:mm' }}</strong>.</div>
-			  <table *ngFor="let row of StatusResult">
-          <tr>
-            <td *ngIf="row.pr_status == 'For DM Approval'">Date created: {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }} </td>
-            <td *ngIf="row.pr_status == 'For Budget Checking'">Approved by Division Manager: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
-            <td *ngIf="row.pr_status == 'For Cash Allocation'">Approved by Budget: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
-            <td *ngIf="row.pr_status == 'For Printing'">Approved by Finance: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
-            <td *ngIf="row.pr_status == 'Disapprove(For Budget Checking)'">Disapproved by Budget: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
-            <td *ngIf="row.pr_status == 'Approved'">Approved by GM: {{row.pr_updatedBy}} on {{row.pr_datetime | date: 'MM/dd/yyyy HH:mm' }}</td>
-          </tr>
-			  </table>
-      </div> -->
       <div class="inline-form" style="justify-content: flex-end;">
         <button mat-flat-button color="primary" (click)="viewHistoryPR(prnumber)">
           View History

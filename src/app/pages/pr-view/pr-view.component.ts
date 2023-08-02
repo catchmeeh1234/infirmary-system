@@ -10,7 +10,7 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrFilterButtonComponent } from '../pr-filter-button/pr-filter-button.component';
 import { ItemsViewComponent } from '../items-view/items-view.component';
-import { API_URL } from '../../constants';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-pr-view',
@@ -89,7 +89,7 @@ export class PrViewComponent implements OnInit {
     .subscribe((data:any) => {
       console.log(data);
       if (data.status === "1") {
-          window.open(`${API_URL}/printing/index.php?prno=${prno}`, '_blank');
+          window.open(`${environment.API_URL}/PR/printing/index.php?prno=${prno}`, '_blank');
           this.loadPR_Details();
       }
     });
@@ -98,7 +98,7 @@ export class PrViewComponent implements OnInit {
   }
 
   onPrintPreview(prno) {
-    window.open(`${API_URL}/printing/previewprint.php?prno=${prno}`, '_blank');
+    window.open(`${environment.API_URL}/PR/printing/previewprint.php?prno=${prno}`, '_blank');
   }
 
   updatePR_Status(prno, pr_status, stat, remarks_visible:boolean, pr_division:string) {

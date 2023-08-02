@@ -90,12 +90,12 @@ export class DashboardCrmComponent implements OnInit {
       );
     }
 
-    LoadTotalAS() {
-        this.document.loadTotalAS()
-        .subscribe(data => {
-        this.totalas = parseInt(data);
-        let object = {colorDark: '#5C6BC0', colorLight: '#7986CB', number: this.totalas, title: 'ADMINISTRATIVE SERVICE', icon: 'account_circle'}
-        this.dashCard.push(object);
-        });
-    }
+    // LoadTotalAS() {
+    //     this.document.loadTotalAS()
+    //     .subscribe(data => {
+    //     this.totalas = parseInt(data);
+    //     let object = {colorDark: '#5C6BC0', colorLight: '#7986CB', number: this.totalas, title: 'ADMINISTRATIVE SERVICE', icon: 'account_circle'}
+    //     this.dashCard.push(object);
+    //     });
+    // }
 }

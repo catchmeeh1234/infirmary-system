@@ -63,14 +63,14 @@ export class ProfileComponent implements OnInit {
       this.user.editUserAccount(this.profileForm.value)
       .subscribe((data:any) => {
         if (data.status === "Account updated successfully") {
-          alert("Account Update is Successfuly, Please log in again");
-          this.profileForm.disable();
-
+          alert("Account Update was Successful, Please log in again");
           this.router.navigate(['./login']);
           this.sessionStorageService.removeSession();
         } else {
           alert(data.status);
         }
+        this.profileForm.disable();
+
       });
 
     }

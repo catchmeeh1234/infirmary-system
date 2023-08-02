@@ -10,5 +10,9 @@ export const environment = {
     appId: "1:422055031001:web:261c3f03c6dbe830df8ec8",
     measurementId: "G-NYGXB63DCC"
   },
-  mailApi: '/assets/list.json'
+  mailApi: '/assets/list.json',
+  API_URL: "https://backend.eprms.home:4302",
+  domain: "https://srwd.eprms.home/",
+  loginBackgroundCount: 3,
+  primaryColor: "#327ebd",
 };

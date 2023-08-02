@@ -36,8 +36,6 @@ export class PrAddComponent implements OnInit {
   public selectedDivision:string;
   public selectedDesignation:string;
 
-  public pr_types:any;
-
   public addForm: FormGroup;
   public isAddFormValid: boolean = false;
 
@@ -99,7 +97,6 @@ export class PrAddComponent implements OnInit {
 
     this.onDisplayUnitMeasurements();
     this.onDisplayDivisions();
-    this.onDisplayPRTypes();
     this.getAllData(this.sessionStorageService.getSession('division'));
   }
 
@@ -135,13 +132,6 @@ export class PrAddComponent implements OnInit {
     this.document.getDivisions()
     .subscribe(data => {
       this.divisions = data;
-    });
-  }
-
-  onDisplayPRTypes() {
-    this.document.loadPRTypes()
-    .subscribe(data => {
-      this.pr_types = data;
     });
   }
 

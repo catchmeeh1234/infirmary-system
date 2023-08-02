@@ -15,7 +15,6 @@ import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ServicesComponent } from './services/services.component';
 import { CoreModule } from '../core/core.module';
-import { ViewDocumentsComponent } from './view-documents/view-documents.component';
 
 import { TablesModule } from '../tables/tables.module';
 import { MatTableModule } from '@angular/material/table';
@@ -104,7 +103,6 @@ import { ProfileComponent } from './profile/profile.component';
         ContactComponent,
         AboutComponent,
         ServicesComponent,
-        ViewDocumentsComponent,
         PrViewComponent,
         PrAddComponent,
         PrItemComponent,

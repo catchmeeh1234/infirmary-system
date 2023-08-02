@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL, domain } from '../constants';
 import { SessionStorageService } from './session-storage.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class NotificationsService {
     } else if (role === "Final Approver") {
       status = "Final Approver";
     }
-    return this.http.get(`${API_URL}/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
+    return this.http.get(`${environment.API_URL}/Notifications/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
   }
 
   updateNotificationIsRead(notif_prno, notif_status, role) {
@@ -34,7 +34,7 @@ export class NotificationsService {
     params.append('notif_status', notif_status);
     params.append('role', role);
 
-    return this.http.post(`${API_URL}/updateNotificationIsRead.php`, params, {responseType: 'json'});
+    return this.http.post(`${environment.API_URL}/Notifications/updateNotificationIsRead.php`, params, {responseType: 'json'});
   }
 
   markAllAsRead(notif_details:any, role:string) {
@@ -43,7 +43,7 @@ export class NotificationsService {
     params.append('notif_details', JSON.stringify(notif_details));
     params.append('role', role);
 
-    return this.http.post(`${API_URL}/markAllNotifAsRead.php`, params, {responseType: 'text'});
+    return this.http.post(`${environment.API_URL}/Notifications/markAllNotifAsRead.php`, params, {responseType: 'text'});
   }
 
   updateOneNotification(notif_id, role:string) {
@@ -51,7 +51,7 @@ export class NotificationsService {
     params.append('notif_id', notif_id);
     params.append('role', role);
 
-    return this.http.post(`${API_URL}/updateOneNotification.php`, params, {responseType: 'json'});
+    return this.http.post(`${environment.API_URL}/Notifications/updateOneNotification.php`, params, {responseType: 'json'});
 
   }
 
@@ -64,7 +64,7 @@ export class NotificationsService {
     params.append('status', status);
     params.append('prno', prno);
 
-    return this.http.post(`${API_URL}/addNotification.php`, params, {responseType: 'json'});
+    return this.http.post(`${environment.API_URL}/Notifications/addNotification.php`, params, {responseType: 'json'});
   }
 
   createDesktopNotification(message, icon) {
@@ -76,7 +76,7 @@ export class NotificationsService {
     const notification = new Notification('New Message', options );
 
     notification.onclick = function() {
-      window.open(domain);
+      window.open(environment.domain);
       //notification.close();
     };
 

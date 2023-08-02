@@ -110,14 +110,6 @@
                   <input matInput type="text" formControlName="cost" class="form-control" placeholder="Enter Cost">
                 </mat-form-field>
               </td>
-              <!-- <td align="center">
-                <mat-form-field appearance="outline">
-                  <mat-label>item type</mat-label>
-                  <mat-select class="form-control" formControlName="pr_type" (selectionChange)="onSelectChangePRType($event, i)">
-                    <mat-option *ngFor="let type of pr_types" [value]="type.pr_type_name"> {{ type.pr_type_name }} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td> -->
               <td align="center">
                 <button (click)="removeItem(i)" class="no-style-btn remove-item"><i class="fa-solid fa-trash"></i></button>
               </td>

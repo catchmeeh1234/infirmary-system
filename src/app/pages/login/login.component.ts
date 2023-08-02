@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { HttpClient } from '@angular/common/http';
-import { loginBackgroundCount } from '../../constants';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     this.buildForm();
   }
   setBackgroundImage() {
-    const randomNum = Math.floor(Math.random() * loginBackgroundCount) + 1;
+    const randomNum = Math.floor(Math.random() * environment.loginBackgroundCount) + 1;
     const bgImg = `url(assets/login_backgrounds/bg${randomNum}.jpg)`; // construct the URL for the random background image
     const div = document.getElementById('div_login'); // get the div element by its ID
     div.style.backgroundImage = bgImg; // set the background image style

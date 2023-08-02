@@ -9,7 +9,7 @@ import { SessionStorageService } from '../../services/session-storage.service';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
-import { API_URL } from '../../constants';
+import { environment } from '../../../environments/environment';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
@@ -179,19 +179,6 @@ export class ItemsViewComponent implements OnInit {
 
       }, 0);
     });
-
-    this.document.telLDisapprove(prnum)
-    .subscribe(data => {
-      let result:any = data;
-      if (result == null) {
-        this.StatusResult = result = [];
-      } else {
-        this.StatusResult = result;
-        this.disDate = result[0].pr_datetime;
-        this.disBy = result[0].pr_updatedBy;
-      }
-    });
-
   }
 
   PRBack() {
@@ -230,7 +217,7 @@ export class ItemsViewComponent implements OnInit {
     .subscribe((data:any) => {
       console.log(data);
       if (data.status === "1") {
-          window.open(`${API_URL}/printing/index.php?prno=${this.prnumber}`, '_blank');
+          window.open(`${environment.API_URL}/PR/printing/index.php?prno=${this.prnumber}`, '_blank');
           this.loadPRDetails(this.prnumber);
 
       }

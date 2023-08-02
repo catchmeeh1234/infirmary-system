@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
-import { API_URL } from '../constants';
-import { observable } from 'rxjs';
-import { StringDecoder } from 'string_decoder';
+import { environment } from '../../environments/environment';
 import { SessionStorageService } from './session-storage.service';
 import { Pr_details } from '../Types';
 
@@ -25,55 +23,26 @@ export class PrService {
     let div = this.sessionStorageService.getSession('division');
     let role = this.sessionStorageService.getSession('access');
 
-    return this.http.get(`${API_URL}/api/pr.php?division=${div}&role=${role}`, {responseType: 'json'});
+    return this.http.get(`${environment.API_URL}/PR/fetchPR.php?division=${div}&role=${role}`, {responseType: 'json'});
   }
 
   loadPRNo() {
-    return this.http.get(API_URL + '/api/prno.php', {responseType: 'text'});
+    return this.http.get(environment.API_URL + '/PR/incrementPRNo.php', {responseType: 'text'});
   }
 
-  loadItems(prnum) {
-    return this.http.get(API_URL + `/api/pritems.php?prnum=${prnum}`, {responseType: 'json'});
-  }
-
-  // getPurpose(prnum) {
-  //   return this.http.get(API_URL + `/api/getPurpose.php?prnum=${prnum}`, {responseType: 'json'});
-  // }
 
   approvePr(div, access) {
-    return this.http.get(API_URL + `/api/approvepr.php?div=${div}&role=${access}`, {responseType: 'json'});
+    //return this.http.get(environment.API_URL + `/api/approvepr.php?div=${div}&role=${access}`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/PR/viewPRForApproval.php?div=${div}&role=${access}`, {responseType: 'json'});
   }
 
-  // updateApproveStatus(prnum, status, username, button) {
-  //   return this.http.get(API_URL + `/prApproveStatus.php?prnum=${prnum}&status=${status}&name=${username}&stat=${button}`, {responseType: 'text'});
-  // }
 
-  telLDisapprove(prnum) {
-    return this.http.get(API_URL + `/api/telLDisapprove.php?prnum=${prnum}`, {responseType: 'json'});
-  }
-
-  prHistory(prnum) {
-    return this.http.get(API_URL + `/api/prHistory.php?prnum=${prnum}`, {responseType: 'json'});
-  }
-
-  loadTotalAS() {
-    return this.http.get(API_URL + '/api/LoadTotalAS.php', {responseType: 'text'});
-  }
-
-  loadTotalEM() {
-    return this.http.get(API_URL + '/api/loadTotalEC.php', {responseType: 'text'});
-  }
-
-  loadTotalFC() {
-    return this.http.get(API_URL + '/api/loadTotalFC.php', {responseType: 'text'});
-  }
-
-  loadTotalPR() {
-    return this.http.get(API_URL + '/api/loadTotalPR.php', {responseType: 'text'});
+  prHistory(prnum:string) {
+    return this.http.get(environment.API_URL + `/PR/prHistory.php?prnum=${prnum}`, {responseType: 'json'});
   }
 
   loadDocumentCounter(division:string) {
-    return this.http.get(API_URL + `/loadDocumentCounter.php?division=${division}`, {responseType: 'text'});
+    return this.http.get(environment.API_URL + `/PR/loadDocumentCounter.php?division=${division}`, {responseType: 'text'});
   }
 
   //addPR(prno:string, datecreated:string, requestor:string, designation:string, division:string, purpose:string, prstatus:string) {
@@ -85,7 +54,7 @@ export class PrService {
     params.append('pr_details', json);
     params.append('username', username);
 
-    return this.http.post(API_URL +'/addPR.php', params, { responseType: 'text'});
+    return this.http.post(environment.API_URL +'/PR/addPR.php', params, { responseType: 'text'});
   }
 
   editPR(prDetails:any) {
@@ -93,48 +62,44 @@ export class PrService {
     let json = JSON.stringify(prDetails);
     params.append('pr_details', json);
 
-    return this.http.post(API_URL +'/editPR.php', params, { responseType: 'text'});
+    return this.http.post(environment.API_URL +'/PR/editPR.php', params, { responseType: 'text'});
   }
 
   getUnitMeasurements() {
-    return this.http.get(API_URL + `/viewUnits.php`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/Units/viewUnits.php`, {responseType: 'json'});
   }
 
   getDivisions() {
-    return this.http.get(API_URL + `/viewDivisions.php`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/Divisions/viewDivisions.php`, {responseType: 'json'});
   }
 
   getPrLabelStatus() {
-    return this.http.get(API_URL + `/viewPrLabelStatus.php`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/PR/viewPrLabelStatus.php`, {responseType: 'json'});
   }
 
   updatePrRequestAPI(prDetails:any) {
-    return this.http.post(API_URL + `/cancelPR.php`, prDetails, {responseType: 'json'});
+    return this.http.post(environment.API_URL + `/PR/cancelPR.php`, prDetails, {responseType: 'json'});
   }
   loadPrAndItems(prno:string) {
     //console.log(prno);
-    return this.http.get(API_URL + `/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/PR/loadPrAndItems.php?prno=${prno}`, {responseType: 'json'});
   }
 
   loadDisapprovePR(division) {
-    return this.http.get(API_URL + `/viewDisapprovePR.php?division=${division}`, {responseType: 'json'});
+    return this.http.get(environment.API_URL + `/PR/viewDisapprovePR.php?division=${division}`, {responseType: 'json'});
   }
 
   //* monthly total pr */
   PRTotalJan() {
-    return this.http.get(API_URL + '/api/JanTotalPR.php', {responseType: 'json'});
+    return this.http.get(environment.API_URL + '/PR/JanTotalPR.php', {responseType: 'json'});
   }
 
-  //load pr type
-  loadPRTypes() {
-    return this.http.get(API_URL + `/loadPRTypes.php`, {responseType: 'json'});
-  }
 
   // update pr counter
   updatePRPrintCounter(prno:string) {
     let params = new FormData();
     params.append('prno', prno);
 
-    return this.http.post(API_URL + `/updatePRPrintCounter.php`, params, {responseType: 'json'});
+    return this.http.post(environment.API_URL + `/PR/updatePRPrintCounter.php`, params, {responseType: 'json'});
   }
 }

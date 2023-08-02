@@ -15,7 +15,11 @@ export const environment = {
     appId: "1:422055031001:web:261c3f03c6dbe830df8ec8",
     measurementId: "G-NYGXB63DCC"
   },
-  mailApi: '/assets/list.json'
+  mailApi: '/assets/list.json',
+  API_URL: 'https://backend.eprms.home:4600',
+  domain: "https://srwd.eprms.home/",
+  loginBackgroundCount: 3,
+  primaryColor: "#327ebd",
 };
 export const palete = {
     primary: '#D32F2F',
@@ -29,5 +33,5 @@ export const palete = {
     secondaryLight: '#E91E63',
     tertiaryLight: '#9C27B0',
     quaternaryLight: '#673AB7',
-    quinaryLight: '#3F51B5'       
+    quinaryLight: '#3F51B5'
 }

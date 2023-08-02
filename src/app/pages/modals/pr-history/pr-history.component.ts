@@ -20,28 +20,29 @@ export class PrHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.pr.prHistory(this.data.prnumber)
-    .subscribe(data => {
-      let result:any = data;
-      if (result.length = 0) {
+    .subscribe((res:any) => {
+      let result:any = res;
+
+      if (result.length === 0) {
         this.pr_history = new MatTableDataSource(result);
         return;
-      }
-      //this.pr_history = result;
-      //console.log(result);
+      } else {
+        for (const prhistory of result) {
 
-      for (const prhistory of result) {
-        if (prhistory.pr_status === "For DM Approval") {
-          prhistory.pr_status = "PR Created";
-        } else if (prhistory.pr_status === "For Budget Checking") {
-          prhistory.pr_status = "Approved by DM";
-        } else if (prhistory.pr_status === "For Cash Allocation") {
-          prhistory.pr_status = "Approved in Budget Checking";
-        } else if (prhistory.pr_status === "For Printing") {
-          prhistory.pr_status = "Approved in Cash Allocation";
+          if (prhistory.pr_status === "For DM Approval") {
+            prhistory.pr_status = "PR Created";
+          } else if (prhistory.pr_status === "For Budget Checking") {
+            prhistory.pr_status = "Approved by DM";
+          } else if (prhistory.pr_status === "For Cash Allocation") {
+            prhistory.pr_status = "Approved in Budget Checking";
+          } else if (prhistory.pr_status === "For Printing") {
+            prhistory.pr_status = "Approved in Cash Allocation";
+          }
+          this.pr_history = new MatTableDataSource(result);
+
         }
-      }
 
-      this.pr_history = new MatTableDataSource(result);
+      }
 
     });
   }

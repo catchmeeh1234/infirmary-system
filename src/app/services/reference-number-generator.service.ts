@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from '../constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ReferenceNumberGeneratorService {
   constructor(private http: HttpClient) { }
 
   getRefNo() {
-    return this.http.get(API_URL+`/getLogicNumbers.php?remarks=document_referenceNumber`, {responseType: 'text'});
+    return this.http.get(environment.API_URL+`/getLogicNumbers.php?remarks=document_referenceNumber`, {responseType: 'text'});
   }
 
   generateRefNo(type:String):any {
