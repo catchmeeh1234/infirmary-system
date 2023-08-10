@@ -25,6 +25,7 @@ export class PrHistoryComponent implements OnInit {
 
       if (result.length === 0) {
         this.pr_history = new MatTableDataSource(result);
+
         return;
       } else {
         for (const prhistory of result) {
@@ -38,10 +39,9 @@ export class PrHistoryComponent implements OnInit {
           } else if (prhistory.pr_status === "For Printing") {
             prhistory.pr_status = "Approved in Cash Allocation";
           }
-          this.pr_history = new MatTableDataSource(result);
-
         }
-
+        this.pr_history = new MatTableDataSource(result);
+        console.log(this.pr_history.data.length);
       }
 
     });

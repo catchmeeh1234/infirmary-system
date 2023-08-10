@@ -34,7 +34,6 @@ import { TablesRouterModule } from '../tables/tables.router';
 import { MatMenuModule } from '@angular/material/menu';
 import { PrViewComponent } from './pr-view/pr-view.component';
 import { PrAddComponent } from './pr-add/pr-add.component';
-import { PrItemComponent } from './pr-item/pr-item.component';
 import { ItemsViewComponent } from './items-view/items-view.component';
 import { ApprovePrComponent } from './approve-pr/approve-pr.component';
 
@@ -58,6 +57,7 @@ import { PrFilterButtonComponent } from './pr-filter-button/pr-filter-button.com
 import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { UserAccountViewComponent } from './modals/user-account-view/user-account-view.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordComponent } from './modals/change-password/change-password.component';
 
 
 @NgModule({
@@ -105,7 +105,6 @@ import { ProfileComponent } from './profile/profile.component';
         ServicesComponent,
         PrViewComponent,
         PrAddComponent,
-        PrItemComponent,
         ItemsViewComponent,
         ApprovePrComponent,
         SampleCompComponent,
@@ -117,7 +116,8 @@ import { ProfileComponent } from './profile/profile.component';
         PrFilterButtonComponent,
         AccountViewComponent,
         UserAccountViewComponent,
-        ProfileComponent
+        ProfileComponent,
+        ChangePasswordComponent
     ],
     exports: [
     ],

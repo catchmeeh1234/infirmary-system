@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { NotificationsService } from './notifications.service';
 import { PrService } from './pr.service';
 import { SessionStorageService } from './session-storage.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class WebSocketService {
   constructor(
     private sessionStorageService:SessionStorageService,
     private pr: PrService,
-    private notif: NotificationsService
+    private notif: NotificationsService,
+    private user:UserService,
   ) {
     this.status_message = "";
 
@@ -48,6 +50,7 @@ export class WebSocketService {
   disconnectSocket() {
     this.socket.on('disconnect', () => {
       let now = new Date();
+      let username = this.sessionStorageService.getSession('username');
 
       console.log(`Socket.IO connection closed. Time: ${now}`);
     });
@@ -56,6 +59,8 @@ export class WebSocketService {
   closeSocket() {
     if (this.socket !== undefined && this.socket !== null) {
       this.socket.disconnect();
+
+      //this.socket.emit('userDisco', this.sessionStorageService.getSession('username'));
     }
   }
 
@@ -119,6 +124,11 @@ export class WebSocketService {
 
         let result:any = res;
         this.notif.notificationContent = result;
+      });
+
+      this.user.loadNotificationsCounter(this.sessionStorageService.getSession('userid'))
+      .subscribe((data:any) => {
+        this.user.notificationCounter = data;
       });
     });
 

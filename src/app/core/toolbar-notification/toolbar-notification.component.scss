@@ -82,6 +82,7 @@ $prefix: 'toolbar-notification';
 	        position: relative;
 	        color: #666;
 	        cursor: pointer;
+          background-color: #ccc;
 
 	        .icon {
 		        height: 28px;
@@ -161,4 +162,8 @@ $prefix: 'toolbar-notification';
       	background: #EEE;
       	margin: 0 16px 0 14px;
     }
+}
+
+.notRead {
+  background-color: #ffffff !important;
 }

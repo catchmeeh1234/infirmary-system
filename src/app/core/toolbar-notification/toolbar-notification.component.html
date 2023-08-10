@@ -1,7 +1,7 @@
 <div class="toolbar-notification-container" [class.alternative]="isDarkTheme">
 	<button mat-icon-button (click)="isOpen = !isOpen;toggleTheme('indigo-pink')" [ngClass]="[cssPrefix+'-btn']" [class.open]="isOpen">
     	<mat-icon>notifications_none</mat-icon>
-    	<span class="badge" *ngIf="notif.notificationContent && notif.notificationContent.length !== 0">{{ notif.notificationContent.length }}</span>
+    	<span class="badge" *ngIf="user.notificationCounter != 0">{{ user.notificationCounter }}</span>
   </button>
 
 
@@ -12,7 +12,7 @@
         	<div class="title">
          		 <div class="name">Notifications</div>
           		<div class="extra">
-You have {{ notif.notificationContent.length }} new notifications</div>
+You have {{ user.notificationCounter }} new notifications</div>
         	</div>
         	<button type="button" mat-icon-button>
           		<mat-icon class="icon">settings</mat-icon>
@@ -31,16 +31,16 @@ You have {{ notif.notificationContent.length }} new notifications</div>
 <ng-template #thenBlock>
   <ng-scrollbar class="content">
     <div *ngFor="let notification of notif.notificationContent last as isLast">
-      <div class="notification" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
+      <div class="notification" fxLayout="row" fxLayoutAlign="start center" mat-ripple [ngClass]="{'notRead': notification.notif_isRead == 1 || notification.notif_encoder_isRead == 1 }">
         <mat-icon class="icon" (click)="select(notification.notif_prno, notification.notif_id)">notifications</mat-icon>
         <div class="title" fxLayout="column" (click)="select(notification.notif_prno, notification.notif_id)">
           <div class="name">{{ notification.notif_title }}</div>
           <div class="time">{{ notification.notif_message }}</div>
         </div>
         <span fxFlex></span>
-        <button type="button" mat-icon-button (click)="delete(notification.notif_id)">
+        <!-- <button type="button" mat-icon-button (click)="delete(notification.notif_id)">
           <mat-icon class="close">close</mat-icon>
-        </button>
+        </button> -->
       </div>
       <div class="divider" *ngIf="!isLast"></div>
     </div>

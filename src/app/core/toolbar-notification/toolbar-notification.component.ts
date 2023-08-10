@@ -5,6 +5,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { PrService } from '../../services/pr.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemsViewComponent } from '../../pages/items-view/items-view.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'cdk-toolbar-notification',
@@ -20,16 +21,27 @@ export class ToolbarNotificationComponent implements OnInit {
 
   private division = this.sessionStorageService.getSession('division');
   private role = this.sessionStorageService.getSession('access');
+  private userid = this.sessionStorageService.getSession('userid');
+
+  public notif_counter:number;
 
     @HostListener('document:click', ['$event', '$event.target'])
       onClick(event: MouseEvent, targetElement: HTMLElement) {
         if (!targetElement) {
           return;
         }
+        if (this.isOpen === true) {
+          this.notif.resetNotificationCounter(this.userid)
+          .subscribe(data => {
+            //console.log(data);
+            this.loadNotifications(this.division, this.role);
+          });
+        }
         const clickedInside = this.elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
           this.isOpen = false;
         }
+
     }
 
   	constructor(
@@ -38,7 +50,7 @@ export class ToolbarNotificationComponent implements OnInit {
       public notif: NotificationsService,
       private sessionStorageService: SessionStorageService,
       private router:Router,
-      // private pr: PrService,
+      public user:UserService,
     ) { }
 
   	ngOnInit() {
@@ -50,6 +62,11 @@ export class ToolbarNotificationComponent implements OnInit {
       .subscribe(data => {
         let result:any = data;
         this.notif.notificationContent = result;
+      });
+
+      this.user.loadNotificationsCounter(this.userid)
+      .subscribe((data:any) => {
+        this.user.notificationCounter = data;
       });
     }
 
@@ -75,7 +92,10 @@ export class ToolbarNotificationComponent implements OnInit {
       //   queryParams,
       //   queryParamsHandling: 'merge' // 'merge' will merge the new parameters with the existing ones
       // };
-
+      this.notif.updateNotifIsRead(notif_id, this.role)
+      .subscribe(data => {
+        console.log(data);
+      });
       this.router.navigateByUrl('/auth/pages/viewPR', { skipLocationChange: true });
       //   this.router.navigate(['/auth/pages/viewItems'], navigationExtras);
       // });

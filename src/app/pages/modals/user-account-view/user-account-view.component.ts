@@ -45,11 +45,11 @@ export class UserAccountViewComponent implements OnInit {
     this.editForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       Username: new FormControl('',[Validators.required]),
-      Password: new FormControl('', [Validators.required]),
       FullName: new FormControl('', [Validators.required]),
       Division: new FormControl('', [Validators.required]),
       Designation: new FormControl('', [Validators.required]),
       email: new FormControl(''),
+      originalUsername: new FormControl(''),
     });
 
     if (this.data.isFormDisabled) {
@@ -88,6 +88,9 @@ export class UserAccountViewComponent implements OnInit {
     .subscribe(data => {
       let result:any = data;
       this.editForm.patchValue(result[0]);
+
+      //assign value to original username
+      this.editForm.patchValue({ originalUsername: result[0].Username });
       // this.editForm.setValue({
       //   empid: result[0].Emp_ID,
       //   username: result[0].Username,
@@ -109,9 +112,16 @@ export class UserAccountViewComponent implements OnInit {
       panelClass: ['style-snackbar-success']
     };
 
+    if (!this.editForm.valid) {
+      config.panelClass = ['style-snackbar-error'];
+      this.snackBar.open("Fill all necessary information", 'Dismiss', config);
+      return;
+    }
+
     this.user.editUserAccount(this.editForm.value)
     .subscribe(data => {
       let res:any = data;
+      console.log(res);
       if (res.status === "Account updated successfully") {
         console.log(res.status);
         this.user.fetchAllUserAccounts()

@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswordComponent } from '../modals/change-password/change-password.component';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   public divisions:any;
-  private userid = this.sessionStorageService.getSession("userid");
+  public userid = this.sessionStorageService.getSession("userid");
 
   public profileForm:FormGroup;
   public btnValue:string = "Edit";
@@ -21,17 +23,20 @@ export class ProfileComponent implements OnInit {
               private sessionStorageService:SessionStorageService,
               private user:UserService,
               private formBuilder:FormBuilder,
-              private router:Router) { }
+              private router:Router,
+              private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.profileForm = this.formBuilder.group({
       id: ['', Validators.required],
       Username: ['', Validators.required],
-      Password: ['', Validators.required],
+      // Password: ['', Validators.required],
       FullName: ['', Validators.required],
       Division: ['', Validators.required],
       Designation: ['', Validators.required],
       email: [''],
+      originalUsername: [''],
+
     });
 
     this.loadDivisions();
@@ -49,6 +54,7 @@ export class ProfileComponent implements OnInit {
     this.user.fetchOneUserAccount(this.userid)
     .subscribe((data:any) => {
       this.profileForm.patchValue(data[0]);
+      this.profileForm.patchValue({ originalUsername: data[0].Username });
       this.profileForm.disable();
     });
   }
@@ -72,9 +78,18 @@ export class ProfileComponent implements OnInit {
         this.profileForm.disable();
 
       });
-
     }
+  }
 
+  changePassword(id) {
+    const dialogRef = this.dialog.open(ChangePasswordComponent, {
+      panelClass: ['no-padding'],
+      data: {
+        containerWidth: '1000px',
+        headerText: `Change User Password`,
+        id: id,
+      }
+    });
   }
 
 }

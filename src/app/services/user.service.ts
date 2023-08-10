@@ -8,8 +8,13 @@ import { environment } from '../../environments/environment';
 export class UserService {
 
   public dataSourceUser:any;
+  public notificationCounter:number = 0;
 
   constructor(private http:HttpClient) { }
+
+  loadNotificationsCounter(userid) {
+    return this.http.get(`${environment.API_URL}/Accounts/loadNotificationsCounter.php?userid=${userid}`, {responseType: 'text'})
+  }
 
   getUser(id:string, username:string) {
     return this.http.get(`${environment.API_URL}/Accounts/authUser.php?username=${id}&password=${username}`, {responseType: 'json'})
@@ -39,5 +44,14 @@ export class UserService {
     let params = new FormData();
     params.append('userid', userid);
     return this.http.post(`${environment.API_URL}/Accounts/resetUserAccount.php`, params, {responseType: 'json'});
+  }
+
+  changeUserPassword(userAccountDetails:any, id) {
+    let json = JSON.stringify(userAccountDetails);
+    let params = new FormData();
+    params.append('userAccountDetails', json);
+    params.append('id', id);
+
+    return this.http.post(`${environment.API_URL}/Accounts/changeUserPassword.php`, params, {responseType: 'json'});
   }
 }

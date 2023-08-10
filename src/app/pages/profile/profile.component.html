@@ -7,6 +7,7 @@
 		<div class="table-container" [formGroup]="profileForm">
       <div class="inline-form">
           <input type="hidden" formControlName="id" class="form-control" placeholder="User ID" >
+          <input type="hidden" formControlName="originalUsername">
       </div>
       <div class="inline-form">
         <mat-form-field appearance="outline">
@@ -14,12 +15,12 @@
           <input matInput type="text" formControlName="Username" class="form-control" placeholder="Full name" >
         </mat-form-field>
       </div>
-      <div class="inline-form">
+      <!-- <div class="inline-form">
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input matInput type="text" formControlName="Password" class="form-control" placeholder="Password" >
         </mat-form-field>
-      </div>
+      </div> -->
       <div class="inline-form">
         <mat-form-field appearance="outline">
           <mat-label>Full Name</mat-label>
@@ -44,7 +45,10 @@
           <input matInput type="text" formControlName="email" class="form-control" placeholder="Email" >
         </mat-form-field>
       </div>
-      <button mat-flat-button color="primary" id="btnEdit" (click)="onEditUserAccount()">{{btnValue}}</button>
+      <div class="inline-form">
+        <button mat-flat-button color="primary" id="btnEdit" (click)="onEditUserAccount()">{{btnValue}}</button>
+        <button mat-flat-button color="primary" id="btnEdit" (click)="changePassword(userid)">Change Password</button>
+      </div>
 		</div>
 	</div>
 </div>

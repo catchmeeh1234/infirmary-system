@@ -12,6 +12,15 @@ export class NotificationsService {
 
   constructor(private http: HttpClient, private sessionStorageService:SessionStorageService) { }
 
+  updateNotifIsRead(notifid, role) {
+    let params = new FormData();
+    params.append('notifid', notifid);
+    params.append('role', role);
+
+    return this.http.post(`${environment.API_URL}/Notifications/updateNotifIsRead.php`, params, {responseType: 'text'});
+
+  }
+
   viewNotifications(division, role) {
     let status:string;
     if (role === "Approver") {
@@ -26,6 +35,13 @@ export class NotificationsService {
       status = "Final Approver";
     }
     return this.http.get(`${environment.API_URL}/Notifications/viewNotifications.php?division=${division.toUpperCase()}&status=${status}`, {responseType: 'json'});
+  }
+
+  resetNotificationCounter(userid) {
+    let params = new FormData();
+    params.append('userid', userid);
+
+    return this.http.post(`${environment.API_URL}/Notifications/resetNotificationcounter.php`, params, {responseType: 'text'});
   }
 
   updateNotificationIsRead(notif_prno, notif_status, role) {

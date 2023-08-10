@@ -27,7 +27,7 @@ export const menus = [
           'open': false,
         },
         {
-          'name': 'Approve PR',
+          'name': 'For Approval',
           'link': 'pages/approvePr',
           'icon': 'thumbs_up_down',
           'chip': false,

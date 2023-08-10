@@ -51,7 +51,7 @@ export class PrFilterButtonComponent implements OnInit {
           (!filters.status || data.pr_status.toLowerCase() === filters.status.toLowerCase()) &&
           (!filters.requestor || data.pr_requestor.toLowerCase() === filters.requestor.toLowerCase()) &&
           (!filters.date || data.pr_dateCreated.toLowerCase() === filters.date.toLowerCase()) &&
-          (!filters.search || data.pr_no.includes(filters.search))
+          (!filters.search || (data.pr_no.includes(filters.search) || data.pr_purpose.toLowerCase().includes(filters.search)))
         );
       };
     }, 500);

@@ -7,7 +7,7 @@
       <div class="table-container">
         <form [formGroup]="editForm">
           <input type="hidden" size="6" placeholder="ID" class="pr_no_hidden" formControlName="id"/>
-          <input type="hidden" placeholder="Password" formControlName="Password">
+          <input type="hidden" formControlName="originalUsername">
           <div class="inline-form">
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
