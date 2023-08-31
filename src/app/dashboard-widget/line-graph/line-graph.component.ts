@@ -31,10 +31,10 @@ export class LineGraphComponent implements OnInit {
 
     let totaldata = [];
     for (const div of this.Total) {
-        const prmonth:string = div.month;
-        const prtotal:any = div.total;
-          totaldata.push(prtotal);
-        };
+      const prmonth:string = div.month;
+      const prtotal:any = div.total;
+      totaldata.push(prtotal);
+    };
 
       let chart = new Chart('line-graph', {
                 type: 'line',

@@ -279,7 +279,7 @@ export class PrAddComponent implements OnInit {
     this.addForm.get('pr_designation')?.enable();
     this.addForm.get('pr_division')?.enable();
 
-    let x = this.document.addPR(prno.value, this.addForm.value, username);
+    let x = this.document.addPR(prno.value.trim(), this.addForm.value, username);
 
     x.subscribe(data => {
       console.log(data);
@@ -287,24 +287,25 @@ export class PrAddComponent implements OnInit {
       let response:any = data;
       if (response.trim() === "Inserted Successfully") {
         let title = 'Purchase Request Created';
-        let message = `Purchase Request: ${prno.value} has been created by ${this.sessionStorageService.getSession('username')}`;
+        let message = `Purchase Request: ${prno.value.trim()} has been created by ${this.sessionStorageService.getSession('username')}`;
 
         const json_notif = {
           message: message,
           notif_division: this.div
         };
         const json_email_notif = {
-          prno: prno.value,
+          prno: prno.value.trim(),
           division: this.addForm.get('pr_division').value,
           status: this.addForm.get('pr_status').value,
         };
 
-        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('pr_division').value, this.addForm.get('pr_status').value, prno.value).subscribe(data => {
+        this.notif.insertNotification(title, message, this.sessionStorageService.getSession('access'), this.addForm.get('pr_division').value, this.addForm.get('pr_status').value, prno.value.trim()).subscribe(data => {
           //this.websock.status_message = devicedeveui;
           console.log(data);
         });
         this.websock.sendNotif(json_notif);
         this.websock.updateNotification();
+        this.websock.updatePRTable();
 
         if (prno.value == null) {
           return;
@@ -316,8 +317,8 @@ export class PrAddComponent implements OnInit {
           panelClass: ['no-padding'],
           data: {
             containerWidth: '1000px',
-            headerText: `Pr Number: ${prno.value}`,
-            prNumber: prno.value,
+            headerText: `Pr Number: ${prno.value.trim()}`,
+            prNumber: prno.value.trim(),
           }
         });
 

@@ -11,6 +11,7 @@ import { PrUpdateStatusService } from '../../services/pr-update-status.service';
 import { PrHistoryComponent } from '../modals/pr-history/pr-history.component';
 import { environment } from '../../../environments/environment';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-items-view',
@@ -26,6 +27,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 
 export class ItemsViewComponent implements OnInit {
+  prDetailsForm:FormGroup;
+
   expandedElement: any | null;
 
   public dataSource:any;
@@ -36,16 +39,12 @@ export class ItemsViewComponent implements OnInit {
   public arrayOfYears:any;
   public selectedYear:string;
   public yearButton:string;
-  public remarks:string;
-  public current_status:string;
   public prnumber:string;
-  public dateCreated:string;
-  public requestor:string;
+
   public print_counter:string;
 
   public prequeststatus:string;
   public prequestdivision:string;
-  public purpose:string;
   public isBtnApproval:boolean = false;
 
   //logged in user's details
@@ -74,7 +73,8 @@ export class ItemsViewComponent implements OnInit {
               private router:Router,
               public dialog: MatDialog,
               private sessionStorageService:SessionStorageService,
-              private prUpdateStatus:PrUpdateStatusService
+              private prUpdateStatus:PrUpdateStatusService,
+              private formBuilder:FormBuilder
   ) {
     this.arrayOfYears = [];
     this.selectedYear = new Date().getFullYear().toString();
@@ -82,6 +82,15 @@ export class ItemsViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // init formgroup
+    this.prDetailsForm = this.formBuilder.group({
+      pr_purpose: ['', Validators.required],
+      remarks: [''],
+      pr_status: ['', Validators.required],
+      pr_dateCreated: ['', Validators.required],
+      pr_requestor: ['', Validators.required]
+    });
+    this.prDetailsForm.disable();
     //const url = new URL(window.location.href);
     //const prnum = url.searchParams.get("prnum");
     const prnum = this.data.prNumber;
@@ -159,13 +168,11 @@ export class ItemsViewComponent implements OnInit {
         for (const prDetails of this.result) {
           this.prequeststatus = prDetails.pr_status;
           this.prequestdivision = prDetails.pr_division;
-          this.purpose = prDetails.pr_purpose;
-          this.remarks = prDetails.remarks;
-          this.current_status = prDetails.pr_status;
-          this.dateCreated = prDetails.pr_dateCreated;
-          this.requestor = prDetails.pr_requestor;
+
           this.print_counter = prDetails.print_counter;
           this.dataSource = new MatTableDataSource(prDetails.items);
+
+          this.prDetailsForm.patchValue(prDetails);
 
           this.dataSource.paginator = this.paginator;
         }
@@ -265,7 +272,7 @@ export class ItemsViewComponent implements OnInit {
         } else {
           this.isBtnApproval = true;
         }
-
+        console.log(result);
         this.prUpdateStatus.updatePrRequest(this.prnumber, this.prequeststatus, stat, result.remarks, this.prequestdivision);
         setTimeout(() => {
           this.loadPRDetails(this.prnumber);

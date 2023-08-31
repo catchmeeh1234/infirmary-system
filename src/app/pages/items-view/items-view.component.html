@@ -35,7 +35,7 @@
             <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
               <div class="example-element-detail"
                   [@detailExpand]="element != expandedElement ? 'expanded' : 'collapsed'">
-                <table style="text-align: left;padding: 1em;" *ngIf="element.pr_subitems.length!=0">
+                <table style="text-align: left;padding: 1em;" *ngIf="element.pr_subitems.length != 0">
                   <tr>
                     <th style="width: 3%;"></th>
                     <th style="padding-left: 15px;width: 40%;">Sub item</th>
@@ -66,71 +66,39 @@
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>
-
-      <!-- <mat-table #table [dataSource]="dataSource">
-				- Note that these columns can be defined in any order.
-				The actual rendered columns are set as a property on the row definition"
-
-				<ng-container matColumnDef="PRItems">
-					<mat-header-cell *matHeaderCellDef> Items </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_items}} </mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="PRQuantity">
-					<mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_quantity}} </mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="PRUnit">
-					<mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_unit}} </mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="PRCost">
-					<mat-header-cell *matHeaderCellDef> Unit Price </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_cost | number:'1.2-2'}} </mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="TotalCost">
-					<mat-header-cell *matHeaderCellDef> Total Price </mat-header-cell>
-					<mat-cell *matCellDef="let row"> {{row.pr_quantity * row.pr_cost | number:'1.2-2'}} </mat-cell>
-				</ng-container>
-
-				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-			</mat-table> -->
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label=""> </mat-paginator>
 
+      <form [formGroup]="prDetailsForm">
       <div class="inline-form">
         <mat-form-field appearance="outline">
           <mat-label>Purpose</mat-label>
-          <input matInput type="text" size="30"placeholder="Purpose" class="purpose" [value]="purpose" disabled/>
+          <input matInput type="text" size="30"placeholder="Purpose" class="purpose" formControlName="pr_purpose"/>
         </mat-form-field>
       </div>
-      <div class="inline-form" *ngIf="remarks !== null">
+      <div class="inline-form" *ngIf="prDetailsForm.get('remarks').value !== null">
         <mat-form-field appearance="outline">
           <mat-label>Remarks</mat-label>
-          <input matInput type="text" size="30"placeholder="Purpose" class="purpose" [value]="remarks" disabled/>
+          <input matInput type="text" size="30"placeholder="Remarks" formControlName="remarks"/>
         </mat-form-field>
       </div>
       <div class="inline-form">
         <mat-form-field appearance="outline">
           <mat-label>Current Status</mat-label>
-          <input matInput type="text" size="30"placeholder="Current Status" class="currentstatus" [value]="current_status" disabled/>
+          <input matInput type="text" size="30"placeholder="Current Status" class="currentstatus" formControlName="pr_status"/>
         </mat-form-field>
         <!-- <mat-form-field appearance="outline" *ngIf="current_status.includes('Disapprove')">
           <mat-label>Disapprove By</mat-label>
-          <input matInput type="text" size="30"placeholder="Disapprove by" class="disapprove" [value]="current_status + ' by' + username" disabled/>
+          <input matInput type="text" size="30"placeholder="Disapprove by" class="disapprove" [value]="current_status + ' by' + username"/>
         </mat-form-field> -->
         <mat-form-field appearance="outline">
           <mat-label>Date Created</mat-label>
-          <input matInput type="text" size="30"placeholder="Date Created" class="datecreated" [value]="dateCreated" disabled/>
+          <input matInput type="text" size="30"placeholder="Date Created" class="datecreated" formControlName="pr_dateCreated"/>
         </mat-form-field>
       </div>
       <div class="inline-form">
         <mat-form-field appearance="outline">
           <mat-label>Requestor</mat-label>
-          <input matInput type="text" size="30"placeholder="Requestor" class="requestor" [value]="requestor" disabled/>
+          <input matInput type="text" size="30"placeholder="Requestor" class="requestor" formControlName="pr_requestor"/>
         </mat-form-field>
       </div>
       <div class="inline-form" style="justify-content: flex-end;">
@@ -140,7 +108,7 @@
         <!-- <button *ngIf="isShowReroute === true" mat-flat-button color="primary" (click)="onUpdateApproveStatus('Re-route', true)">
           Re-route
 				</button> -->
-        <button *ngIf="prequeststatus === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
+        <button *ngIf="prDetailsForm.get('pr_status').value === 'For DM Approval' && access === 'Encoder'" mat-flat-button color="primary" (click)="editPR()">
           Edit PR
 				</button>
 				<button *ngIf="prequeststatus === 'For Printing'" mat-flat-button color="primary" (click)="onPrintPr()" [matTooltip]="'Printed '+ print_counter + ' times'">
@@ -164,6 +132,7 @@
           Tag as Approved by GM
         </button>
       </div>
+      </form>
 		</div>
   </div>
 </app-modal>

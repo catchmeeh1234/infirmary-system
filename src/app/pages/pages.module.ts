@@ -16,7 +16,6 @@ import { AboutComponent } from './about/about.component';
 import { ServicesComponent } from './services/services.component';
 import { CoreModule } from '../core/core.module';
 
-import { TablesModule } from '../tables/tables.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
